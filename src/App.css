@@ -1,0 +1,138 @@
+.app-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--bg-dark-base);
+  overflow-x: hidden;
+  position: relative;
+}
+
+.hero-layout {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 680px;
+  overflow: hidden;
+  background-color: #07090e;
+}
+
+.hero-shapegrid-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+.hero-bottom-fade-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 180px;
+  background: linear-gradient(to bottom, rgba(7, 9, 14, 0) 0%, rgba(7, 9, 14, 0.8) 60%, var(--bg-dark-base, #07090e) 100%);
+  pointer-events: none;
+  z-index: 15;
+}
+
+.hero-grid-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 0 4rem;
+  pointer-events: none;
+  /* Mouse move events pass through to ShapeGrid canvas */
+}
+
+.hero-left-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  pointer-events: none;
+}
+
+.hero-right-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-left: 2rem;
+  z-index: 12;
+  pointer-events: none;
+}
+
+/* Re-enable pointer events on interactive controls inside right column */
+.hero-right-col>* {
+  pointer-events: auto;
+}
+
+.hero-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  pointer-events: auto;
+  margin-top: 1.5rem;
+}
+
+/* Headings with Same Font & Size */
+.hero-heading-static,
+.hero-heading-rotate {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: clamp(1.8rem, 4.2vw, 3.5rem);
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+  margin: 0;
+  pointer-events: none;
+  /* Non-interactive headings pass through */
+}
+
+.hero-heading-rotate {
+  color: #ffffff;
+}
+
+.word-rotate-text {
+  display: inline-block;
+}
+
+/* Paragraph Subtext below heading */
+.hero-subtext {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: clamp(0.9rem, 1.35vw, 1.12rem);
+  color: #94A3B8;
+  line-height: 1.65;
+  max-width: 540px;
+  margin-top: 1.5rem;
+  margin-bottom: 0;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+  font-weight: 400;
+  pointer-events: none;
+  /* Non-interactive paragraph passes through */
+}
+
+@media (max-width: 900px) {
+  .hero-grid-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    padding: 1.5rem;
+    overflow-y: auto;
+  }
+
+  .hero-right-col {
+    padding-left: 0;
+    align-items: center;
+    text-align: center;
+  }
+}

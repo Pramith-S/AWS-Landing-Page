@@ -1,0 +1,224 @@
+/* Global CSS & Design Tokens for AWS SBG JSSATEB Landing Page */
+:root {
+  /* Palette & Backgrounds */
+  --bg-dark-base: #0B0B0E;
+  --bg-dark-alt: #120E16;
+  --bg-card: #181524;
+  --bg-card-hover: #1E1A2E;
+  --bg-glass: rgba(24, 21, 36, 0.75);
+  --bg-footer: #07060A;
+  
+  /* Primary & Accent Colors */
+  --deep-purple: #6C2BD9;
+  --electric-violet: #8B5CF6;
+  --btn-purple: #7C3AED;
+  --btn-purple-hover: #6D28D9;
+  
+  /* Subtle AWS Highlights */
+  --aws-orange: #FF9900;
+  --aws-amber: #FFB800;
+  
+  /* Text Contrast Hierarchy (WCAG AA Compliant) */
+  --text-primary: #F3F4F6;
+  --text-secondary: #9CA3AF;
+  --text-muted: #6B7280;
+  
+  /* Fine Borders & Glows */
+  --border-card: rgba(139, 92, 246, 0.15);
+  --border-card-hover: rgba(139, 92, 246, 0.4);
+  --border-purple-glow: rgba(124, 58, 237, 0.3);
+  
+  /* Fonts */
+  --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  
+  /* Radius & Shadows */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+  
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.4);
+  --shadow-purple-glow: 0 8px 30px rgba(124, 58, 237, 0.25);
+  
+  /* Transitions */
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-body);
+  background-color: var(--bg-dark-base);
+  color: var(--text-primary);
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--bg-dark-base);
+  color: var(--text-primary);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Global Section Layout */
+.section-padding {
+  padding: 6rem 0;
+  position: relative;
+}
+
+/* Badge Component */
+.section-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.9rem;
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-full);
+  color: var(--electric-violet);
+  font-family: var(--font-mono);
+  font-size: 0.825rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+/* Section Header Text */
+.section-title {
+  font-size: clamp(2rem, 3.5vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 650px;
+  line-height: 1.6;
+}
+
+/* Standard Dark Card Surface */
+.sbg-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 2rem;
+  transition: var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.sbg-card:hover {
+  border-color: var(--border-card-hover);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-purple-glow);
+}
+
+/* Purple Text Accent */
+.text-violet-accent {
+  color: var(--electric-violet);
+}
+
+.text-gradient-purple {
+  background: linear-gradient(135deg, #8B5CF6 0%, #6C2BD9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-aws {
+  background: linear-gradient(135deg, #FF9900 0%, #FFC700 50%, #FF5500 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Solid Purple Primary Button */
+.btn-purple-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: var(--btn-purple);
+  color: #FFFFFF;
+  font-weight: 600;
+  font-family: var(--font-heading);
+  padding: 0.85rem 1.8rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+  transition: var(--transition-normal);
+  text-decoration: none;
+  font-size: 0.975rem;
+}
+
+.btn-purple-primary:hover {
+  background: var(--btn-purple-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(124, 58, 237, 0.5);
+}
+
+/* Outline Secondary Button */
+.btn-purple-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: rgba(139, 92, 246, 0.05);
+  color: var(--text-primary);
+  font-weight: 600;
+  font-family: var(--font-heading);
+  padding: 0.85rem 1.8rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-card);
+  cursor: pointer;
+  transition: var(--transition-normal);
+  text-decoration: none;
+  font-size: 0.975rem;
+}
+
+.btn-purple-outline:hover {
+  background: rgba(139, 92, 246, 0.15);
+  border-color: var(--electric-violet);
+  color: #FFFFFF;
+  transform: translateY(-2px);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-dark-base);
+}
+::-webkit-scrollbar-thumb {
+  background: #251F38;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--deep-purple);
+}

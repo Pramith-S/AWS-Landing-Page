@@ -1,0 +1,31 @@
+.shiny-text {
+  display: inline-block;
+  color: #ffffff;
+  background: linear-gradient(120deg,
+      #ffffff 0%,
+      #ffffff 35%,
+      var(--shiny-shine-color, #a855f7) 50%,
+      #ffffff 65%,
+      #ffffff 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine var(--shiny-speed, 5s) linear infinite;
+  animation-direction: var(--shiny-direction, normal);
+  animation-delay: var(--shiny-delay, 1s);
+  will-change: background-position;
+}
+
+.shiny-text.pause-on-hover:hover {
+  animation-play-state: paused;
+}
+
+@keyframes shine {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}

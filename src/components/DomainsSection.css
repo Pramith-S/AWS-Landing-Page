@@ -1,0 +1,408 @@
+.domains-section {
+  background-color: var(--bg-dark-alt);
+  border-top: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.domains-section::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 140px;
+  background: linear-gradient(to bottom, rgba(18, 14, 22, 0) 0%, var(--bg-dark-base) 100%);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.domains-header {
+  margin-bottom: 3.5rem;
+}
+
+/* Connected Master Retro Console Chassis */
+.unified-retro-console {
+  position: relative;
+  width: 100%;
+  max-width: 1020px;
+  margin: 0 auto;
+  background-color: #232328;
+  background-image: linear-gradient(90deg,
+      transparent 50%,
+      rgba(0, 0, 0, 0.25) 50%),
+    linear-gradient(0deg, #2c2c34 0%, #191920 100%);
+  background-size: 4px 4px, 100% 100%;
+  border: 3px solid #484854;
+  border-bottom: 4px solid #111116;
+  border-right: 4px solid #111116;
+  border-radius: 14px;
+  padding: 10px;
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.2),
+    0 25px 60px rgba(0, 0, 0, 0.8),
+    0 0 0 1px rgba(139, 92, 246, 0.15);
+  user-select: none;
+}
+
+/* Inner Layout Grid connecting Left Stack and Right CRT TV Details */
+.console-inner-layout {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 10px;
+  align-items: stretch;
+}
+
+/* Left Stack: Winamp Selector + GIF TV Screen Box connected vertically */
+.console-left-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+}
+
+/* Lower GIF TV Screen Box */
+.gif-tv-screen-box {
+  background: #15151a;
+  background-image: linear-gradient(90deg,
+      transparent 50%,
+      rgba(0, 0, 0, 0.2) 50%),
+    linear-gradient(0deg, #25252d 0%, #17171d 100%);
+  background-size: 4px 4px, 100% 100%;
+  border: 2px solid #444;
+  border-bottom: 2px solid #111;
+  border-right: 2px solid #111;
+  border-radius: 6px;
+  padding: 6px;
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.15), 0 8px 18px rgba(0, 0, 0, 0.6);
+  position: relative;
+  overflow: hidden;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 220px;
+}
+
+.gif-tv-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #000000;
+  padding: 4px 8px;
+  margin-bottom: 6px;
+  border-radius: 2px;
+  border: 1px solid #333;
+}
+
+.gif-tv-header-title {
+  font-family: "Courier New", monospace;
+  font-size: 10px;
+  color: #00ff00;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.gif-tv-header-badge {
+  font-family: "Courier New", monospace;
+  font-size: 9px;
+  color: #ffb700;
+}
+
+.gif-tv-display {
+  position: relative;
+  width: 100%;
+  flex-grow: 1;
+  min-height: 180px;
+  background: #000000;
+  border-radius: 3px;
+  border: 1px solid #222;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gif-tv-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.gif-tv-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+  background-size: 100% 4px;
+  z-index: 5;
+  opacity: 0.6;
+}
+
+/* TV Screen Domain Details Card */
+.tv-screen-details-card {
+  --base-metal: #2a2a2e;
+  --base-dark: #1a1a1d;
+  --accent-gold: #ffb700;
+  --neon-green: #00ff00;
+  --neon-green-dim: #004d00;
+  --glass-reflection: rgba(255, 255, 255, 0.15);
+  --font-main: "Courier New", monospace;
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: var(--base-metal);
+  background-image: linear-gradient(90deg,
+      transparent 50%,
+      rgba(0, 0, 0, 0.25) 50%),
+    linear-gradient(0deg, #333 0%, #1e1e22 100%);
+  background-size: 4px 4px, 100% 100%;
+  border: 2px solid #555;
+  border-bottom: 2px solid #111;
+  border-right: 2px solid #111;
+  border-radius: 6px;
+  padding: 6px;
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.25),
+    0 10px 25px rgba(0, 0, 0, 0.6);
+  font-family: var(--font-main);
+  overflow: hidden;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+}
+
+/* TV Monitor Header */
+.tv-monitor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #000;
+  padding: 6px 12px;
+  margin-bottom: 6px;
+  border-radius: 2px;
+  border: 1px solid #444;
+}
+
+.tv-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tv-power-led {
+  width: 8px;
+  height: 8px;
+  background-color: #00ff00;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #00ff00;
+  animation: tv-power-pulse 2s infinite ease-in-out;
+}
+
+@keyframes tv-power-pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.6;
+    transform: scale(0.85);
+  }
+}
+
+.tv-header-title {
+  font-size: 11px;
+  color: var(--accent-gold);
+  letter-spacing: 1px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.tv-header-status {
+  font-size: 10px;
+  color: #00ff00;
+  letter-spacing: 0.5px;
+}
+
+/* Inner CRT Display Screen */
+.tv-crt-screen {
+  flex-grow: 1;
+  background: #05040a;
+  border: 1px solid #222;
+  border-radius: 4px;
+  padding: 1.5rem 1.5rem 1.25rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Staggered Slow CRT Reveal Keyframe Animation */
+@keyframes crt-reveal-fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.tv-domain-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(168, 85, 247, 0.15);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  color: #c084fc;
+  padding: 3px 10px;
+  border-radius: 2px;
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 0.85rem;
+  opacity: 0;
+  animation: crt-reveal-fadeInUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.05s forwards;
+}
+
+.tv-domain-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 0.6rem;
+  text-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
+  letter-spacing: 0.5px;
+  opacity: 0;
+  animation: crt-reveal-fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+}
+
+.tv-domain-desc {
+  font-size: 0.9rem;
+  color: #a0a0a5;
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+  font-family: inherit;
+  opacity: 0;
+  animation: crt-reveal-fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.25s forwards;
+}
+
+.tv-focus-heading {
+  font-size: 10px;
+  color: var(--accent-gold);
+  letter-spacing: 1px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+  opacity: 0;
+  animation: crt-reveal-fadeInUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.35s forwards;
+}
+
+.tv-focus-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 1.25rem;
+  opacity: 0;
+  animation: crt-reveal-fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
+}
+
+.tv-focus-pill {
+  background: rgba(168, 85, 247, 0.1);
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  color: #c084fc;
+  padding: 3px 9px;
+  border-radius: 2px;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.tv-deliverables-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid #222;
+  opacity: 0;
+  animation: crt-reveal-fadeInUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.52s forwards;
+}
+
+.tv-deliverable-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #1e1e24;
+  border-radius: 3px;
+  opacity: 0;
+  animation: crt-reveal-fadeInUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.tv-deliverable-icon {
+  color: var(--accent-gold);
+  margin-top: 1px;
+  flex-shrink: 0;
+}
+
+.tv-deliverable-name {
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 2px;
+}
+
+.tv-deliverable-desc {
+  font-size: 0.75rem;
+  color: #777780;
+  line-height: 1.3;
+}
+
+/* CRT Screen Scanline Overlay Effect */
+.tv-screen-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+  background-size: 100% 4px;
+  z-index: 10;
+  opacity: 0.5;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 1024px) {
+  .console-inner-layout {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .console-left-stack {
+    max-width: 100%;
+  }
+
+  .tv-screen-details-card {
+    height: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .tv-deliverables-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tv-crt-screen {
+    padding: 1rem;
+  }
+}

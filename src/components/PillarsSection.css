@@ -1,0 +1,759 @@
+.pillars-section {
+  background-color: var(--bg-dark-alt);
+  border-top: none;
+  position: relative;
+  overflow: hidden;
+  padding: 5rem 0;
+}
+
+.pillars-section::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 140px;
+  background: linear-gradient(to bottom, rgba(18, 14, 22, 0) 0%, var(--bg-dark-base) 100%);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.pillars-bg-wrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.pillars-section .container {
+  position: relative;
+  z-index: 2;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pillars-header {
+  margin-bottom: 2.5rem;
+}
+
+/* TV Console Main Container */
+.tv-console-container {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+/* TV Outer Cabinet */
+.tv-cabinet {
+  display: grid;
+  grid-template-columns: 2.3fr 1fr;
+  gap: 1.5rem;
+  background: linear-gradient(145deg, #2b2734, #1a1722, #120f18);
+  border: 4px solid #3c354a;
+  border-radius: 28px;
+  padding: 1.75rem;
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.7),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1),
+    0 0 0 1px rgba(139, 92, 246, 0.2);
+  position: relative;
+}
+
+/* Retro TV Antenna (Top Right) */
+.tv-antenna-wrapper {
+  position: absolute;
+  top: -46px;
+  right: 65px;
+  width: 48px;
+  height: 48px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.antenna-base {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 10px;
+  background: linear-gradient(180deg, #4c3f63, #221b30);
+  border: 1px solid #6b588a;
+  border-radius: 5px 5px 0 0;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.antenna-rod {
+  position: absolute;
+  bottom: 8px;
+  width: 3px;
+  height: 44px;
+  background: linear-gradient(180deg, #d8b4fe, #8b5cf6, #4c3f63);
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(167, 139, 250, 0.4);
+}
+
+.antenna-rod.rod-left {
+  left: 14px;
+  transform-origin: bottom center;
+  transform: rotate(-28deg);
+}
+
+.antenna-rod.rod-right {
+  right: 14px;
+  transform-origin: bottom center;
+  transform: rotate(24deg);
+}
+
+.antenna-tip {
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--aws-orange);
+  border: 1px solid #fff;
+  box-shadow: 0 0 8px var(--aws-orange), 0 0 4px #fff;
+}
+
+/* CRT Screen Outer Bezel */
+.tv-screen-bezel {
+  background: linear-gradient(160deg, #181522, #0d0b12);
+  border: 3px solid #322b42;
+  border-radius: 22px;
+  padding: 1.25rem;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+}
+
+/* CRT Glass Screen Viewport */
+.tv-screen-glass {
+  position: relative;
+  background: #08060c;
+  border-radius: 18px;
+  border: 2px solid #4a3e63;
+  overflow: hidden;
+  min-height: 380px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: inset 0 0 35px rgba(139, 92, 246, 0.25);
+}
+
+/* CRT Scanlines Overlay */
+.tv-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 8;
+  background: linear-gradient(rgba(18, 16, 26, 0) 50%,
+      rgba(0, 0, 0, 0.35) 50%);
+  background-size: 100% 4px;
+}
+
+/* Glass Reflection Glare */
+.tv-glass-glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9;
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.07) 0%,
+      rgba(255, 255, 255, 0.02) 40%,
+      transparent 60%);
+}
+
+/* Static Glitch Animation when tuning channel */
+.tv-static-effect {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  background: repeating-radial-gradient(circle at 50% 50%, #fff 0, #000 2px, #8b5cf6 4px);
+  mix-blend-mode: overlay;
+  opacity: 0.85;
+  animation: tvStaticGlitch 0.08s infinite alternate;
+}
+
+@keyframes tvStaticGlitch {
+  0% {
+    transform: scale(1) translate(2px, -1px);
+  }
+
+  100% {
+    transform: scale(1.03) translate(-2px, 1px);
+  }
+}
+
+/* Viewport Display (ON / OFF states) */
+.tv-display-viewport {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  position: relative;
+  z-index: 5;
+  transition: opacity 0.3s ease;
+}
+
+.tv-display-viewport.powered-off {
+  background: #050408;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tv-screen-off-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--text-muted);
+}
+
+.tv-screen-off-state .off-icon {
+  opacity: 0.3;
+}
+
+.tv-screen-off-state span {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.tv-screen-off-state small {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* Screen Content inside CRT viewport */
+.tv-screen-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.25rem 1.5rem;
+  justify-content: space-between;
+  background: rgba(18, 14, 28, 0.95);
+}
+
+/* Top Broadcast Info Bar */
+.tv-broadcast-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px dashed rgba(139, 92, 246, 0.3);
+  margin-bottom: 1rem;
+}
+
+.tv-broadcast-channel {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.tv-ch-number {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: var(--aws-orange);
+  background: rgba(255, 153, 0, 0.15);
+  border: 1px solid rgba(255, 153, 0, 0.35);
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  letter-spacing: 0.06em;
+}
+
+.tv-live-indicator {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #10B981;
+  letter-spacing: 0.06em;
+}
+
+.tv-auto-timer {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--electric-violet);
+}
+
+.spin-icon {
+  animation: spinSlow 3s linear infinite;
+}
+
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Pillar Card Details Layout */
+.tv-pillar-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  flex: 1;
+}
+
+.tv-pillar-badge-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tv-pillar-icon-box {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  background: rgba(139, 92, 246, 0.15);
+  border: 1px solid var(--electric-violet);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tv-pillar-icon-box .pillar-icon {
+  color: var(--electric-violet);
+}
+
+.tv-pillar-badge {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--electric-violet);
+  letter-spacing: 0.06em;
+}
+
+.tv-pillar-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.tv-pillar-desc {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.tv-pillar-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.tv-tag-item {
+  font-size: 0.775rem;
+  font-family: var(--font-mono);
+  padding: 0.25rem 0.6rem;
+  background: rgba(139, 92, 246, 0.12);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+}
+
+.tv-pillar-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: auto;
+}
+
+.tv-pillar-highlight {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--aws-orange);
+}
+
+/* TV Control Panel (Right Side) */
+.tv-control-panel {
+  background: linear-gradient(180deg, #221e2c, #16131f);
+  border: 2px solid #362f45;
+  border-radius: 18px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  justify-content: space-between;
+}
+
+/* Speaker Grill */
+.tv-speaker-grill {
+  background: #120f1a;
+  border: 1px solid #2d263a;
+  border-radius: 12px;
+  padding: 0.75rem;
+}
+
+.tv-speaker-slots {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tv-grill-slot {
+  height: 3px;
+  background: #252030;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.8);
+}
+
+/* Power & Volume Knob Row */
+.tv-knobs-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  background: #171422;
+  border: 1px solid #2d263a;
+  border-radius: 12px;
+  padding: 0.85rem 0.5rem;
+}
+
+.tv-knob-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tv-knob-label {
+  font-family: var(--font-mono);
+  font-size: 0.675rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+}
+
+/* Power Button */
+/* Custom Power Switch Button */
+#checkbox {
+  display: none !important;
+}
+
+.switch {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  background-color: rgb(99, 99, 99);
+  border-radius: 50%;
+  z-index: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgb(126, 126, 126);
+  box-shadow: 0px 0px 3px rgb(2, 2, 2) inset;
+  transition: all 0.3s ease;
+}
+.switch svg {
+  width: 1.2em;
+  height: 1.2em;
+}
+.switch svg path {
+  fill: rgb(48, 48, 48);
+  transition: fill 0.3s ease;
+}
+#checkbox:checked + .switch {
+  box-shadow: 0px 0px 1px rgb(255, 100, 100) inset,
+    0px 0px 2px rgb(255, 100, 100) inset, 0px 0px 10px rgb(255, 100, 100) inset,
+    0px 0px 25px rgb(239, 68, 68), 0px 0px 50px rgb(220, 38, 38),
+    0px 0px 5px rgb(255, 60, 60);
+  border: 2px solid rgb(255, 255, 255);
+  background-color: rgb(220, 38, 38);
+}
+#checkbox:checked + .switch svg {
+  filter: drop-shadow(0px 0px 5px rgb(255, 255, 255));
+}
+#checkbox:checked + .switch svg path {
+  fill: rgb(255, 255, 255);
+}
+
+/* Rotary Knob */
+.tv-rotary-knob {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #374151, #1f2937);
+  border: 2px solid #4b5563;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.knob-line {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  width: 2px;
+  height: 12px;
+  background: #9ca3af;
+  transform: translateX(-50%);
+  border-radius: 1px;
+}
+
+.vol-icon {
+  color: var(--text-muted);
+}
+
+/* Tuning Knob Section */
+.tv-tuning-section {
+  background: #171422;
+  border: 1px solid #2d263a;
+  border-radius: 14px;
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.tv-tuning-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--text-muted);
+}
+
+.radio-icon {
+  color: var(--electric-violet);
+}
+
+/* Big Dial Tuning Knob */
+.tv-tuning-dial {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+  transition: transform 0.3s ease;
+}
+
+.tv-tuning-dial:hover {
+  transform: scale(1.05);
+}
+
+.dial-face {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #374151 0%, #1f2937 80%, #111827 100%);
+  border: 3px solid var(--electric-violet);
+  position: relative;
+  box-shadow:
+    0 6px 15px rgba(0, 0, 0, 0.6),
+    0 0 15px rgba(139, 92, 246, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dial-pointer {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dial-pointer::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 14px;
+  background: var(--aws-orange);
+  border-radius: 2px;
+  box-shadow: 0 0 8px var(--aws-orange);
+}
+
+.dial-pointer.pos-0 {
+  transform: rotate(0deg);
+}
+
+.dial-pointer.pos-1 {
+  transform: rotate(120deg);
+}
+
+.dial-pointer.pos-2 {
+  transform: rotate(240deg);
+}
+
+.dial-center-cap {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #111827;
+  border: 1px solid #374151;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.dial-center-cap span {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--text-muted);
+}
+
+/* Channel Selector Buttons */
+.tv-channel-selector {
+  display: flex;
+  gap: 0.4rem;
+  width: 100%;
+}
+
+.tv-chan-button {
+  flex: 1;
+  background: #1f2937;
+  border: 1px solid #374151;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.725rem;
+  font-weight: 700;
+  padding: 0.4rem 0.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.tv-chan-button:hover {
+  background: rgba(139, 92, 246, 0.2);
+  color: #fff;
+  border-color: var(--electric-violet);
+}
+
+.tv-chan-button.active {
+  background: var(--electric-violet);
+  color: #fff;
+  border-color: var(--electric-violet);
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+}
+
+/* Brand Badge */
+.tv-brand-badge {
+  text-align: center;
+  padding: 0.4rem;
+  background: #120f1a;
+  border: 1px solid #2d263a;
+  border-radius: 8px;
+}
+
+.tv-brand-text {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 850px) {
+  .tv-cabinet {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
+/* ==========================================================================
+   CLOCK INPUT TUNING DIAL STYLES
+   ========================================================================== */
+
+.clock-input {
+  display: flex;
+  position: relative;
+  width: 68px;
+  height: 68px;
+  margin: 1.25rem auto;
+  --a: #0004, #fff4;
+  --b: var(--a), var(--a), var(--a);
+  --c: var(--b), var(--b), var(--b);
+  background: conic-gradient(
+      from -2deg,
+      #efefff88,
+      #00000088,
+      #efefff88,
+      #00000088,
+      #efefff88
+    ),
+    radial-gradient(var(--c), var(--c)),
+    radial-gradient(circle at 12% 12%, #efefff, #9999a4);
+  background-size: calc(100% + 8px) calc(100% + 8px);
+  background-position: -4px -4px;
+  border: 4px solid #0005;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6), inset 0 0 4px rgba(255, 255, 255, 0.3);
+  box-sizing: border-box;
+}
+
+.clock-input input {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+.clock-input .dial {
+  position: absolute;
+  width: 28px;
+  height: 4px;
+  border-radius: 99px;
+  background-color: #000b;
+  top: calc(50% - 2px);
+  left: calc(50% - 2px);
+  transform-origin: 2px 50%;
+  pointer-events: none;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.clock-input label {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.clock-input #v1:checked ~ #l2 {
+  z-index: 2;
+}
+.clock-input #v1:checked ~ .dial {
+  transform: rotate(0deg);
+}
+
+.clock-input #v2:checked ~ #l3 {
+  z-index: 2;
+}
+.clock-input #v2:checked ~ .dial {
+  transform: rotate(60deg);
+}
+
+.clock-input #v3:checked ~ #l1 {
+  z-index: 2;
+}
+.clock-input #v3:checked ~ .dial {
+  transform: rotate(120deg);
+}
