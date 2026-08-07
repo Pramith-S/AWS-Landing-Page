@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Menu, X, ArrowUpRight } from 'lucide-react';
-import awsLogo from '../../images/aws_logo.png';
 import PillNav from './PillNav';
 import './Navbar.css';
+
+const awsLogo = '/images/aws_logo.png';
 
 const Navbar = ({ onOpenJoinModal }) => {
   const [isScrolled, setIsScrolled] = useState(false);

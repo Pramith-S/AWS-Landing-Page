@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { X, CheckCircle2, Sparkles, User, Mail, GraduationCap } from 'lucide-react';
-import awsLogo from '../../images/aws_logo.png';
 import './JoinModal.css';
+
+const awsLogo = '/images/aws_logo.png';
 
 const JoinModal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({

@@ -3,9 +3,9 @@ import { Calendar, Clock, MapPin, UserCheck, ArrowUpRight, Filter, ChevronLeft, 
 import gsap from 'gsap';
 import './EventsSection.css';
 
-import communityImg from '../../images/events/Community Events.png';
-import hackathonsImg from '../../images/events/Hackathons.png';
-import workshopsImg from '../../images/events/Workshops.png';
+const communityImg = '/images/events/Community Events.png';
+const hackathonsImg = '/images/events/Hackathons.png';
+const workshopsImg = '/images/events/Workshops.png';
 
 const EVENTS_DATA = [
   {

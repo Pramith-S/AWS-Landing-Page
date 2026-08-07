@@ -1,7 +1,8 @@
 import { Github, Linkedin, Instagram, ArrowUp } from 'lucide-react';
-import awsLogo from '../../images/aws_logo.png';
 import ShapeGrid from './ShapeGrid';
 import './Footer.css';
+
+const awsLogo = '/images/aws_logo.png';
 
 const Footer = () => {
   const scrollToTop = () => {
