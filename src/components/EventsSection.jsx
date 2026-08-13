@@ -344,7 +344,7 @@ const EventsSection = ({ onOpenJoinModal }) => {
               <div className="terminal-body">
                 <div className="terminal-cmd-line">
                   <span className="terminal-prompt">$</span>
-                  <span className="terminal-cmd">aws event get-details --id={currentEvent.id}</span>
+                  <span className="terminal-cmd">event get-details --id={currentEvent.id}</span>
                 </div>
 
                 <h3 className="active-event-title" ref={titleContainerRef}>

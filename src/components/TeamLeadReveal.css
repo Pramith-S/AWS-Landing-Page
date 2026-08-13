@@ -180,3 +180,18 @@
     transform: translateX(-50%) scale(1.03);
   }
 }
+
+/* Mobile Index Team Lead Reveal Image Override */
+.mobile-app-wrapper .reveal-content-layer {
+  background-image: url('/images/team_lead_mobile.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+@media (max-width: 768px) {
+  .reveal-content-layer {
+    background-image: url('/images/team_lead_mobile.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+}

@@ -88,3 +88,16 @@
   width: clamp(230px, 68vw, 300px);
   height: clamp(230px, 68vw, 300px);
 }
+
+/* Mobile Hero Tech Stack Logo Loop Banner */
+.mobile-hero-logo-loop-banner {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  padding: 1rem 0;
+  background: transparent;
+  border: none;
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}

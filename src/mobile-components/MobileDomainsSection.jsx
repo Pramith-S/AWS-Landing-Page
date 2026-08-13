@@ -208,18 +208,6 @@ const MobileDomainsSection = () => {
               </div>
             </div>
 
-            {/* Deliverables 2-Column Grid */}
-            <div className="mobile-deliverables-grid">
-              {activeDomain.deliverables.map((item, idx) => (
-                <div key={idx} className="mobile-deliverable-card">
-                  <CheckCircle2 size={14} className="deliverable-icon" />
-                  <div className="deliverable-info">
-                    <span className="deliverable-title">{item.title}</span>
-                    <span className="deliverable-desc">{item.desc}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </div>
