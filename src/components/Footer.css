@@ -208,6 +208,10 @@
   color: var(--electric-violet);
 }
 
+.footer-links-row {
+  display: contents;
+}
+
 @media (max-width: 960px) {
   .footer-main-grid {
     grid-template-columns: 1fr 1fr;
@@ -219,9 +223,25 @@
   .footer-main-grid {
     grid-template-columns: 1fr;
   }
+
+  .footer-links-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    width: 100%;
+  }
+
   .footer-bottom-bar {
     flex-direction: column;
     gap: 1rem;
     text-align: center;
   }
+}
+
+/* Mobile App Explicit Override */
+.mobile-app-wrapper .footer-links-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  width: 100%;
 }

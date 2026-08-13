@@ -64,27 +64,30 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Column 2: Quick Links */}
-          <div className="footer-col links-col">
-            <h4 className="footer-col-title">Navigation</h4>
-            <ul className="footer-links-list">
-              <li><a href="#about">About SBG</a></li>
-              <li><a href="#pillars">Core Pillars</a></li>
-              <li><a href="#events">Events & Labs</a></li>
-              <li><a href="#team">Core Team</a></li>
-              <li><a href="#contact">Contact Us</a></li>
-            </ul>
-          </div>
+          {/* Columns 2 & 3: Navigation & Resources Links Row */}
+          <div className="footer-links-row">
+            {/* Column 2: Quick Links */}
+            <div className="footer-col links-col">
+              <h4 className="footer-col-title">Navigation</h4>
+              <ul className="footer-links-list">
+                <li><a href="#about">About SBG</a></li>
+                <li><a href="#pillars">Core Pillars</a></li>
+                <li><a href="#events">Events & Labs</a></li>
+                <li><a href="#team">Core Team</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+              </ul>
+            </div>
 
-          {/* Column 3: Resources & Community */}
-          <div className="footer-col links-col">
-            <h4 className="footer-col-title">Resources & Community</h4>
-            <ul className="footer-links-list">
-              <li><a href="https://aws.amazon.com/developer/" target="_blank" rel="noreferrer">AWS Developer Portal</a></li>
-              <li><a href="https://aws.amazon.com/certification/" target="_blank" rel="noreferrer">AWS Certification Guide</a></li>
-              <li><a href="https://aws.amazon.com/developer/community/student-hubs/" target="_blank" rel="noreferrer">AWS Student Hubs</a></li>
-              <li><a href="https://explore.skillbuilder.aws/" target="_blank" rel="noreferrer">AWS Skill Builder</a></li>
-            </ul>
+            {/* Column 3: Resources & Community */}
+            <div className="footer-col links-col">
+              <h4 className="footer-col-title">Resources & Community</h4>
+              <ul className="footer-links-list">
+                <li><a href="https://aws.amazon.com/developer/" target="_blank" rel="noreferrer">AWS Developer Portal</a></li>
+                <li><a href="https://aws.amazon.com/certification/" target="_blank" rel="noreferrer">AWS Certification Guide</a></li>
+                <li><a href="https://aws.amazon.com/developer/community/student-hubs/" target="_blank" rel="noreferrer">AWS Student Hubs</a></li>
+                <li><a href="https://explore.skillbuilder.aws/" target="_blank" rel="noreferrer">AWS Skill Builder</a></li>
+              </ul>
+            </div>
           </div>
 
           {/* Column 4: Pass Card */}
