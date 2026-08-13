@@ -224,7 +224,7 @@ const MobileAboutSection = () => {
               <span>// WHO WE ARE</span>
             </div>
 
-            <div className="about-stroke-heading" aria-label="Empowering Next-Gen Cloud Architects & Builders">
+            <div className="about-stroke-heading" aria-label="Empowering Next-Gen Cloud Architects">
               <StrokeText
                 text="Empowering Next-Gen"
                 trigger="scroll"
@@ -240,7 +240,7 @@ const MobileAboutSection = () => {
                 fillMode="wipe"
               />
               <StrokeText
-                text="Cloud Architects & Builders"
+                text="Cloud Architects"
                 trigger="scroll"
                 strokeColor="#8B5CF6"
                 fillColor="#A78BFA"
