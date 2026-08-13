@@ -1,9 +1,19 @@
 .pillars-section {
-  background-color: var(--bg-dark-alt);
+  background: url('/images/pillar_bg.gif') center/cover no-repeat;
   border-top: none;
   position: relative;
   overflow: hidden;
   padding: 5rem 0;
+}
+
+.pillars-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 6, 12, 0.75);
+  backdrop-filter: brightness(0.65);
+  -webkit-backdrop-filter: brightness(0.65);
+  pointer-events: none;
+  z-index: 1;
 }
 
 .pillars-section::before {
