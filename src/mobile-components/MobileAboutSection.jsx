@@ -234,35 +234,21 @@ const MobileAboutSection = () => {
                 drawDuration={1.4}
                 fillDelay={0.2}
                 stagger={0.03}
-                fontSize={26}
+                fontSize={32}
                 fontWeight={800}
                 letterSpacing={-0.5}
                 fillMode="wipe"
               />
               <StrokeText
-                text="Cloud Architects &"
+                text="Cloud Architects & Builders"
                 trigger="scroll"
                 strokeColor="#8B5CF6"
-                fillColor="#8B5CF6"
+                fillColor="#A78BFA"
                 strokeWidth={1.2}
-                drawDuration={1.4}
+                drawDuration={1.5}
                 fillDelay={0.3}
                 stagger={0.03}
-                fontSize={26}
-                fontWeight={800}
-                letterSpacing={-0.5}
-                fillMode="wipe"
-              />
-              <StrokeText
-                text="Builders"
-                trigger="scroll"
-                strokeColor="#8B5CF6"
-                fillColor="#8B5CF6"
-                strokeWidth={1.2}
-                drawDuration={1.4}
-                fillDelay={0.4}
-                stagger={0.03}
-                fontSize={26}
+                fontSize={32}
                 fontWeight={800}
                 letterSpacing={-0.5}
                 fillMode="wipe"
