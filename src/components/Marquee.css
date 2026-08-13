@@ -1,0 +1,52 @@
+@keyframes marquee-scroll-horizontal {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes marquee-scroll-reverse {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.marquee-root {
+  display: flex;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 1rem 0;
+  user-select: none;
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 1) 5%, rgba(0, 0, 0, 1) 95%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 1) 5%, rgba(0, 0, 0, 1) 95%, transparent 100%);
+}
+
+.marquee-track {
+  display: flex;
+  flex-direction: row;
+  gap: var(--marquee-gap, 1.5rem);
+  width: max-content;
+  animation: marquee-scroll-horizontal var(--marquee-duration, 35s) linear infinite;
+  will-change: transform;
+}
+
+.marquee-track.reverse {
+  animation-name: marquee-scroll-reverse;
+}
+
+.marquee-root:hover .marquee-track.pause-on-hover {
+  animation-play-state: paused;
+}
+
+.marquee-group {
+  display: flex;
+  flex-direction: row;
+  gap: var(--marquee-gap, 1.5rem);
+  flex-shrink: 0;
+}

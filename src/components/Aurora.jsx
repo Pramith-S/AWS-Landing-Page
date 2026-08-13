@@ -167,10 +167,27 @@ export default function Aurora(props) {
     });
 
     const mesh = new Mesh(gl, { geometry, program });
-    ctn.appendChild(gl.canvas);
+    let isVisible = true;
+    const observer = new IntersectionObserver(([entry]) => {
+      const isIntersecting = entry.isIntersecting;
+      if (isIntersecting !== isVisible) {
+        isVisible = isIntersecting;
+        if (isVisible && !animateId) {
+          animateId = requestAnimationFrame(update);
+        }
+      }
+    }, { threshold: 0.05 });
+
+    if (ctn) {
+      observer.observe(ctn);
+    }
 
     let animateId = 0;
     const update = t => {
+      if (!isVisible) {
+        animateId = 0;
+        return;
+      }
       animateId = requestAnimationFrame(update);
       const { time = t * 0.01, speed = 1.0 } = propsRef.current;
       program.uniforms.uTime.value = time * speed * 0.1;
@@ -188,7 +205,8 @@ export default function Aurora(props) {
     resize();
 
     return () => {
-      cancelAnimationFrame(animateId);
+      observer.disconnect();
+      if (animateId) cancelAnimationFrame(animateId);
       window.removeEventListener('resize', resize);
       if (ctn && gl.canvas.parentNode === ctn) {
         ctn.removeChild(gl.canvas);

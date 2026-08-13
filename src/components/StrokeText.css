@@ -1,7 +1,8 @@
 .stroke-text {
-  display: block;
-  width: 100%;
+  display: inline-block;
+  vertical-align: middle;
   line-height: 0;
+  max-width: 100%;
 }
 
 .stroke-text--hover {
@@ -9,9 +10,10 @@
 }
 
 .stroke-text__svg {
-  display: block;
-  width: 100%;
-  height: var(--stroke-text-height, 160px);
+  display: inline-block;
+  vertical-align: middle;
+  width: auto;
+  height: var(--stroke-text-height, 40px);
   overflow: visible;
 }
 

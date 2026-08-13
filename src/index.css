@@ -115,6 +115,22 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-primary);
 }
 
+.text-center .section-stroke-heading {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.section-stroke-heading {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
 .section-subtitle {
   font-size: 1.1rem;
   color: var(--text-secondary);

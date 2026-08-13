@@ -6,6 +6,23 @@
   padding: 5rem 0;
 }
 
+.pillars-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 180px;
+  background: linear-gradient(
+    to bottom,
+    var(--bg-dark-alt) 0%,
+    rgba(18, 14, 22, 0.6) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
 .pillars-section::after {
   content: '';
   position: absolute;
@@ -16,15 +33,6 @@
   background: linear-gradient(to bottom, rgba(18, 14, 22, 0) 0%, var(--bg-dark-base) 100%);
   pointer-events: none;
   z-index: 10;
-}
-
-.pillars-bg-wrapper {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
 }
 
 .pillars-section .container {
@@ -44,6 +52,10 @@
 .pillars-header {
   margin-bottom: 2.5rem;
 }
+
+/* ==========================================================================
+   DESKTOP VINTAGE TELEVISION CONSOLE STYLES (index.html)
+   ========================================================================== */
 
 /* TV Console Main Container */
 .tv-console-container {
@@ -294,20 +306,6 @@
   color: var(--electric-violet);
 }
 
-.spin-icon {
-  animation: spinSlow 3s linear infinite;
-}
-
-@keyframes spinSlow {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 /* Pillar Card Details Layout */
 .tv-pillar-details {
   display: flex;
@@ -448,8 +446,7 @@
   letter-spacing: 0.08em;
 }
 
-/* Power Button */
-/* Custom Power Switch Button */
+/* Power Switch Button */
 #checkbox {
   display: none !important;
 }
@@ -514,10 +511,6 @@
   border-radius: 1px;
 }
 
-.vol-icon {
-  color: var(--text-muted);
-}
-
 /* Tuning Knob Section */
 .tv-tuning-section {
   background: #171422;
@@ -540,149 +533,6 @@
 .radio-icon {
   color: var(--electric-violet);
 }
-
-/* Big Dial Tuning Knob */
-.tv-tuning-dial {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  outline: none;
-  transition: transform 0.3s ease;
-}
-
-.tv-tuning-dial:hover {
-  transform: scale(1.05);
-}
-
-.dial-face {
-  width: 76px;
-  height: 76px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #374151 0%, #1f2937 80%, #111827 100%);
-  border: 3px solid var(--electric-violet);
-  position: relative;
-  box-shadow:
-    0 6px 15px rgba(0, 0, 0, 0.6),
-    0 0 15px rgba(139, 92, 246, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.dial-pointer {
-  position: absolute;
-  inset: 0;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.dial-pointer::after {
-  content: '';
-  position: absolute;
-  top: 6px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 4px;
-  height: 14px;
-  background: var(--aws-orange);
-  border-radius: 2px;
-  box-shadow: 0 0 8px var(--aws-orange);
-}
-
-.dial-pointer.pos-0 {
-  transform: rotate(0deg);
-}
-
-.dial-pointer.pos-1 {
-  transform: rotate(120deg);
-}
-
-.dial-pointer.pos-2 {
-  transform: rotate(240deg);
-}
-
-.dial-center-cap {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: #111827;
-  border: 1px solid #374151;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
-}
-
-.dial-center-cap span {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  font-weight: 800;
-  color: var(--text-muted);
-}
-
-/* Channel Selector Buttons */
-.tv-channel-selector {
-  display: flex;
-  gap: 0.4rem;
-  width: 100%;
-}
-
-.tv-chan-button {
-  flex: 1;
-  background: #1f2937;
-  border: 1px solid #374151;
-  color: var(--text-secondary);
-  font-family: var(--font-mono);
-  font-size: 0.725rem;
-  font-weight: 700;
-  padding: 0.4rem 0.2rem;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-align: center;
-}
-
-.tv-chan-button:hover {
-  background: rgba(139, 92, 246, 0.2);
-  color: #fff;
-  border-color: var(--electric-violet);
-}
-
-.tv-chan-button.active {
-  background: var(--electric-violet);
-  color: #fff;
-  border-color: var(--electric-violet);
-  box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
-}
-
-/* Brand Badge */
-.tv-brand-badge {
-  text-align: center;
-  padding: 0.4rem;
-  background: #120f1a;
-  border: 1px solid #2d263a;
-  border-radius: 8px;
-}
-
-.tv-brand-text {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  font-weight: 800;
-  color: var(--text-muted);
-  letter-spacing: 0.1em;
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 850px) {
-  .tv-cabinet {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-  }
-}
-
-/* ==========================================================================
-   CLOCK INPUT TUNING DIAL STYLES
-   ========================================================================== */
 
 .clock-input {
   display: flex;
@@ -756,4 +606,203 @@
 }
 .clock-input #v3:checked ~ .dial {
   transform: rotate(120deg);
+}
+
+.tv-channel-selector {
+  display: flex;
+  gap: 0.4rem;
+  width: 100%;
+}
+
+.tv-chan-button {
+  flex: 1;
+  background: #1f2937;
+  border: 1px solid #374151;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.725rem;
+  font-weight: 700;
+  padding: 0.4rem 0.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.tv-chan-button:hover {
+  background: rgba(139, 92, 246, 0.2);
+  color: #fff;
+  border-color: var(--electric-violet);
+}
+
+.tv-chan-button.active {
+  background: var(--electric-violet);
+  color: #fff;
+  border-color: var(--electric-violet);
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+}
+
+/* ==========================================================================
+   MOBILE MARQUEE CAROUSEL STYLES (mobile-index.html)
+   ========================================================================== */
+
+.pillars-marquee-wrapper {
+  position: relative;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.pillar-marquee-card {
+  width: 350px;
+  min-width: 350px;
+  background: rgba(18, 14, 28, 0.85);
+  border: 1px solid rgba(139, 92, 246, 0.22);
+  border-radius: 20px;
+  padding: 1.65rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.15rem;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.08);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.pillar-marquee-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(168, 85, 247, 0.55);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.8), 0 0 25px rgba(139, 92, 246, 0.25);
+}
+
+.pillar-card-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.pillar-card-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pillar-card-badge {
+  font-family: var(--font-mono);
+  font-size: 0.725rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 0.25rem 0.65rem;
+  border-radius: 20px;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.pillar-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pillar-card-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.pillar-card-desc {
+  font-size: 0.9rem;
+  color: #CBD5E1;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.pillar-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.pillar-tag-item {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  padding: 0.2rem 0.55rem;
+  background: rgba(139, 92, 246, 0.12);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  border-radius: 6px;
+  color: #E2E8F0;
+}
+
+.pillar-card-footer {
+  padding-top: 0.65rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+  margin-top: auto;
+}
+
+.pillar-card-highlight {
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: var(--aws-orange);
+}
+
+@media (max-width: 850px) {
+  .tv-cabinet {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .pillar-marquee-card {
+    width: 290px;
+    min-width: 290px;
+    padding: 1.25rem;
+    gap: 0.85rem;
+  }
+
+  .pillar-card-title {
+    font-size: 1.1rem;
+  }
+
+  .pillar-card-desc {
+    font-size: 0.825rem;
+  }
+}
+
+/* Mobile Image Card Styling inside Marquee */
+.mobile-pillar-image-card {
+  width: 280px;
+  min-width: 280px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  background: rgba(18, 14, 28, 0.85);
+}
+
+.mobile-pillar-image-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(139, 92, 246, 0.3);
+  border-color: rgba(168, 85, 247, 0.5);
+}
+
+.pillar-card-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: 16px;
 }

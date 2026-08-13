@@ -13,20 +13,53 @@ const TeamLeadReveal = () => {
     const section = sectionRef.current;
     if (!section) return;
 
+    let isVisible = false;
+    let isRunning = false;
+
     const updatePosition = () => {
-      // Smooth linear interpolation (lerp) towards target mouse position
-      currentPos.current.x += (targetPos.current.x - currentPos.current.x) * 0.18;
-      currentPos.current.y += (targetPos.current.y - currentPos.current.y) * 0.18;
+      if (!isVisible) {
+        isRunning = false;
+        return;
+      }
+
+      const dx = targetPos.current.x - currentPos.current.x;
+      const dy = targetPos.current.y - currentPos.current.y;
+
+      currentPos.current.x += dx * 0.2;
+      currentPos.current.y += dy * 0.2;
 
       section.style.setProperty('--mouse-x', `${currentPos.current.x.toFixed(1)}px`);
       section.style.setProperty('--mouse-y', `${currentPos.current.y.toFixed(1)}px`);
 
-      animFrameId.current = requestAnimationFrame(updatePosition);
+      if (Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1) {
+        animFrameId.current = requestAnimationFrame(updatePosition);
+      } else {
+        isRunning = false;
+      }
     };
 
-    animFrameId.current = requestAnimationFrame(updatePosition);
+    const startAnimation = () => {
+      if (!isRunning && isVisible) {
+        isRunning = true;
+        animFrameId.current = requestAnimationFrame(updatePosition);
+      }
+    };
+
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible) {
+        startAnimation();
+      } else if (animFrameId.current) {
+        cancelAnimationFrame(animFrameId.current);
+        isRunning = false;
+      }
+    }, { threshold: 0.1 });
+
+    observer.observe(section);
+    section._startAnim = startAnimation;
 
     return () => {
+      observer.disconnect();
       if (animFrameId.current) cancelAnimationFrame(animFrameId.current);
     };
   }, []);
@@ -38,6 +71,7 @@ const TeamLeadReveal = () => {
     targetPos.current.y = e.clientY - rect.top;
     
     if (!isHovered) setIsHovered(true);
+    if (sectionRef.current._startAnim) sectionRef.current._startAnim();
   };
 
   const handleMouseEnter = (e) => {

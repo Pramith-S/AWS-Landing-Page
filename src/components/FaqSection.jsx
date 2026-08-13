@@ -1,5 +1,6 @@
 import { HelpCircle, Sparkles, ChevronRight } from 'lucide-react';
 import ScrollStack, { ScrollStackItem } from './ScrollStack';
+import StrokeText from './StrokeText';
 import './FaqSection.css';
 
 const faqItems = [
@@ -45,9 +46,36 @@ const FaqSection = () => {
             <HelpCircle size={14} />
             <span>// FREQUENTLY ASKED QUESTIONS</span>
           </div>
-          <h2 className="section-title">
-            Got Questions? <span className="text-gradient-purple">We Have Answers</span>
-          </h2>
+          <div className="about-stroke-heading section-stroke-heading" aria-label="Got Questions? We Have Answers">
+            <StrokeText
+              text="Got Questions?"
+              trigger="scroll"
+              strokeColor="#8B5CF6"
+              fillColor="#F8FAFC"
+              strokeWidth={1.2}
+              drawDuration={1.4}
+              fillDelay={0.2}
+              stagger={0.03}
+              fontSize={32}
+              fontWeight={800}
+              letterSpacing={-0.5}
+              fillMode="wipe"
+            />
+            <StrokeText
+              text="We Have Answers"
+              trigger="scroll"
+              strokeColor="#8B5CF6"
+              fillColor="#8B5CF6"
+              strokeWidth={1.2}
+              drawDuration={1.4}
+              fillDelay={0.3}
+              stagger={0.03}
+              fontSize={32}
+              fontWeight={800}
+              letterSpacing={-0.5}
+              fillMode="wipe"
+            />
+          </div>
           <p className="section-subtitle mx-auto">
             Everything you need to know about joining, participating, and getting AWS certified with AWS Student Builder Group JSSATEB.
           </p>
@@ -56,11 +84,11 @@ const FaqSection = () => {
         {/* Scroll Stack FAQ Container */}
         <div className="faq-stack-wrapper">
           <ScrollStack
-            itemDistance={40}
-            itemScale={0.035}
-            itemStackDistance={25}
-            stackPosition="18%"
-            scaleEndPosition="10%"
+            itemDistance={20}
+            itemScale={0.03}
+            itemStackDistance={12}
+            stackPosition="10%"
+            scaleEndPosition="5%"
             baseScale={0.88}
             rotationAmount={0}
             blurAmount={0}

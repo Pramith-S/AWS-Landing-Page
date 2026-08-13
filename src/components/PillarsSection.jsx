@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Terminal, Layers, Award, Radio, Tv, Power, RotateCw, Volume2 } from 'lucide-react';
-import FaultyTerminal from './FaultyTerminal';
+import { Terminal, Layers, Award, Radio, Tv } from 'lucide-react';
 import DecryptedText from './DecryptedText';
 import './PillarsSection.css';
 
@@ -53,13 +52,6 @@ const PillarsSection = () => {
     }, 400);
   };
 
-  // Cycle to next channel
-  const handleNextChannel = () => {
-    if (!isPoweredOn) return;
-    const nextIndex = (activePillarIndex + 1) % pillars.length;
-    handleTune(nextIndex);
-  };
-
   // Auto-switch channel every 15 seconds
   useEffect(() => {
     if (!isPoweredOn) return;
@@ -84,7 +76,7 @@ const PillarsSection = () => {
 
     let glitchTimeoutId;
     const scheduleGlitch = () => {
-      const randomDelay = Math.floor(Math.random() * 3000) + 2000; // 2000ms to 5000ms
+      const randomDelay = Math.floor(Math.random() * 3000) + 2000;
       glitchTimeoutId = setTimeout(() => {
         setIsTuning(true);
         setTimeout(() => setIsTuning(false), 220);
@@ -104,28 +96,6 @@ const PillarsSection = () => {
 
   return (
     <section id="pillars" className="section-padding pillars-section">
-      {/* FaultyTerminal Background */}
-      <div className="pillars-bg-wrapper">
-        <FaultyTerminal
-          scale={1.5}
-          gridMul={[2, 1]}
-          digitSize={1.2}
-          timeScale={0.5}
-          pause={false}
-          scanlineIntensity={0.5}
-          glitchAmount={1}
-          flickerAmount={1}
-          noiseAmp={1}
-          chromaticAberration={0}
-          dither={0}
-          curvature={0.1}
-          tint="#7C3AED"
-          mouseReact
-          mouseStrength={0.5}
-          pageLoadAnimation
-          brightness={0.6}
-        />
-      </div>
       <div className="container">
         {/* Section Header */}
         <div className="pillars-header text-center">
@@ -138,32 +108,17 @@ const PillarsSection = () => {
               animateOn="view"
               speed={35}
               sequential={true}
-              className="text-gradient-purple"
-              encryptedClassName="opacity-50 text-purple-400"
+              className="decrypted"
+              encryptedClassName="encrypted"
             />
-            <DecryptedText
-              text="Engineered for Excellence"
-              animateOn="view"
-              speed={35}
-              sequential={true}
-              className="text-white"
-              encryptedClassName="opacity-50 text-purple-300"
-            />
+            <span className="text-gradient">3 Core Pillars</span>
           </h2>
-          <p className="section-subtitle mx-auto">
-            <DecryptedText
-              text="Our structured pillars give students every tool required to transform theoretical computer science into production cloud mastery."
-              animateOn="view"
-              speed={25}
-              sequential={true}
-              revealDirection="start"
-              className="text-secondary"
-              encryptedClassName="opacity-40 text-purple-400"
-            />
+          <p className="section-description mx-auto">
+            Explore the core pillars driving student innovation, cloud architecture, and industry career readiness at AWS SBG JSSATEB.
           </p>
         </div>
 
-        {/* Vintage Television Console */}
+        {/* Vintage Television Console (Desktop index.html) */}
         <div className="tv-console-container">
           <div className="tv-cabinet">
             {/* Retro Antenna (Top Right) */}
@@ -177,7 +132,7 @@ const PillarsSection = () => {
               </div>
             </div>
 
-            {/* TV Screen Container (Left Column) */}
+            {/* TV Screen Container */}
             <div className="tv-screen-bezel">
               <div className="tv-screen-glass">
                 {/* Scanlines & Screen Reflections */}
@@ -225,7 +180,6 @@ const PillarsSection = () => {
 
                         <div className="tv-pillar-footer">
                           <span className="tv-pillar-highlight">✨ {activePillar.highlight}</span>
-                          {/* Explore button removed per user request */}
                         </div>
                       </div>
                     </div>
@@ -240,7 +194,7 @@ const PillarsSection = () => {
               </div>
             </div>
 
-            {/* TV Control Panel (Right Column) */}
+            {/* TV Control Panel */}
             <div className="tv-control-panel">
               {/* Speaker Grill */}
               <div className="tv-speaker-grill">

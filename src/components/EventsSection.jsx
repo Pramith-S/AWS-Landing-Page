@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { Calendar, Clock, MapPin, UserCheck, ArrowUpRight, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
 import gsap from 'gsap';
+import StrokeText from './StrokeText';
 import './EventsSection.css';
 
 const communityImg = '/images/events/Community Events.png';
@@ -269,9 +270,36 @@ const EventsSection = ({ onOpenJoinModal }) => {
                 <Calendar size={14} />
                 <span>// COMMUNITY EVENTS</span>
               </div>
-              <h2 className="section-title">
-                Events Conducted & <span className="text-gradient-purple">Upcoming Sessions</span>
-              </h2>
+              <div className="about-stroke-heading section-stroke-heading" aria-label="Events Conducted & Upcoming Sessions">
+                <StrokeText
+                  text="Events Conducted &"
+                  trigger="scroll"
+                  strokeColor="#8B5CF6"
+                  fillColor="#F8FAFC"
+                  strokeWidth={1.2}
+                  drawDuration={1.4}
+                  fillDelay={0.2}
+                  stagger={0.03}
+                  fontSize={32}
+                  fontWeight={800}
+                  letterSpacing={-0.5}
+                  fillMode="wipe"
+                />
+                <StrokeText
+                  text="Upcoming Sessions"
+                  trigger="scroll"
+                  strokeColor="#8B5CF6"
+                  fillColor="#8B5CF6"
+                  strokeWidth={1.2}
+                  drawDuration={1.4}
+                  fillDelay={0.3}
+                  stagger={0.03}
+                  fontSize={32}
+                  fontWeight={800}
+                  letterSpacing={-0.5}
+                  fillMode="wipe"
+                />
+              </div>
               <p className="section-subtitle">
                 Join interactive hands-on cloud labs, hackathons, and architecture deep dives hosted by AWS SBG JSSATEB.
               </p>

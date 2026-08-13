@@ -11,6 +11,8 @@ const ShapeGrid = ({
   hoverColor = '#A855F7',
   shape = 'square',
   hoverTrailAmount = 0,
+  randomFlicker = false,
+  randomFlickerCount = 6,
   className = ''
 }) => {
   const canvasRef = useRef(null);
@@ -21,6 +23,7 @@ const ShapeGrid = ({
   const hoveredSquare = useRef(null);
   const trailCells = useRef([]);
   const cellOpacities = useRef(new Map());
+  const randomFlickerCells = useRef(new Map());
 
   const effectiveSquareSize = size || squareSize || 40;
   const effectiveHoverFill = hoverColor || hoverFillColor || '#A855F7';
@@ -221,7 +224,23 @@ const ShapeGrid = ({
       ctx.fillRect(0, 0, canvas.width, canvas.height);
     };
 
+    let isVisible = true;
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible && !requestRef.current) {
+        requestRef.current = requestAnimationFrame(updateAnimation);
+      }
+    }, { threshold: 0.05 });
+
+    if (canvas.parentElement) {
+      observer.observe(canvas.parentElement);
+    }
+
     const updateAnimation = () => {
+      if (!isVisible) {
+        requestRef.current = null;
+        return;
+      }
       const effectiveSpeed = Math.max(speed, 0.1);
       const wrapX = isHex ? hexHoriz * 2 : effectiveSquareSize;
       const wrapY = isHex ? hexVert : isTri ? effectiveSquareSize * 2 : effectiveSquareSize;
@@ -265,6 +284,43 @@ const ShapeGrid = ({
           const key = `${t.x},${t.y}`;
           if (!targets.has(key)) {
             targets.set(key, (trailCells.current.length - i) / (trailCells.current.length + 1));
+          }
+        }
+      }
+
+      if (randomFlicker) {
+        const maxX = numSquaresX.current || 20;
+        const maxY = numSquaresY.current || 40;
+
+        if (randomFlickerCells.current.size < randomFlickerCount && Math.random() < 0.12) {
+          const rx = Math.floor(Math.random() * maxX) - 1;
+          const ry = Math.floor(Math.random() * maxY) - 1;
+          const rKey = `${rx},${ry}`;
+          if (!randomFlickerCells.current.has(rKey)) {
+            randomFlickerCells.current.set(rKey, {
+              opacity: 0,
+              targetOpacity: Math.random() * 0.45 + 0.15,
+              speed: Math.random() * 0.015 + 0.008,
+              phase: 'fade-in'
+            });
+          }
+        }
+
+        for (const [rKey, cell] of randomFlickerCells.current) {
+          if (cell.phase === 'fade-in') {
+            cell.opacity += cell.speed;
+            if (cell.opacity >= cell.targetOpacity) {
+              cell.phase = 'fade-out';
+            }
+          } else {
+            cell.opacity -= cell.speed * 0.8;
+            if (cell.opacity <= 0) {
+              randomFlickerCells.current.delete(rKey);
+              continue;
+            }
+          }
+          if (!targets.has(rKey)) {
+            targets.set(rKey, cell.opacity);
           }
         }
       }
@@ -394,6 +450,7 @@ const ShapeGrid = ({
     requestRef.current = requestAnimationFrame(updateAnimation);
 
     return () => {
+      observer.disconnect();
       resizeObserver.disconnect();
       window.removeEventListener('resize', resizeCanvas);
       if (requestRef.current) cancelAnimationFrame(requestRef.current);

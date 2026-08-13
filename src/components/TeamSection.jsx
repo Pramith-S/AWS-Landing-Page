@@ -1,6 +1,7 @@
 import { Users } from 'lucide-react';
 import LeadershipCard from './LeadershipCard';
 import Aurora from './Aurora';
+import StrokeText from './StrokeText';
 import './TeamSection.css';
 
 const TeamSection = () => {
@@ -21,9 +22,36 @@ const TeamSection = () => {
             <Users size={14} />
             <span>// OUR LEADERSHIP</span>
           </div>
-          <h2 className="section-title">
-            Driven by Students, <span className="text-gradient-purple">Empowered by AWS</span>
-          </h2>
+          <div className="about-stroke-heading section-stroke-heading" aria-label="Driven by Students, Empowered by AWS">
+            <StrokeText
+              text="Driven by Students,"
+              trigger="scroll"
+              strokeColor="#8B5CF6"
+              fillColor="#F8FAFC"
+              strokeWidth={1.2}
+              drawDuration={1.4}
+              fillDelay={0.2}
+              stagger={0.03}
+              fontSize={32}
+              fontWeight={800}
+              letterSpacing={-0.5}
+              fillMode="wipe"
+            />
+            <StrokeText
+              text="Empowered by AWS"
+              trigger="scroll"
+              strokeColor="#8B5CF6"
+              fillColor="#8B5CF6"
+              strokeWidth={1.2}
+              drawDuration={1.4}
+              fillDelay={0.3}
+              stagger={0.03}
+              fontSize={32}
+              fontWeight={800}
+              letterSpacing={-0.5}
+              fillMode="wipe"
+            />
+          </div>
           <p className="section-subtitle mx-auto">
             Meet the passionate core leads guiding workshops, hackathons, and cloud architectural excellence at JSSATEB.
           </p>

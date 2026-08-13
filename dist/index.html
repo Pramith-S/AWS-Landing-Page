@@ -5,12 +5,23 @@
     <link rel="icon" type="image/png" href="/images/aws_logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AWS Student Builder Group | JSSATEB</title>
+    <!-- Mobile Device Redirect Check -->
+    <script>
+      (function() {
+        var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobi/i.test(navigator.userAgent) || window.innerWidth <= 768;
+        if (isMobile && !window.location.pathname.includes('mobile-index.html')) {
+          window.location.replace('/mobile-index.html' + window.location.search + window.location.hash);
+        }
+      })();
+    </script>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <script type="module" crossorigin src="/assets/index-C0xPcLFw.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-DEfrOOuP.css">
+    <script type="module" crossorigin src="/assets/main-6SdwguGr.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/index-CeBfPRfB.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-f9vrDKq9.css">
+    <link rel="stylesheet" crossorigin href="/assets/main-BL8kQxTc.css">
   </head>
   <body>
     <div id="root"></div>

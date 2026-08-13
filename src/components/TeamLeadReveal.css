@@ -2,15 +2,30 @@
   position: relative;
   width: 100%;
   min-height: 650px;
-  background-color: #000000;
+  background-color: #030206;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: crosshair;
   user-select: none;
-  border-top: 1px solid rgba(168, 85, 247, 0.15);
-  border-bottom: 1px solid rgba(168, 85, 247, 0.15);
+  border-top: none;
+  border-bottom: none;
+}
+
+.team-lead-reveal-section::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: linear-gradient(to bottom,
+      rgba(3, 2, 6, 0) 0%,
+      rgba(10, 7, 16, 0.6) 60%,
+      var(--bg-dark-alt) 100%);
+  pointer-events: none;
+  z-index: 10;
 }
 
 /* Pitch Black Overlay Layer */
@@ -36,19 +51,15 @@
   align-items: center;
   justify-content: center;
   padding: 3rem 1.5rem;
-  
-  mask-image: radial-gradient(
-    circle var(--spotlight-radius, 280px) at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(0, 0, 0, 1) 0%,
-    rgba(0, 0, 0, 0.85) 45%,
-    rgba(0, 0, 0, 0) 100%
-  );
-  -webkit-mask-image: radial-gradient(
-    circle var(--spotlight-radius, 280px) at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(0, 0, 0, 1) 0%,
-    rgba(0, 0, 0, 0.85) 45%,
-    rgba(0, 0, 0, 0) 100%
-  );
+
+  mask-image: radial-gradient(circle var(--spotlight-radius, 280px) at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 0.85) 45%,
+      rgba(0, 0, 0, 0) 100%);
+  -webkit-mask-image: radial-gradient(circle var(--spotlight-radius, 280px) at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 0.85) 45%,
+      rgba(0, 0, 0, 0) 100%);
   transition: opacity 0.4s ease-out;
   transform: translateZ(0);
   will-change: mask-image, -webkit-mask-image;
@@ -60,12 +71,10 @@
   inset: 0;
   z-index: 3;
   pointer-events: none;
-  background: radial-gradient(
-    circle var(--spotlight-radius, 300px) at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(168, 85, 247, 0.3) 0%,
-    rgba(124, 58, 237, 0.12) 45%,
-    transparent 80%
-  );
+  background: radial-gradient(circle var(--spotlight-radius, 300px) at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(168, 85, 247, 0.3) 0%,
+      rgba(124, 58, 237, 0.12) 45%,
+      transparent 80%);
   transition: opacity 0.4s ease-out;
   transform: translateZ(0);
   will-change: background;
@@ -159,10 +168,13 @@
 }
 
 @keyframes pulse-glow {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), 0 0 15px rgba(168, 85, 247, 0.2);
     transform: translateX(-50%) scale(1);
   }
+
   50% {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), 0 0 30px rgba(168, 85, 247, 0.55);
     transform: translateX(-50%) scale(1.03);

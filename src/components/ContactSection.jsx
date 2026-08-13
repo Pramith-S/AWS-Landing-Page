@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { MapPin, Mail, Send, Building2, CheckCircle2, MessageSquare, User, AtSign, Briefcase, AlertTriangle, ShieldAlert } from 'lucide-react';
 import DarkVeil from './DarkVeil';
+import StrokeText from './StrokeText';
 import './ContactSection.css';
 
 const MAX_MESSAGES_PER_DAY = 2;
@@ -161,9 +162,36 @@ const ContactSection = () => {
               <span>// GET IN TOUCH</span>
             </div>
 
-            <h2 className="section-title">
-              Connect with <span className="text-gradient-purple">AWS SBG JSSATEB</span>
-            </h2>
+            <div className="about-stroke-heading section-stroke-heading" aria-label="Connect with AWS SBG JSSATEB">
+              <StrokeText
+                text="Connect with"
+                trigger="scroll"
+                strokeColor="#8B5CF6"
+                fillColor="#F8FAFC"
+                strokeWidth={1.2}
+                drawDuration={1.4}
+                fillDelay={0.2}
+                stagger={0.03}
+                fontSize={32}
+                fontWeight={800}
+                letterSpacing={-0.5}
+                fillMode="wipe"
+              />
+              <StrokeText
+                text="AWS SBG JSSATEB"
+                trigger="scroll"
+                strokeColor="#8B5CF6"
+                fillColor="#8B5CF6"
+                strokeWidth={1.2}
+                drawDuration={1.4}
+                fillDelay={0.3}
+                stagger={0.03}
+                fontSize={32}
+                fontWeight={800}
+                letterSpacing={-0.5}
+                fillMode="wipe"
+              />
+            </div>
 
             <p className="contact-lead-desc">
               Have questions about upcoming workshops, interested in partnering as an industry sponsor,

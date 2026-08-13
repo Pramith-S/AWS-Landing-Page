@@ -1,5 +1,6 @@
 import { Github, Linkedin, Instagram, ArrowUp } from 'lucide-react';
 import ShapeGrid from './ShapeGrid';
+import Card from './Card';
 import './Footer.css';
 
 const awsLogo = '/images/aws_logo.png';
@@ -15,14 +16,16 @@ const Footer = () => {
       <div className="footer-shapegrid-wrapper">
         <ShapeGrid
           speed={0.5}
-          squareSize={40}
+          squareSize={30}
           direction="diagonal"
           borderColor="#2F293A"
           hoverFillColor="#222"
           shape="square"
           hoverTrailAmount={0}
           hoverColor="#A855F7"
-          size={80}
+          size={60}
+          randomFlicker={true}
+          randomFlickerCount={6}
         />
       </div>
 
@@ -84,13 +87,9 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Column 4: Community Badge & Affiliation */}
-          <div className="footer-col affiliation-col">
-            <h4 className="footer-col-title">Collegiate Affiliation</h4>
-            <p className="affiliation-desc">
-              AWS Student Builders Group (SBG) is an independent student-run organization hosted at
-              JSS Academy of Technical Education, Bengaluru (JSSATEB).
-            </p>
+          {/* Column 4: Pass Card */}
+          <div className="footer-col card-col">
+            <Card />
           </div>
         </div>
 

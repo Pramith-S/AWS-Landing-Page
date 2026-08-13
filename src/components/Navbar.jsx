@@ -12,11 +12,11 @@ const Navbar = ({ onOpenJoinModal }) => {
 
   useEffect(() => {
     const sectionIds = ['about', 'pillars', 'events', 'domains', 'team', 'faq', 'contact'];
+    let ticking = false;
 
-    const handleScroll = () => {
+    const checkScroll = () => {
       setIsScrolled(window.scrollY > 20);
 
-      // Check section bounding boxes relative to viewport center
       const viewportCenter = window.innerHeight * 0.4;
       let currentSection = '#about';
 
@@ -31,10 +31,18 @@ const Navbar = ({ onOpenJoinModal }) => {
       }
 
       setActiveSection(currentSection);
+      ticking = false;
+    };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(checkScroll);
+      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
+    checkScroll();
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -86,7 +94,7 @@ const Navbar = ({ onOpenJoinModal }) => {
         {/* Right CTA */}
         <div className="nav-actions">
           <a
-            href="https://www.meetup.com/aws-sbg-at-jss-academy-of-technical-education-bengaluru/"
+            href="https://bit.ly/45162HC"
             target="_blank"
             rel="noreferrer"
             className="nav-cta-btn"
