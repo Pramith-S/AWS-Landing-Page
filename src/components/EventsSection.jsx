@@ -335,7 +335,7 @@ const EventsSection = ({ onOpenJoinModal }) => {
                   <span className="window-dot yellow"></span>
                   <span className="window-dot green"></span>
                 </div>
-                <span className="terminal-shell-label">bash — aws-sbg-cli</span>
+                <span className="terminal-shell-label">aws-sbg-cli</span>
                 <span className={`event-tag-badge ${currentEvent.tag.toLowerCase().replace(/\s+/g, '-')}`}>
                   {currentEvent.tag}
                 </span>

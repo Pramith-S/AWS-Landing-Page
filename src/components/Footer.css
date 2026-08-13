@@ -180,6 +180,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
+  z-index: 20;
+  pointer-events: auto;
 }
 
 .copyright-text {
@@ -200,6 +203,9 @@
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: var(--transition-fast);
+  position: relative;
+  z-index: 30;
+  pointer-events: auto !important;
 }
 
 .scroll-top-btn:hover {
@@ -214,34 +220,56 @@
 
 @media (max-width: 960px) {
   .footer-main-grid {
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 2.5rem;
-  }
-}
-
-@media (max-width: 580px) {
-  .footer-main-grid {
-    grid-template-columns: 1fr;
   }
 
   .footer-links-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    width: 100%;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 1.5rem !important;
+    width: 100% !important;
   }
 
   .footer-bottom-bar {
     flex-direction: column;
     gap: 1rem;
     text-align: center;
+    margin-top: 1.5rem;
   }
 }
 
-/* Mobile App Explicit Override */
+/* Mobile App Wrapper Explicit Overrides */
+.mobile-app-wrapper .footer-main-grid {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2.5rem !important;
+  margin-bottom: 2rem !important;
+}
+
+.mobile-app-wrapper .card-col {
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 5;
+}
+
 .mobile-app-wrapper .footer-links-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  width: 100%;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 1.5rem !important;
+  width: 100% !important;
+}
+
+.mobile-app-wrapper .footer-bottom-bar {
+  position: relative;
+  z-index: 20;
+  margin-top: 1.5rem;
+  pointer-events: auto;
+}
+
+.mobile-app-wrapper .scroll-top-btn {
+  position: relative;
+  z-index: 30;
+  pointer-events: auto !important;
 }

@@ -194,9 +194,11 @@ const StyledWrapper = styled.div`
     box-shadow: rgba(0, 0, 0, 0.4) 0px 5px 5px 0px;
   }
 
-  .card:hover .profile-pic:hover {
-    transform: scale(1.3);
-    border-radius: 0px;
+  @media (hover: hover) {
+    .card:hover .profile-pic:hover {
+      transform: scale(1.15);
+      border-radius: 0px;
+    }
   }
 
   .card:hover .profile-pic img {

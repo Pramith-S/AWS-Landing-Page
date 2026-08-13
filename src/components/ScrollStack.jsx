@@ -37,8 +37,13 @@ const ScrollStack = ({
   }, []);
 
   const parsePercentage = useCallback((value, containerHeight) => {
-    if (typeof value === 'string' && value.includes('%')) {
-      return (parseFloat(value) / 100) * containerHeight;
+    if (typeof value === 'string') {
+      if (value.includes('%')) {
+        return (parseFloat(value) / 100) * containerHeight;
+      }
+      if (value.includes('vh')) {
+        return (parseFloat(value) / 100) * (window.innerHeight || containerHeight);
+      }
     }
     return parseFloat(value);
   }, []);
@@ -69,9 +74,9 @@ const ScrollStack = ({
     const stackPositionPx = parsePercentage(stackPosition, containerHeight);
     const scaleEndPositionPx = parsePercentage(scaleEndPosition, containerHeight);
 
-    const endElement = useWindowScroll
-      ? document.querySelector('.scroll-stack-end')
-      : scrollerRef.current?.querySelector('.scroll-stack-end');
+    const endElement = scrollerRef.current
+      ? scrollerRef.current.querySelector('.scroll-stack-end')
+      : document.querySelector('.scroll-stack-end');
 
     let endElementTop = 0;
     if (endElement) {
