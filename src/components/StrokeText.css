@@ -13,7 +13,6 @@
   display: inline-block;
   vertical-align: middle;
   width: auto;
-  max-width: 100%;
   height: var(--stroke-text-height, 40px);
   overflow: visible;
 }
