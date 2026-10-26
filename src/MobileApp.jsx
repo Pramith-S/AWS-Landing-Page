@@ -32,13 +32,14 @@ import MobileNavbar from './mobile-components/MobileNavbar';
 import MobileAboutSection from './mobile-components/MobileAboutSection';
 import MobilePillarsSection from './mobile-components/MobilePillarsSection';
 import MobileEventsSection from './mobile-components/MobileEventsSection';
-import MobileTeamSection from './mobile-components/MobileTeamSection';
-import MobileTeamLeadReveal from './mobile-components/MobileTeamLeadReveal';
+import PathwaySection from './components/PathwaySection';
 import MobileDomainsSection from './mobile-components/MobileDomainsSection';
+import CoreTeamSection from './components/CoreTeamSection';
 import MobileContactSection from './mobile-components/MobileContactSection';
 import MobileFaqSection from './mobile-components/MobileFaqSection';
 import MobileFooter from './mobile-components/MobileFooter';
 import MobileJoinModal from './mobile-components/MobileJoinModal';
+import Loader from './components/Loader';
 import './App.css';
 import './MobileApp.css';
 
@@ -80,6 +81,9 @@ function MobileApp() {
 
   return (
     <div className="app-wrapper mobile-app-wrapper">
+      {/* Intro Website Loader */}
+      <Loader />
+
       {/* Mobile Navbar */}
       <MobileNavbar onOpenJoinModal={handleOpenJoinModal} />
 
@@ -157,9 +161,9 @@ function MobileApp() {
 
       {/* Other Mobile Components */}
       <MobileEventsSection onOpenJoinModal={handleOpenJoinModal} />
-      <MobileTeamSection />
-      <MobileTeamLeadReveal />
+      <PathwaySection onOpenJoinModal={handleOpenJoinModal} />
       <MobileDomainsSection />
+      <CoreTeamSection />
       <MobileContactSection />
       <MobileFaqSection />
       <MobileFooter />

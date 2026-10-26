@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { Layers, Terminal, Calendar, Megaphone, Briefcase, CheckCircle2, Sparkles } from 'lucide-react';
-import PixelBlast from './PixelBlast';
+import RetroCyberBackground from './RetroCyberBackground';
 import './DomainsSection.css';
 
 const domainsData = [
@@ -341,18 +341,8 @@ const DomainsSection = () => {
 
   return (
     <section id="domains" className="section-padding domains-section">
-      {/* Interactive WebGL PixelBlast Background */}
-      <PixelBlast
-        variant="square"
-        pixelSize={3}
-        color="#A855F7"
-        patternScale={2}
-        patternDensity={1.2}
-        enableRipples={true}
-        rippleIntensityScale={1.5}
-        liquid={true}
-        liquidStrength={0.08}
-      />
+      {/* Retro Cyber Terminal Animated Background */}
+      <RetroCyberBackground />
 
       <div className="container">
         {/* Section Header */}

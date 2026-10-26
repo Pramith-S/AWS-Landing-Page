@@ -81,7 +81,7 @@ const PillNav = ({
               ref={(el) => (itemRefs.current[href] = el)}
               href={href}
               className={`pill-nav-item ${isCurrent ? 'is-active' : ''}`}
-              onClick={() => setActiveTab(href)}
+              onClick={() => setHoveredTab(null)}
               onMouseEnter={() => setHoveredTab(href)}
               onMouseLeave={() => setHoveredTab(null)}
             >

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { MapPin, Mail, Send, Building2, CheckCircle2, MessageSquare, User, AtSign, Briefcase, AlertTriangle, ShieldAlert } from 'lucide-react';
-import DarkVeil from './DarkVeil';
+import CosmicCloudVeil from './CosmicCloudVeil';
 import StrokeText from './StrokeText';
 import './ContactSection.css';
 
@@ -142,16 +142,8 @@ const ContactSection = () => {
 
   return (
     <section id="contact" className="section-padding contact-section">
-      {/* DarkVeil WebGL Animated Background */}
-      <DarkVeil
-        color="#7C3AED"
-        hueShift={0}
-        noiseIntensity={0.04}
-        scanlineIntensity={0.15}
-        scanlineFrequency={0.05}
-        speed={0.4}
-        warpAmount={0.25}
-      />
+      {/* Cosmic Cloud Constellation Animated Background */}
+      <CosmicCloudVeil />
 
       <div className="container">
         <div className="contact-grid">

@@ -73,7 +73,7 @@ const Footer = () => {
                 <li><a href="#about">About SBG</a></li>
                 <li><a href="#pillars">Core Pillars</a></li>
                 <li><a href="#events">Events & Labs</a></li>
-                <li><a href="#team">Core Team</a></li>
+                <li><a href="#core-team">Core Team</a></li>
                 <li><a href="#contact">Contact Us</a></li>
               </ul>
             </div>
