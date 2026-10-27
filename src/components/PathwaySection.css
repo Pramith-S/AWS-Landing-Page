@@ -1,0 +1,665 @@
+/* ==========================================================================
+   AWS LANDMARK PATHWAY (METRO LINE ROADMAP) STYLES
+   ========================================================================== */
+
+.pathway-section {
+  position: relative;
+  background: radial-gradient(circle at 50% 20%, rgba(255, 153, 0, 0.05) 0%, transparent 60%),
+              radial-gradient(circle at 80% 80%, rgba(124, 58, 237, 0.06) 0%, transparent 50%),
+              #08070d;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.pathway-header-box {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 3.5rem auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pathway-header-box .section-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  background: rgba(255, 153, 0, 0.1);
+  border: 1px solid rgba(255, 153, 0, 0.3);
+  border-radius: 99px;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #FF9900;
+  letter-spacing: 0.08em;
+  margin-bottom: 1rem;
+  box-shadow: 0 0 15px rgba(255, 153, 0, 0.15);
+}
+
+.pathway-header-box .section-subtitle {
+  color: #94a3b8;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-top: 1rem;
+}
+
+/* Metro Transit Main Shell */
+.metro-transit-wrapper {
+  background: rgba(14, 12, 22, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.75rem;
+  padding: 2rem 2.5rem 2.5rem 2.5rem;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  position: relative;
+}
+
+/* Header bar above line */
+.metro-line-bar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1.25rem;
+  margin-bottom: 2.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.metro-line-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.metro-line-indicator-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  box-shadow: 0 0 10px currentColor;
+  transition: all 0.3s ease;
+}
+
+.metro-line-title {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #e2e8f0;
+  letter-spacing: 0.08em;
+}
+
+.metro-instruction-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.pulse-icon {
+  color: #FF9900;
+  animation: pulseRotate 2s infinite ease-in-out;
+}
+
+@keyframes pulseRotate {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 1; }
+}
+
+/* ==========================================================================
+   METRO LINE TRACK & STATION POINTS
+   ========================================================================== */
+
+.metro-line-card {
+  width: 100%;
+  min-height: 9.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  padding: 3.5rem 3.5rem 1.5rem 3.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Continuous Railway Rail Track */
+.metro-track-rail {
+  position: absolute;
+  left: 3.5rem;
+  right: 3.5rem;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 99px;
+  z-index: 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+}
+
+.metro-track-progress {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s ease;
+  box-shadow: 0 0 16px rgba(255, 153, 0, 0.7);
+}
+
+/* Individual Station Point */
+.metro-line-point {
+  background-color: #0d0b16;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.station-dot-number {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: #94a3b8;
+  letter-spacing: -0.02em;
+  transition: color 0.2s ease;
+  user-select: none;
+}
+
+.metro-line-point:hover,
+.metro-line-point.active {
+  border-color: var(--station-color, #FF9900);
+  background-color: var(--station-color, #FF9900);
+  transform: scale(1.15);
+  box-shadow: 0 0 25px var(--station-color, #FF9900), inset 0 0 6px rgba(255, 255, 255, 0.4);
+}
+
+.metro-line-point:hover .station-dot-number,
+.metro-line-point.active .station-dot-number {
+  color: #000000;
+  font-weight: 900;
+}
+
+/* Floating Station Name Capsule (ONLY visible when active or touched/hovered) */
+.station-active-capsule {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.42rem 0.85rem;
+  background: rgba(12, 10, 20, 0.95);
+  border: 1px solid var(--station-color, #FF9900);
+  border-radius: 99px;
+  white-space: nowrap;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 16px rgba(255, 153, 0, 0.25);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.capsule-num {
+  font-family: var(--font-mono, monospace);
+  color: var(--station-color, #FF9900);
+  font-weight: 800;
+  font-size: 0.76rem;
+}
+
+.capsule-divider {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 0.76rem;
+}
+
+.capsule-name {
+  font-family: var(--font-mono, monospace);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+}
+
+.capsule-arrow {
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  background: rgba(12, 10, 20, 0.95);
+  border-right: 1px solid var(--station-color, #FF9900);
+  border-bottom: 1px solid var(--station-color, #FF9900);
+}
+
+.metro-line-point:hover .station-active-capsule,
+.metro-line-point.active .station-active-capsule {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Subtle Pin Pulse Marker */
+.metro-line-point .station-pin-marker {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.9rem;
+  height: 0.9rem;
+  background-color: var(--station-color, #FF9900);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  opacity: 0;
+  transition: all 0.25s ease;
+}
+
+.metro-line-point.active .station-pin-marker {
+  opacity: 0.4;
+  transform: translate(-50%, -50%) scale(2.2);
+  animation: pinPulse 2s infinite ease-out;
+}
+
+@keyframes pinPulse {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+  100% { transform: translate(-50%, -50%) scale(2.8); opacity: 0; }
+}
+
+.pin-pulse-core {
+  position: absolute;
+  top: 25%;
+  left: 25%;
+  width: 50%;
+  height: 50%;
+  background: #ffffff;
+  border-radius: 50%;
+}
+
+.metro-line-point:hover .station-pin-marker,
+.metro-line-point.active .station-pin-marker {
+  opacity: 1;
+  transform: translate(-50%, -180%);
+}
+
+/* ==========================================================================
+   METRO LINE INFORMATION BOARD (HUD / TERMINAL CARD)
+   ========================================================================== */
+
+.metro-line-information {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(20, 17, 32, 0.95) 0%, rgba(12, 10, 20, 0.98) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-left: 4px solid var(--theme-accent, #FF9900);
+  border-radius: 1.25rem;
+  padding: 1.75rem 2rem;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 30px rgba(var(--theme-accent, 255, 153, 0), 0.1);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-top: 1rem;
+}
+
+/* Header inside Info Board */
+.metro-info-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.metro-info-station-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.info-station-pill {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.65rem;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid currentColor;
+  border-radius: 6px;
+}
+
+.info-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: 99px;
+  text-transform: uppercase;
+}
+
+.info-status-pill.completed {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #34d399;
+}
+
+.info-status-pill.active {
+  background: rgba(124, 58, 237, 0.2);
+  border: 1px solid rgba(124, 58, 237, 0.5);
+  color: #c084fc;
+  box-shadow: 0 0 10px rgba(124, 58, 237, 0.3);
+}
+
+.info-status-pill.upcoming {
+  background: rgba(6, 182, 212, 0.15);
+  border: 1px solid rgba(6, 182, 212, 0.4);
+  color: #38bdf8;
+}
+
+.info-status-pill.planned {
+  background: rgba(236, 72, 153, 0.15);
+  border: 1px solid rgba(236, 72, 153, 0.4);
+  color: #f472b6;
+}
+
+.info-tag-pill {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 99px;
+  color: #cbd5e1;
+}
+
+/* Step controls inside HUD */
+.metro-step-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.step-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.step-btn:hover {
+  background: var(--theme-accent, #FF9900);
+  border-color: var(--theme-accent, #FF9900);
+  color: #000000;
+  transform: scale(1.08);
+}
+
+.step-count {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.78rem;
+  color: #94a3b8;
+  font-weight: 700;
+  padding: 0 0.3rem;
+}
+
+/* Body layout inside Info Board */
+.metro-info-body {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 2rem;
+  padding-top: 1.25rem;
+}
+
+.metro-cmd-prompt {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.78rem;
+  margin-bottom: 0.65rem;
+}
+
+.prompt-sym {
+  color: #10B981;
+  font-weight: 800;
+}
+
+.prompt-cmd {
+  color: #94a3b8;
+}
+
+.metro-station-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.25;
+  margin-bottom: 0.35rem;
+  letter-spacing: -0.02em;
+}
+
+.metro-station-subtitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--theme-accent, #FF9900);
+  margin-bottom: 1rem;
+}
+
+.metro-station-desc {
+  font-size: 0.95rem;
+  color: #cbd5e1;
+  line-height: 1.65;
+  margin-bottom: 1.25rem;
+}
+
+.metro-highlights-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.highlight-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.3rem 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 99px;
+  color: #e2e8f0;
+}
+
+.tag-sparkle {
+  color: var(--theme-accent, #FF9900);
+}
+
+/* Meta Details Card (Right Column) */
+.metro-meta-card {
+  background: rgba(10, 8, 16, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.meta-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #94a3b8;
+  letter-spacing: 0.08em;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.meta-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.meta-row .meta-icon {
+  color: var(--theme-accent, #FF9900);
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+}
+
+.meta-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.meta-label {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.65rem;
+  color: #64748b;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.meta-val {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.meta-subval {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.74rem;
+  color: #94a3b8;
+  line-height: 1.4;
+}
+
+.meta-row.highlight-speaker .speaker-title {
+  color: #fbbf24;
+}
+
+.meta-row.highlight-speaker .speaker-desc {
+  color: #a1a1aa;
+}
+
+.metro-join-btn {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, var(--btn-accent, #FF9900), #7C3AED);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.metro-join-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 153, 0, 0.3);
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (TABLETS & MOBILE)
+   ========================================================================== */
+
+@media (max-width: 992px) {
+  .metro-info-body {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .metro-line-card {
+    padding: 3rem 1.5rem 1.5rem 1.5rem;
+  }
+
+  .metro-track-rail {
+    left: 1.5rem;
+    right: 1.5rem;
+  }
+
+  .station-active-capsule .capsule-name {
+    font-size: 0.76rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .metro-transit-wrapper {
+    padding: 1.25rem 1rem 1.75rem 1rem;
+    border-radius: 1.25rem;
+  }
+
+  .metro-line-card {
+    min-height: 8rem;
+    padding: 2.75rem 0.75rem 1.25rem 0.75rem;
+  }
+
+  .metro-track-rail {
+    left: 0.75rem;
+    right: 0.75rem;
+    height: 5px;
+  }
+
+  .metro-line-point {
+    width: 2.1rem;
+    height: 2.1rem;
+    border-width: 2.5px;
+  }
+
+  .station-dot-number {
+    font-size: 0.68rem;
+  }
+
+  .station-active-capsule {
+    padding: 0.32rem 0.65rem;
+    bottom: calc(100% + 10px);
+  }
+
+  .station-active-capsule .capsule-name {
+    font-size: 0.7rem;
+  }
+
+  .station-active-capsule .capsule-num {
+    font-size: 0.68rem;
+  }
+
+  .metro-station-title {
+    font-size: 1.3rem;
+  }
+
+  .metro-line-information {
+    padding: 1.25rem;
+    border-radius: 1rem;
+  }
+}

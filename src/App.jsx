@@ -8,13 +8,14 @@ import Navbar from './components/Navbar';
 import AboutSection from './components/AboutSection';
 import PillarsSection from './components/PillarsSection';
 import EventsSection from './components/EventsSection';
-import TeamSection from './components/TeamSection';
-import TeamLeadReveal from './components/TeamLeadReveal';
+import PathwaySection from './components/PathwaySection';
 import DomainsSection from './components/DomainsSection';
+import CoreTeamSection from './components/CoreTeamSection';
 import ContactSection from './components/ContactSection';
 import FaqSection from './components/FaqSection';
 import Footer from './components/Footer';
 import JoinModal from './components/JoinModal';
+import Loader from './components/Loader';
 import './App.css';
 
 function App() {
@@ -33,6 +34,9 @@ function App() {
 
   return (
     <div className="app-wrapper">
+      {/* Intro Website Loader */}
+      <Loader />
+
       {/* Sticky Glass Navbar */}
       <Navbar onOpenJoinModal={handleOpenJoinModal} />
 
@@ -96,14 +100,14 @@ function App() {
       {/* 3. Events Conducted Section */}
       <EventsSection onOpenJoinModal={handleOpenJoinModal} />
 
-      {/* 4. Team Section */}
-      <TeamSection />
-
-      {/* 4.5 Team Lead Reveal Section */}
-      <TeamLeadReveal />
+      {/* 3.5 AWS Landmark Pathway Section */}
+      <PathwaySection onOpenJoinModal={handleOpenJoinModal} />
 
       {/* 4.6 Our Domains Section */}
       <DomainsSection />
+
+      {/* 4.8 Meet Our Core Team Section */}
+      <CoreTeamSection />
 
       {/* 5. Contact Us Section */}
       <ContactSection />

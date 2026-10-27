@@ -22,7 +22,7 @@ const MobileNavbar = () => {
     { name: 'Pillars', href: '#pillars' },
     { name: 'Events', href: '#events' },
     { name: 'Domains', href: '#domains' },
-    { name: 'Team', href: '#team' },
+    { name: 'Core Team', href: '#core-team' },
     { name: 'FAQ', href: '#faq' },
     { name: 'Contact', href: '#contact' },
   ];

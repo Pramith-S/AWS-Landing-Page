@@ -11,7 +11,7 @@ const Navbar = ({ onOpenJoinModal }) => {
   const [activeSection, setActiveSection] = useState('#about');
 
   useEffect(() => {
-    const sectionIds = ['about', 'pillars', 'events', 'domains', 'team', 'faq', 'contact'];
+    const sectionIds = ['about', 'pillars', 'events', 'domains', 'core-team', 'contact', 'faq'];
     let ticking = false;
 
     const checkScroll = () => {
@@ -52,9 +52,9 @@ const Navbar = ({ onOpenJoinModal }) => {
     { name: 'Pillars', href: '#pillars' },
     { name: 'Events', href: '#events' },
     { name: 'Domains', href: '#domains' },
-    { name: 'Team', href: '#team' },
-    { name: 'FAQ', href: '#faq' },
+    { name: 'Core Team', href: '#core-team' },
     { name: 'Contact', href: '#contact' },
+    { name: 'FAQ', href: '#faq' },
   ];
 
   return (
@@ -79,8 +79,8 @@ const Navbar = ({ onOpenJoinModal }) => {
               { label: 'About', href: '#about' },
               { label: 'Pillars', href: '#pillars' },
               { label: 'Events', href: '#events' },
-              { label: 'Team', href: '#team' },
               { label: 'Domains', href: '#domains' },
+              { label: 'Core Team', href: '#core-team' },
               { label: 'Contact', href: '#contact' },
               { label: 'FAQ', href: '#faq' }
             ]}

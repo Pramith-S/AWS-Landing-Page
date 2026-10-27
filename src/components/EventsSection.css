@@ -171,6 +171,16 @@
   border-bottom: 1px solid #27272a;
 }
 
+/* Inside the terminal header, keep badge minimal / no pill */
+.terminal-header-bar .event-tag-badge {
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  backdrop-filter: none !important;
+  font-size: 0.78rem;
+}
+
 .terminal-window-dots {
   display: flex;
   gap: 0.5rem;
@@ -223,26 +233,36 @@
 
 .event-tag-badge {
   font-family: var(--font-mono, monospace);
-  font-size: 0.85rem;
+  font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.1em;
-  padding: 0 !important;
-  background: transparent !important;
-  border: none !important;
   text-transform: uppercase;
   display: inline-block;
+  padding: 0.3rem 0.75rem !important;
+  background: rgba(12, 10, 20, 0.85) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  border-radius: 99px !important;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
+/* Tag colors */
 .event-tag-badge.workshops {
   color: #c084fc;
+  border-color: rgba(192, 132, 252, 0.4) !important;
+  background: rgba(124, 58, 237, 0.35) !important;
 }
 
 .event-tag-badge.hackathons {
   color: #34d399;
+  border-color: rgba(52, 211, 153, 0.4) !important;
+  background: rgba(16, 185, 129, 0.3) !important;
 }
 
 .event-tag-badge.community-events {
   color: #f472b6;
+  border-color: rgba(244, 114, 182, 0.4) !important;
+  background: rgba(236, 72, 153, 0.3) !important;
 }
 
 .terminal-card .active-event-title {
@@ -283,6 +303,50 @@
   grid-column: 1 / -1;
   color: #fbbf24;
   font-weight: 700;
+  align-items: flex-start;
+}
+
+.speaker-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.speaker-name {
+  color: #fbbf24;
+  font-weight: 700;
+  font-size: 0.88rem;
+}
+
+.speaker-role {
+  color: #a1a1aa;
+  font-size: 0.76rem;
+  font-weight: 400;
+  line-height: 1.5;
+  font-family: var(--font-mono, monospace);
+}
+
+.event-inaugural-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.28rem 0.85rem;
+  background: linear-gradient(135deg, rgba(255, 153, 0, 0.18), rgba(255, 153, 0, 0.08));
+  border: 1px solid rgba(255, 153, 0, 0.45);
+  border-radius: 99px;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #FF9900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow: 0 0 14px rgba(255, 153, 0, 0.2);
+  animation: inaugGlow 2.5s ease-in-out infinite alternate;
+}
+
+@keyframes inaugGlow {
+  from { box-shadow: 0 0 8px rgba(255, 153, 0, 0.15); border-color: rgba(255, 153, 0, 0.35); }
+  to   { box-shadow: 0 0 20px rgba(255, 153, 0, 0.45); border-color: rgba(255, 153, 0, 0.7); }
 }
 
 .terminal-card .active-event-desc {
@@ -344,6 +408,7 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  margin-left: auto;
 }
 
 .nav-arrow-btn {
@@ -450,11 +515,7 @@
 }
 
 .poster-header-tags {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: none;
 }
 
 .poster-code-box {

@@ -7,21 +7,21 @@ import './EventsSection.css';
 const communityImg = '/images/events/Community Events.png';
 const hackathonsImg = '/images/events/Hackathons.png';
 const workshopsImg = '/images/events/Workshops.png';
-
 const EVENTS_DATA = [
   {
     id: 'event-1',
-    title: 'Coming Soon',
-    category: 'Upcoming',
+    title: 'AWS Foundations — What Even is AWS?',
+    category: 'Past',
     tag: 'WORKSHOPS',
-    date: 'To Be Announced',
-    time: 'Stay Tuned',
-    location: 'JSSATEB - Auditorium',
-    speaker: 'AWS Student Builder Group',
-    description: 'Stay tuned in!',
-    ctaText: 'Get Notified',
+    date: '29 September 2026',
+    time: '2:00 PM IST Onwards',
+    location: 'Sem Hall 1, JSSATEB',
+    speaker: 'Ms. Omshree Butani',
+    speakerRole: 'Senior FinOps Analyst @ Cimpress · AWS Golden Jacket Holder · AWS Community Builder',
+    description: 'Inauguration of AWS Student Builder Group at JSSATEB — our very first session! Ms. Omshree Butani walked us through cloud fundamentals, demystifying AWS for absolute beginners in an engaging live workshop.',
     accentColor: '#7C3AED',
-    image: workshopsImg
+    image: workshopsImg,
+    badge: '🎉 INAUGURAL EVENT'
   },
   {
     id: 'event-2',
@@ -150,9 +150,6 @@ const EventsSection = ({ onOpenJoinModal }) => {
       <div class="events-card-poster">
         <img src="${enterEvent.image}" alt="${enterEvent.tag}" class="events-slide-img" />
         <div class="poster-overlay"></div>
-        <div class="poster-header-tags">
-          <span class="event-tag-badge ${enterEvent.tag.toLowerCase().replace(/\s+/g, '-')}">${enterEvent.tag}</span>
-        </div>
       </div>
     `;
 
@@ -232,9 +229,6 @@ const EventsSection = ({ onOpenJoinModal }) => {
         <div class="events-card-poster">
           <img src="${ev.image}" alt="${ev.tag}" class="events-slide-img" />
           <div class="poster-overlay"></div>
-          <div class="poster-header-tags">
-            <span class="event-tag-badge ${ev.tag.toLowerCase().replace(/\s+/g, '-')}">${ev.tag}</span>
-          </div>
         </div>
       `;
       imagesEl.appendChild(slide);
@@ -307,23 +301,16 @@ const EventsSection = ({ onOpenJoinModal }) => {
 
             {/* Category Filter Tabs */}
             <div className="events-filter-tabs">
-              {['All', 'Upcoming', 'Past'].map((tab) => {
-                const isPast = tab === 'Past';
-                return (
-                  <button
-                    key={tab}
-                    className={`filter-tab-btn ${activeTab === tab ? 'active' : ''} ${isPast ? 'dummy-btn' : ''}`}
-                    onClick={() => {
-                      if (!isPast) handleTabChange(tab);
-                    }}
-                    disabled={isPast}
-                    title={isPast ? 'Past Events (Unavailable)' : undefined}
-                  >
-                    {tab === 'All' && <Filter size={14} />}
-                    <span>{tab === 'All' ? 'All Events' : tab === 'Upcoming' ? 'Upcoming' : 'Past Events'}</span>
-                  </button>
-                );
-              })}
+              {['All', 'Upcoming', 'Past'].map((tab) => (
+                <button
+                  key={tab}
+                  className={`filter-tab-btn ${activeTab === tab ? 'active' : ''}`}
+                  onClick={() => handleTabChange(tab)}
+                >
+                  {tab === 'All' && <Filter size={14} />}
+                  <span>{tab === 'All' ? 'All Events' : tab === 'Upcoming' ? 'Upcoming' : 'Past Events'}</span>
+                </button>
+              ))}
             </div>
 
             {/* Active Event Information Card (Terminal Window Style) */}
@@ -367,8 +354,18 @@ const EventsSection = ({ onOpenJoinModal }) => {
                   </div>
                   <div className="meta-item highlight">
                     <UserCheck size={15} className="meta-icon" />
-                    <span>Host: {currentEvent.speaker}</span>
+                    <div className="speaker-meta">
+                      <span className="speaker-name">{currentEvent.speaker}</span>
+                      {currentEvent.speakerRole && (
+                        <span className="speaker-role">{currentEvent.speakerRole}</span>
+                      )}
+                    </div>
                   </div>
+                  {currentEvent.badge && (
+                    <div className="meta-item">
+                      <span className="event-inaugural-badge">{currentEvent.badge}</span>
+                    </div>
+                  )}
                 </div>
 
                 <div className="terminal-cmd-line desc-line">
@@ -378,15 +375,17 @@ const EventsSection = ({ onOpenJoinModal }) => {
 
                 {/* CTA & Slider Navigation Controls */}
                 <div className="active-event-footer">
-                  <a
-                    href="https://chat.whatsapp.com/LvgZscYwBMD1lRVX79fgkh?s=cl&p=a&mlu=4"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="btn-purple-primary event-cta"
-                  >
-                    <span>{currentEvent.ctaText}</span>
-                    <ArrowUpRight size={16} />
-                  </a>
+                  {currentEvent.ctaText && (
+                    <a
+                      href="https://chat.whatsapp.com/LvgZscYwBMD1lRVX79fgkh?s=cl&p=a&mlu=4"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="btn-purple-primary event-cta"
+                    >
+                      <span>{currentEvent.ctaText}</span>
+                      <ArrowUpRight size={16} />
+                    </a>
+                  )}
 
                   {/* Carousel Navigation Arrows */}
                   <div className="slider-nav-arrows">

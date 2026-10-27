@@ -55,10 +55,15 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 90px;
   font-family: var(--font-body);
   background-color: var(--bg-dark-base);
   color: var(--text-primary);
   overflow-x: hidden;
+}
+
+section[id] {
+  scroll-margin-top: 90px;
 }
 
 body {
