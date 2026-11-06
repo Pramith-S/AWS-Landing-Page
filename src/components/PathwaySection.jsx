@@ -11,9 +11,12 @@ import {
   CheckCircle2,
   Clock,
   Radio,
-  Layers
+  Layers,
+  BookOpen,
+  Music
 } from 'lucide-react';
 import StrokeText from './StrokeText';
+import KaelkothPlaylistBook from './KaelkothPlaylistBook';
 import './PathwaySection.css';
 
 const PATHWAY_STATIONS = [
@@ -116,6 +119,7 @@ const PATHWAY_STATIONS = [
 
 const PathwaySection = ({ onOpenJoinModal }) => {
   const [activeStationIndex, setActiveStationIndex] = useState(0);
+  const [metaTab, setMetaTab] = useState('manifest'); // 'manifest' | 'playlist'
 
   const currentStation = PATHWAY_STATIONS[activeStationIndex];
 
@@ -314,52 +318,90 @@ const PathwaySection = ({ onOpenJoinModal }) => {
                 </div>
               </div>
 
-              {/* Meta Details Box */}
+              {/* Meta Details Box / Station Manifest & Playlist Book Switcher */}
               <div className="metro-meta-card">
-                <div className="meta-card-header">
-                  <Layers size={14} />
-                  <span>STATION MANIFEST</span>
-                </div>
-
-                <div className="meta-row">
-                  <Calendar size={14} className="meta-icon" />
-                  <div className="meta-content">
-                    <span className="meta-label">TIMELINE</span>
-                    <span className="meta-val">{currentStation.date}</span>
-                    {currentStation.time && <span className="meta-subval">{currentStation.time}</span>}
-                  </div>
-                </div>
-
-                <div className="meta-row">
-                  <MapPin size={14} className="meta-icon" />
-                  <div className="meta-content">
-                    <span className="meta-label">VENUE / LOCATION</span>
-                    <span className="meta-val">{currentStation.venue}</span>
-                  </div>
-                </div>
-
-                <div className="meta-row highlight-speaker">
-                  <UserCheck size={14} className="meta-icon" />
-                  <div className="meta-content">
-                    <span className="meta-label">KEY SPEAKER / MENTORS</span>
-                    <span className="meta-val speaker-title">{currentStation.speaker}</span>
-                    <span className="meta-subval speaker-desc">{currentStation.speakerRole}</span>
-                  </div>
-                </div>
-
-                {onOpenJoinModal && (
+                <div className="meta-card-header-tabs">
                   <button 
-                    className="metro-join-btn"
-                    onClick={onOpenJoinModal}
-                    style={{ '--btn-accent': currentStation.lineColor }}
+                    type="button"
+                    className={`meta-tab-btn ${metaTab === 'manifest' ? 'active' : ''}`}
+                    onClick={() => setMetaTab('manifest')}
                   >
-                    <span>Join This Station</span>
-                    <ArrowRight size={14} />
+                    <Layers size={13} />
+                    <span>STATION MANIFEST</span>
                   </button>
+
+                  <button 
+                    type="button"
+                    className={`meta-tab-btn ${metaTab === 'playlist' ? 'active' : ''}`}
+                    onClick={() => setMetaTab('playlist')}
+                  >
+                    <BookOpen size={13} />
+                    <span>PLAYLIST REGALO</span>
+                  </button>
+                </div>
+
+                {metaTab === 'manifest' ? (
+                  <>
+                    <div className="meta-row">
+                      <Calendar size={14} className="meta-icon" />
+                      <div className="meta-content">
+                        <span className="meta-label">TIMELINE</span>
+                        <span className="meta-val">{currentStation.date}</span>
+                        {currentStation.time && <span className="meta-subval">{currentStation.time}</span>}
+                      </div>
+                    </div>
+
+                    <div className="meta-row">
+                      <MapPin size={14} className="meta-icon" />
+                      <div className="meta-content">
+                        <span className="meta-label">VENUE / LOCATION</span>
+                        <span className="meta-val">{currentStation.venue}</span>
+                      </div>
+                    </div>
+
+                    <div className="meta-row highlight-speaker">
+                      <UserCheck size={14} className="meta-icon" />
+                      <div className="meta-content">
+                        <span className="meta-label">KEY SPEAKER / MENTORS</span>
+                        <span className="meta-val speaker-title">{currentStation.speaker}</span>
+                        <span className="meta-subval speaker-desc">{currentStation.speakerRole}</span>
+                      </div>
+                    </div>
+
+                    {onOpenJoinModal && (
+                      <button 
+                        className="metro-join-btn"
+                        onClick={onOpenJoinModal}
+                        style={{ '--btn-accent': currentStation.lineColor }}
+                      >
+                        <span>Join This Station</span>
+                        <ArrowRight size={14} />
+                      </button>
+                    )}
+                  </>
+                ) : (
+                  <div className="meta-playlist-compact-box">
+                    <KaelkothPlaylistBook compact={true} activeStationNum={currentStation.number} />
+                  </div>
                 )}
               </div>
             </div>
 
+          </div>
+
+          {/* Dedicated Full 3D AWS Codex & Kaelkoth Playlist Regalo Showcase */}
+          <div className="pathway-codex-showcase-section">
+            <div className="codex-showcase-divider">
+              <span className="divider-line" />
+              <div className="divider-pill">
+                <Sparkles size={12} className="sparkle-gold" />
+                <span>AWS SBG CODEX · KAELKOTH PLAYLIST REGALO</span>
+                <Sparkles size={12} className="sparkle-gold" />
+              </div>
+              <span className="divider-line" />
+            </div>
+
+            <KaelkothPlaylistBook activeStationNum={currentStation.number} />
           </div>
 
         </div>

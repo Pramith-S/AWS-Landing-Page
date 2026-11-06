@@ -506,6 +506,44 @@
   gap: 1rem;
 }
 
+.meta-card-header-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.meta-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 0.3rem 0.65rem;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.meta-tab-btn:hover {
+  background: rgba(255, 153, 0, 0.12);
+  border-color: rgba(255, 153, 0, 0.3);
+  color: #ffffff;
+}
+
+.meta-tab-btn.active {
+  background: rgba(255, 153, 0, 0.2);
+  border-color: #FF9900;
+  color: #FF9900;
+  box-shadow: 0 0 10px rgba(255, 153, 0, 0.25);
+}
+
 .meta-card-header {
   display: flex;
   align-items: center;
@@ -517,6 +555,50 @@
   letter-spacing: 0.08em;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ==========================================================================
+   CODEX SHOWCASE SECTION (Inside Metro Transit Wrapper)
+   ========================================================================== */
+.pathway-codex-showcase-section {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+.codex-showcase-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.codex-showcase-divider .divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255, 153, 0, 0.4), transparent);
+}
+
+.codex-showcase-divider .divider-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 1rem;
+  background: rgba(255, 153, 0, 0.08);
+  border: 1px solid rgba(255, 153, 0, 0.3);
+  border-radius: 99px;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #FF9900;
+  letter-spacing: 0.08em;
+  box-shadow: 0 0 15px rgba(255, 153, 0, 0.15);
+}
+
+.sparkle-gold {
+  color: #FF9900;
 }
 
 .meta-row {
