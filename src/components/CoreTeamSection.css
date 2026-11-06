@@ -1586,45 +1586,6 @@
    ========================================================================== */
 
 /* Mobile Mode Switcher Pills */
-.cyber-mobile-view-controls {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin: 0.25rem auto 1.25rem;
-  width: 100%;
-}
-
-@media (max-width: 640px) {
-  .cyber-mobile-view-controls {
-    display: flex;
-  }
-}
-
-.cyber-view-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
-  border-radius: 999px;
-  background: rgba(18, 15, 28, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #94a3b8;
-  font-family: var(--font-mono, monospace);
-  font-size: 0.75rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  user-select: none;
-}
-
-.cyber-view-pill.active {
-  background: rgba(139, 92, 246, 0.25);
-  border-color: #a855f7;
-  color: #f8fafc;
-  box-shadow: 0 0 12px rgba(168, 85, 247, 0.45);
-}
-
 /* Members Grid */
 .cyber-members-grid {
   display: grid;
@@ -1633,19 +1594,22 @@
   width: 100%;
   margin: 1rem auto 2rem;
   padding: 4px 6px 12px;
+  box-sizing: border-box;
 }
 
 @media (max-width: 1120px) {
   .cyber-members-grid {
     grid-template-columns: repeat(3, 1fr);
-    gap: 24px 18px;
+    gap: 22px 18px;
   }
 }
 
 @media (max-width: 768px) {
   .cyber-members-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px 14px;
+    gap: 14px 10px;
+    margin: 0.5rem auto 1rem;
+    padding: 4px 4px 10px;
   }
 }
 
@@ -2135,128 +2099,260 @@
     max-width: 100%;
   }
 
+  /* Compartment & Header Fitting (No Horizontal Overflow) */
+  .team-compartments-container {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .team-compartment {
+    padding: 12px 10px 16px;
+    border-radius: 18px;
+    margin: 0.5rem auto 1.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .compartment-top-bar {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    gap: 8px;
+  }
+
+  .compartment-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .compartment-icon-bubble {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+
+  .compartment-icon-bubble svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .compartment-name {
+    font-size: 1.1rem;
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .compartment-desc {
+    font-size: 0.74rem;
+    line-height: 1.25;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .compartment-badge {
+    display: none;
+  }
+
+  /* 4-Radio Switches Console fitting across mobile width in ONE line with no scrolling */
+  .radio-input {
+    width: 100% !important;
+    padding: 6px !important;
+    gap: 4px !important;
+    box-sizing: border-box;
+    overflow: hidden !important;
+    justify-content: space-between !important;
+  }
+
+  .radio-input .label {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    width: auto !important;
+    height: 52px !important;
+    padding: 4px 2px !important;
+  }
+
+  .label .text {
+    font-size: 8.5px !important;
+    letter-spacing: 0 !important;
+  }
+
+  .label .back-side {
+    height: 8px !important;
+    top: -6px !important;
+  }
+
+  .label:has(input[type="radio"]:checked),
+  .label.is-checked {
+    margin-top: 4px !important;
+  }
+
+  /* Member Cards Mobile Compact Proportion (fits neatly in viewport frame, NO scrolling type) */
+  .cyber-members-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 9px;
+    padding: 2px 5px 8px 1px;
+    box-sizing: border-box;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .ecell-card-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .ecell-card-container:hover {
+    transform: translateY(-4px);
+  }
+
   .ecell-card-3d-shadow {
-    right: -7px;
+    right: -5px;
+    top: 0;
     clip-path: polygon(
-      12px 0%, 
-      calc(100% - 12px) 0%, 
-      100% 12px, 
+      10px 0%, 
+      calc(100% - 10px) 0%, 
+      100% 10px, 
       100% 100%, 
       0% 100%, 
-      0% 12px
+      0% 10px
     );
+    box-shadow: 0 0 10px rgba(124, 58, 237, 0.4);
   }
 
   .ecell-card-container:hover .ecell-card-3d-shadow {
-    right: -9px;
+    right: -6px;
+    top: 0;
+  }
+
+  .ecell-card-container.is-lead .ecell-card-3d-shadow {
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+  }
+
+  .ecell-card-container.is-lead:hover .ecell-card-3d-shadow {
+    right: -6px;
+    top: 0;
   }
 
   .ecell-card-main {
     clip-path: polygon(
-      12px 0%, 
-      calc(100% - 12px) 0%, 
-      100% 12px, 
+      10px 0%, 
+      calc(100% - 10px) 0%, 
+      100% 10px, 
       100% 100%, 
       0% 100%, 
-      0% 12px
+      0% 10px
     );
-    padding: 10px 8px 14px;
+    padding: 8px 7px 11px;
     border-width: 1.5px;
   }
 
   .ecell-photo-box {
-    aspect-ratio: 1 / 1.02;
-    border-radius: 10px;
+    aspect-ratio: 1 / 1;
+    border-radius: 8px;
     border-width: 1.5px;
-    margin-bottom: 8px;
-  }
-
-  .ecell-member-name {
-    font-size: 0.9rem;
-    margin-bottom: 2px;
-  }
-
-  .ecell-role-pill {
-    padding: 2px 9px;
-    gap: 5px;
-    margin: 0 0 8px;
-  }
-
-  .ecell-role-dot {
-    width: 4px;
-    height: 4px;
-  }
-
-  .ecell-member-role {
-    font-size: 0.75rem;
-    line-height: 1.15;
-  }
-
-  .cyber-bracket {
-    width: 8px;
-    height: 8px;
-  }
-
-  .ecell-socials-row {
-    gap: 8px;
-  }
-
-  .ecell-social-circle {
-    width: 26px;
-    height: 26px;
-  }
-
-  .ecell-social-circle svg {
-    width: 12px;
-    height: 12px;
-  }
-
-  /* Seamless Horizontal Touch-Swipe Carousel Mode on Mobile */
-  .cyber-members-grid.carousel-mode {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    gap: 14px;
-    padding: 6px 14px 16px;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-
-  .cyber-members-grid.carousel-mode::-webkit-scrollbar {
-    display: none;
-  }
-
-  .cyber-members-grid.carousel-mode .ecell-card-container {
-    flex: 0 0 68%;
-    max-width: 240px;
-    scroll-snap-align: center;
-  }
-
-  .cyber-carousel-indicators {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    margin: 0.25rem auto 1rem;
+    margin-bottom: 6px;
     width: 100%;
   }
 
-  .cyber-indicator-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.22);
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    transition: all 0.25s ease;
+  .cyber-bracket {
+    width: 7px;
+    height: 7px;
+    border-width: 1.5px;
   }
 
-  .cyber-indicator-dot.active {
-    width: 18px;
-    border-radius: 999px;
-    background: #a855f7;
-    box-shadow: 0 0 8px #a855f7;
+  .cyber-bracket.top-left {
+    top: 4px;
+    left: 4px;
+  }
+
+  .cyber-bracket.bottom-right {
+    bottom: 4px;
+    right: 4px;
+  }
+
+  .aws-huge-watermark-render {
+    width: 90%;
+    height: 90%;
+    filter: none !important;
+  }
+
+  .ecell-member-name {
+    font-size: clamp(0.78rem, 3vw, 0.88rem);
+    font-weight: 700;
+    margin: 0 0 3px;
+    line-height: 1.15;
+  }
+
+  .ecell-role-pill {
+    padding: 2px 7px;
+    gap: 4px;
+    margin: 0 0 6px;
+    border-radius: 99px;
+  }
+
+  .ecell-role-dot {
+    width: 3.5px;
+    height: 3.5px;
+  }
+
+  .ecell-member-role {
+    font-size: clamp(0.66rem, 2.4vw, 0.72rem);
+    line-height: 1.1;
+  }
+
+  .ecell-socials-row {
+    gap: 6px;
+    margin-top: 2px;
+  }
+
+  .ecell-social-circle {
+    width: 23px;
+    height: 23px;
+  }
+
+  .ecell-social-circle svg {
+    width: 10.5px;
+    height: 10.5px;
+  }
+}
+
+@media (max-width: 380px) {
+  .cyber-members-grid {
+    gap: 10px 7px;
+    padding: 2px 4px 6px 1px;
+  }
+
+  .ecell-card-main {
+    padding: 7px 5px 9px;
+  }
+
+  .ecell-member-name {
+    font-size: 0.76rem;
+  }
+
+  .ecell-member-role {
+    font-size: 0.64rem;
+  }
+
+  .ecell-social-circle {
+    width: 21px;
+    height: 21px;
+  }
+
+  .ecell-social-circle svg {
+    width: 9.5px;
+    height: 9.5px;
   }
 }
 

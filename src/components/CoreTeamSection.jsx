@@ -15,9 +15,7 @@ import {
   Globe,
   ExternalLink,
   Github,
-  Mail,
-  LayoutGrid,
-  SlidersHorizontal
+  Mail
 } from 'lucide-react';
 import { coreTeamData } from '../data/coreTeamData';
 import StarfieldBackground from './StarfieldBackground';
@@ -177,9 +175,6 @@ const CoreTeamSection = () => {
   const [activePhotoIdx, setActivePhotoIdx] = useState(0); // 0 = Community Grand Stage (first)
   const [activeDepartment, setActiveDepartment] = useState('tech'); // Default to 'tech' so it's open & visible immediately
   const [leadPhotoIdx, setLeadPhotoIdx] = useState(0);
-  const [mobileViewMode, setMobileViewMode] = useState('grid'); // 'grid' (compact 2-col) or 'carousel' (touch-swipe)
-  const [activeCarouselIdx, setActiveCarouselIdx] = useState(0);
-  const carouselRef = useRef(null);
 
   // Auto-switch lead photos every 2 seconds
   useEffect(() => {
@@ -192,26 +187,6 @@ const CoreTeamSection = () => {
   const activePhoto = coreTeamData.groupPhotos[activePhotoIdx];
   const selectedTeam =
     coreTeamData.teams.find((team) => team.id === activeDepartment) || coreTeamData.teams[0];
-
-  const handleCarouselScroll = () => {
-    if (!carouselRef.current) return;
-    const container = carouselRef.current;
-    const cardWidth = container.firstElementChild?.offsetWidth || 220;
-    const scrollLeft = container.scrollLeft;
-    const index = Math.round(scrollLeft / (cardWidth + 12));
-    setActiveCarouselIdx(Math.max(0, Math.min(index, (selectedTeam?.members?.length || 1) - 1)));
-  };
-
-  const scrollCarouselTo = (index) => {
-    if (!carouselRef.current) return;
-    const container = carouselRef.current;
-    const cardWidth = container.firstElementChild?.offsetWidth || 220;
-    container.scrollTo({
-      left: index * (cardWidth + 12),
-      behavior: 'smooth'
-    });
-    setActiveCarouselIdx(index);
-  };
 
   // Helper for initials (filters out symbols like & or /)
   const getInitials = (name) => {
@@ -514,34 +489,8 @@ const CoreTeamSection = () => {
                 </span>
               </div>
 
-              {/* Mobile View Mode Switcher (Compact 2-Col Grid vs Swipe Carousel) */}
-              <div className="cyber-mobile-view-controls">
-                <button
-                  type="button"
-                  className={`cyber-view-pill ${mobileViewMode === 'grid' ? 'active' : ''}`}
-                  onClick={() => setMobileViewMode('grid')}
-                  aria-label="2-Column Grid View"
-                >
-                  <LayoutGrid size={13} />
-                  <span>2-Col Grid</span>
-                </button>
-                <button
-                  type="button"
-                  className={`cyber-view-pill ${mobileViewMode === 'carousel' ? 'active' : ''}`}
-                  onClick={() => setMobileViewMode('carousel')}
-                  aria-label="Swipe Carousel View"
-                >
-                  <SlidersHorizontal size={13} />
-                  <span>Swipe Carousel</span>
-                </button>
-              </div>
-
-              {/* Cyberpunk Member Cards Grid */}
-              <div
-                ref={carouselRef}
-                className={`cyber-members-grid ${mobileViewMode === 'carousel' ? 'carousel-mode' : ''}`}
-                onScroll={handleCarouselScroll}
-              >
+              {/* Cyberpunk Member Cards Grid (Unified Compact Frame Fit) */}
+              <div className="cyber-members-grid">
                 {selectedTeam.members.map((member) => (
                   <CyberTeamCard
                     key={member.id}
@@ -550,21 +499,6 @@ const CoreTeamSection = () => {
                   />
                 ))}
               </div>
-
-              {/* Carousel Peek Indicators (Visible on mobile in carousel mode) */}
-              {mobileViewMode === 'carousel' && (
-                <div className="cyber-carousel-indicators">
-                  {selectedTeam.members.map((member, idx) => (
-                    <button
-                      key={member.id}
-                      type="button"
-                      className={`cyber-indicator-dot ${activeCarouselIdx === idx ? 'active' : ''}`}
-                      onClick={() => scrollCarouselTo(idx)}
-                      aria-label={`Go to ${member.name}`}
-                    />
-                  ))}
-                </div>
-              )}
             </div>
           )}
         </div>
