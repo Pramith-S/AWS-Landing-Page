@@ -1,996 +1,744 @@
-/* ==========================================================================
-   ABOUT AWS SBG JSSATEB SECTION STYLES
-   Futuristic Engineering Aesthetic · AWS Purple Identity · Technical Grid
-   ========================================================================== */
+:root {
+  --white: hsl(0, 0%, 100%);
+  --gray-100: hsl(193, 15%, 88%);
+  --gray-200: hsl(193, 11%, 82%);
+  --gray-300: hsl(193, 7%, 74%);
+  --gray-400: hsl(193, 6%, 65%);
+  --gray-500: hsl(193, 5%, 54%);
+  --gray-600: hsl(193, 6%, 41%);
+  --gray-700: hsl(193, 9%, 28%);
+  --gray-800: hsl(193, 16%, 14%);
+  --gray-900: hsl(193, 40%, 2%);
 
-.about-section {
-  position: relative;
-  background-color: var(--bg-dark-base, #0b0b0e);
-  color: var(--text-primary, #f3f4f6);
-  padding: 6.5rem 0 4rem;
-  overflow: hidden;
-  border-top: 1px solid rgba(139, 92, 246, 0.12);
+  --primary: hsl(227, 100%, 66%);
+  --accent: hsl(196, 93%, 45%);
+  --accent-2: hsl(146, 70%, 58%);
 }
 
-/* Subtle Ambient Ray Overlay Container */
+.about-section {
+  background-color: var(--bg-dark-base);
+  border-top: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.about-section::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 220px;
+  background: linear-gradient(
+    to bottom,
+    rgba(11, 11, 14, 0) 0%,
+    rgba(14, 11, 18, 0.5) 50%,
+    var(--bg-dark-alt) 100%
+  );
+  pointer-events: none;
+  z-index: 10;
+}
+
 .about-siderays-wrapper {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+  overflow: hidden;
   pointer-events: none;
   z-index: 1;
-  opacity: 0.75;
 }
 
-/* Subtle Cyber Technical Grid Overlay */
-.about-grid-overlay {
-  position: absolute;
-  inset: 0;
-  background-image: 
-    linear-gradient(to right, rgba(139, 92, 246, 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(139, 92, 246, 0.035) 1px, transparent 1px);
-  background-size: 56px 56px;
-  pointer-events: none;
-  z-index: 2;
-  mask-image: radial-gradient(circle at 50% 40%, black 40%, transparent 85%);
-  -webkit-mask-image: radial-gradient(circle at 50% 40%, black 40%, transparent 85%);
-}
-
-/* Ambient Radial Glow Orbs */
 .about-glow-orb {
   position: absolute;
-  border-radius: 50%;
+  top: 15%;
+  left: -10%;
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, rgba(108, 43, 217, 0.12) 0%, rgba(0, 0, 0, 0) 70%);
   pointer-events: none;
-  z-index: 2;
-  filter: blur(80px);
 }
 
-.about-glow-top {
-  top: 5%;
-  right: -5%;
-  width: 480px;
-  height: 480px;
-  background: radial-gradient(circle, rgba(124, 58, 237, 0.12) 0%, rgba(108, 43, 217, 0.02) 65%, transparent 80%);
-}
-
-.about-glow-bottom {
-  bottom: 10%;
-  left: -8%;
-  width: 520px;
-  height: 520px;
-  background: radial-gradient(circle, rgba(255, 153, 0, 0.06) 0%, rgba(139, 92, 246, 0.04) 50%, transparent 75%);
-}
-
-.about-container {
-  position: relative;
-  z-index: 10;
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
-}
-
-/* Section Eyebrow Badge */
-.about-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.35rem 0.85rem;
-  background: rgba(139, 92, 246, 0.08);
-  border: 1px solid rgba(139, 92, 246, 0.22);
-  border-radius: 9999px;
-  color: var(--electric-violet, #8b5cf6);
-  font-family: var(--font-mono, 'JetBrains Mono', monospace);
-  font-size: 0.775rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  margin-bottom: 1.15rem;
-}
-
-.badge-pulse-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--electric-violet, #8b5cf6);
-  box-shadow: 0 0 10px #8b5cf6;
-  animation: sbgBadgePulse 2s infinite ease-in-out;
-}
-
-@keyframes sbgBadgePulse {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.4;
-    transform: scale(0.85);
-  }
-}
-
-/* ==========================================================================
-   PART 1 & 2: INTRO NARRATIVE & PROMINENT MISSION CARD (Asymmetric Grid)
-   ========================================================================== */
-
-.about-intro-grid {
+.about-grid {
   display: grid;
-  grid-template-columns: 1.15fr 0.95fr;
+  grid-template-columns: 1fr 1fr;
   gap: 3.5rem;
   align-items: center;
-  margin-bottom: 5.5rem;
 }
 
-/* Left Narrative Column */
-.about-intro-narrative {
+.narrative-body {
+  margin-top: 1.25rem;
+  margin-bottom: 2rem;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  gap: 1.2rem;
 }
 
-.about-editorial-headline {
-  font-family: var(--font-heading, 'Outfit', sans-serif);
-  font-size: clamp(2.1rem, 3.8vw, 3.15rem);
-  font-weight: 800;
-  line-height: 1.18;
-  letter-spacing: -0.025em;
-  color: #ffffff;
-  margin-bottom: 1.35rem;
+.narrative-body p {
+  color: var(--text-secondary);
+  font-size: 1.025rem;
+  line-height: 1.7;
 }
 
-.about-overview-text {
-  font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 1.05rem;
-  line-height: 1.72;
-  color: var(--text-secondary, #9ca3af);
-  margin-bottom: 2rem;
-  max-width: 580px;
-}
-
-/* Chapter Telemetry Chips */
-.about-chapter-telemetry {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.85rem;
-  width: 100%;
-}
-
-.telemetry-chip {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.45rem 0.85rem;
-  background: rgba(18, 14, 22, 0.7);
-  border: 1px solid rgba(139, 92, 246, 0.16);
-  border-radius: 8px;
-  font-family: var(--font-mono, 'JetBrains Mono', monospace);
-  font-size: 0.725rem;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: border-color 0.25s ease, background 0.25s ease;
-}
-
-.telemetry-chip:hover {
-  border-color: rgba(139, 92, 246, 0.35);
-  background: rgba(24, 21, 36, 0.85);
-}
-
-.telemetry-label {
-  color: #6b7280;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-}
-
-.telemetry-value {
-  color: #e5e7eb;
+.narrative-body strong {
+  color: var(--text-primary);
   font-weight: 600;
 }
 
-/* Right Column: Mission Card */
-.about-mission-wrapper {
-  position: relative;
+.about-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.check-icon {
+  color: var(--electric-violet);
+  flex-shrink: 0;
+}
+
+/* Elevator Section Integration */
+.elevator-integration-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
 }
 
-.about-mission-card {
-  position: relative;
-  background: linear-gradient(145deg, rgba(20, 16, 32, 0.82) 0%, rgba(11, 9, 17, 0.94) 100%);
-  border: 1px solid rgba(139, 92, 246, 0.26);
-  border-radius: 16px;
-  padding: 2.25rem 2.25rem 2rem;
-  box-shadow: 
-    0 12px 36px rgba(0, 0, 0, 0.55),
-    0 0 40px rgba(124, 58, 237, 0.09),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  overflow: hidden;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, box-shadow 0.35s ease;
-}
-
-.about-mission-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    380px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(139, 92, 246, 0.12),
-    transparent 60%
-  );
-  pointer-events: none;
-  opacity: 0.8;
-}
-
-.about-mission-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(139, 92, 246, 0.45);
-  box-shadow: 
-    0 18px 44px rgba(0, 0, 0, 0.65),
-    0 0 50px rgba(124, 58, 237, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12);
-}
-
-/* Corner HUD Reticles */
-.hud-corner {
-  position: absolute;
-  font-family: var(--font-mono, monospace);
-  font-size: 13px;
-  color: rgba(139, 92, 246, 0.45);
-  line-height: 1;
-  pointer-events: none;
-  user-select: none;
-}
-
-.hud-corner.top-left { top: 9px; left: 11px; }
-.hud-corner.top-right { top: 9px; right: 11px; }
-.hud-corner.bottom-left { bottom: 9px; left: 11px; }
-.hud-corner.bottom-right { bottom: 9px; right: 11px; }
-
-/* Mission Card Top Bar */
-.mission-card-top {
+.elevator-layout {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1.35rem;
-}
-
-.mission-tag-pill {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.25rem 0.65rem;
-  background: rgba(139, 92, 246, 0.14);
-  border: 1px solid rgba(139, 92, 246, 0.28);
-  border-radius: 6px;
-}
-
-.pulse-indicator {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #ff9900;
-  box-shadow: 0 0 8px #ff9900;
-}
-
-.mission-tag-text {
-  font-family: var(--font-mono, monospace);
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: #ffb800;
-  letter-spacing: 0.06em;
-}
-
-.mission-code-badge {
-  font-family: var(--font-mono, monospace);
-  font-size: 0.685rem;
-  color: #6b7280;
-  letter-spacing: 0.05em;
-}
-
-/* Mission Halo Icon */
-.mission-icon-halo {
-  display: inline-flex;
+  gap: 1.5rem;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.25) 0%, rgba(108, 43, 217, 0.08) 100%);
-  border: 1px solid rgba(139, 92, 246, 0.35);
-  color: #c084fc;
-  margin-bottom: 1.15rem;
-  box-shadow: 0 0 24px rgba(139, 92, 246, 0.22);
+  width: 100%;
+  max-width: 600px;
 }
 
-.mission-heading {
-  font-family: var(--font-heading, 'Outfit', sans-serif);
-  font-size: clamp(1.6rem, 2.4vw, 2.1rem);
-  font-weight: 800;
-  color: #ffffff;
-  letter-spacing: -0.02em;
-  line-height: 1.22;
-  margin-bottom: 0.85rem;
-}
-
-.mission-description {
-  font-size: 0.95rem;
-  line-height: 1.68;
-  color: #cbd5e1;
-  margin-bottom: 1.75rem;
-}
-
-/* 3 Core Directives Row */
-.mission-pillars-row {
+/* Full Section-Height Frameless Logo Loop Columns */
+.about-section-logo-loop-column {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 80px;
+  height: 100%;
+  z-index: 4;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0.85rem 1rem;
-  background: rgba(11, 9, 17, 0.85);
-  border: 1px solid rgba(139, 92, 246, 0.16);
-  border-radius: 10px;
+  justify-content: center;
+  pointer-events: auto;
 }
 
-.mission-pillar-item {
+.about-section-logo-loop-column.left-loop {
+  left: 1.75rem;
+}
+
+.about-section-logo-loop-column.right-loop {
+  right: 1.75rem;
+}
+
+.elevator-frame-container {
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
+  align-items: center;
+  flex: 1;
+  max-width: 380px;
+  width: 100%;
 }
 
-.pillar-item-badge {
+.elevator-header-display {
+  width: 100%;
+  background: #111;
+  border: 2px solid var(--gray-700);
+  border-bottom: none;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  padding: 0.45rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono, monospace);
+  box-sizing: border-box;
+}
+
+.elevator-header-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--gray-400);
+  font-weight: 700;
+}
+
+.elevator-header-floor {
+  font-size: 0.8rem;
+  color: #ff3b30;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 8px rgba(255, 59, 48, 0.6);
+  transition: color 0.3s ease;
+}
+
+.elevator-header-floor.moving {
+  color: #ff9500;
+  text-shadow: 0 0 10px rgba(255, 149, 0, 0.8);
+  animation: blinkMovingHeader 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes blinkMovingHeader {
+  0% {
+    opacity: 0.7;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.frame {
+  display: grid;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1.25;
+  overflow: hidden;
+  border: 14px solid var(--gray-600);
+  border-bottom-color: var(--gray-700);
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  box-shadow: 0 1.5em 2.375em -0.26em #0008, 0 0 25px rgba(139, 92, 246, 0.15);
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  box-shadow: 0 10px 14px 8px #0007 inset;
+  pointer-events: none;
+}
+
+.inside {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  inset: 0;
+  background: radial-gradient(circle at 50% 10%, #1e2230 0%, #0d0f17 90%);
+  color: var(--gray-100);
+  padding: 1.25rem;
+  z-index: 2;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Cabin 2-second vertical movement simulation */
+.frame.transit-up .inside {
+  animation: elevatorTransitUp 2s cubic-bezier(0.45, 0, 0.55, 1) forwards;
+}
+
+.frame.transit-down .inside {
+  animation: elevatorTransitDown 2s cubic-bezier(0.45, 0, 0.55, 1) forwards;
+}
+
+@keyframes elevatorTransitUp {
+  0% {
+    transform: translateY(0);
+    filter: blur(0px);
+  }
+
+  20% {
+    transform: translateY(12px);
+    filter: blur(1px);
+  }
+
+  50% {
+    transform: translateY(-15px);
+    filter: blur(2px);
+  }
+
+  85% {
+    transform: translateY(4px);
+    filter: blur(0.5px);
+  }
+
+  100% {
+    transform: translateY(0);
+    filter: blur(0px);
+  }
+}
+
+@keyframes elevatorTransitDown {
+  0% {
+    transform: translateY(0);
+    filter: blur(0px);
+  }
+
+  20% {
+    transform: translateY(-12px);
+    filter: blur(1px);
+  }
+
+  50% {
+    transform: translateY(15px);
+    filter: blur(2px);
+  }
+
+  85% {
+    transform: translateY(-4px);
+    filter: blur(0.5px);
+  }
+
+  100% {
+    transform: translateY(0);
+    filter: blur(0px);
+  }
+}
+
+.inside-ceiling-light {
+  position: absolute;
+  top: 0;
+  left: 20%;
+  right: 20%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 20px 8px rgba(255, 255, 255, 0.5), 0 0 40px 15px rgba(139, 92, 246, 0.4);
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.elevator-card-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+  align-items: flex-start;
+  z-index: 3;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.inside-top-badge {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.inside-floor-tag {
   font-family: var(--font-mono, monospace);
   font-size: 0.725rem;
   font-weight: 800;
-  color: var(--electric-violet, #8b5cf6);
+  color: var(--gray-400);
   letter-spacing: 0.08em;
 }
 
-.pillar-item-sub {
-  font-size: 0.75rem;
-  color: #94a3b8;
-  font-weight: 500;
-}
-
-.mission-pillar-sep {
-  font-family: var(--font-mono, monospace);
-  color: #374151;
-  font-size: 1.1rem;
-  user-select: none;
-}
-
-/* ==========================================================================
-   PART 3: FOUR CORE PILLARS (Interactive Feature Cards)
-   ========================================================================== */
-
-.about-pillars-subheading {
-  text-align: center;
-  max-width: 680px;
-  margin: 0 auto 3rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.about-sub-title {
-  font-family: var(--font-heading, 'Outfit', sans-serif);
-  font-size: clamp(1.85rem, 3.2vw, 2.5rem);
-  font-weight: 800;
-  color: #ffffff;
-  letter-spacing: -0.02em;
-  margin-bottom: 0.65rem;
-}
-
-.about-sub-desc {
-  font-size: 1rem;
-  line-height: 1.65;
-  color: var(--text-secondary, #9ca3af);
-}
-
-.about-four-pillars-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
-  margin-bottom: 6rem;
-}
-
-.pillar-feature-card {
-  position: relative;
-  background: rgba(18, 15, 28, 0.78);
-  border: 1px solid rgba(139, 92, 246, 0.16);
-  border-radius: 14px;
-  padding: 1.85rem 1.6rem 1.65rem;
-  display: flex;
-  flex-direction: column;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
-  overflow: hidden;
-}
-
-.pillar-feature-card:hover,
-.pillar-feature-card.is-selected {
-  transform: translateY(-4px);
-  border-color: rgba(139, 92, 246, 0.38);
-  background: rgba(24, 20, 38, 0.88);
-  box-shadow: 
-    0 12px 30px rgba(0, 0, 0, 0.5),
-    0 0 35px rgba(124, 58, 237, 0.12);
-}
-
-.pillar-feature-card.is-selected {
-  border-color: var(--pillar-accent, #8b5cf6);
-}
-
-/* Corner + Marks on cards */
-.card-corner {
-  position: absolute;
-  font-family: var(--font-mono, monospace);
-  font-size: 11px;
-  color: rgba(139, 92, 246, 0.35);
-  pointer-events: none;
-}
-
-.card-corner.tl { top: 7px; left: 9px; }
-.card-corner.br { bottom: 7px; right: 9px; }
-
-.pillar-card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1.35rem;
-}
-
-.pillar-number {
-  font-family: var(--font-mono, monospace);
-  font-size: 0.825rem;
-  font-weight: 800;
-  color: #64748b;
-  letter-spacing: 0.05em;
-}
-
-.pillar-badge-tag {
-  font-family: var(--font-mono, monospace);
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  padding: 0.2rem 0.55rem;
-  background: rgba(139, 92, 246, 0.1);
-  border: 1px solid rgba(139, 92, 246, 0.2);
-  border-radius: 4px;
-  color: #c084fc;
-}
-
-.pillar-icon-box {
-  width: 44px;
-  height: 44px;
+.inside-icon-box {
+  width: 48px;
+  height: 48px;
   border-radius: 10px;
+  margin-top: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(139, 92, 246, 0.1);
-  border: 1px solid rgba(139, 92, 246, 0.24);
-  color: var(--pillar-accent, #8b5cf6);
-  margin-bottom: 1.2rem;
-  transition: transform 0.25s ease, background 0.25s ease;
+  border: 1px solid var(--border-card);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+  flex-shrink: 0;
 }
 
-.pillar-feature-card:hover .pillar-icon-box {
-  transform: scale(1.08);
-  background: rgba(139, 92, 246, 0.18);
-  border-color: var(--pillar-accent, #8b5cf6);
+.inside-text-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  margin-bottom: auto;
+  width: 100%;
 }
 
-.pillar-card-title {
-  font-family: var(--font-heading, 'Outfit', sans-serif);
+.inside-title {
   font-size: 1.15rem;
   font-weight: 700;
   color: #ffffff;
-  line-height: 1.32;
-  margin-bottom: 0.75rem;
+  line-height: 1.35;
+  margin: 0;
+  word-wrap: break-word;
 }
 
-.pillar-card-desc {
-  font-size: 0.885rem;
-  line-height: 1.62;
-  color: var(--text-secondary, #9ca3af);
-  margin-bottom: 1.5rem;
-  flex-grow: 1;
-}
-
-/* Tags List */
-.pillar-tags-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-  margin-top: auto;
-}
-
-.pillar-tag-chip {
-  font-family: var(--font-mono, monospace);
-  font-size: 0.685rem;
-  padding: 0.22rem 0.5rem;
-  background: rgba(11, 9, 17, 0.75);
-  border: 1px solid rgba(139, 92, 246, 0.14);
-  border-radius: 5px;
-  color: #cbd5e1;
-}
-
-.pillar-card-glow-line {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--pillar-accent, #8b5cf6), transparent);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.pillar-feature-card:hover .pillar-card-glow-line,
-.pillar-feature-card.is-selected .pillar-card-glow-line {
-  opacity: 1;
-}
-
-/* ==========================================================================
-   PART 4: WHY JOIN AWS SBG JSSATEB? (Vertical Benefits Section)
-   ========================================================================== */
-
-.about-why-join-section {
-  margin-bottom: 5rem;
-}
-
-.why-join-layout {
-  display: grid;
-  grid-template-columns: 0.95fr 1.25fr;
-  gap: 3.5rem;
-  align-items: flex-start;
-}
-
-/* Left Spotlight Card */
-.why-join-spotlight-col {
-  position: sticky;
-  top: 110px;
-}
-
-.why-join-spotlight-card {
-  background: linear-gradient(160deg, rgba(22, 17, 36, 0.88) 0%, rgba(12, 10, 20, 0.96) 100%);
-  border: 1px solid rgba(139, 92, 246, 0.24);
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-}
-
-.spotlight-terminal-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 1.15rem;
-  background: rgba(11, 9, 17, 0.9);
-  border-bottom: 1px solid rgba(139, 92, 246, 0.14);
-}
-
-.terminal-dots {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.terminal-dots .dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-}
-
-.dot-red { background: #ff5f56; }
-.dot-amber { background: #ffbd2e; }
-.dot-green { background: #27c93f; }
-
-.terminal-title {
-  font-family: var(--font-mono, monospace);
-  font-size: 0.685rem;
-  font-weight: 700;
-  color: #6b7280;
-  letter-spacing: 0.08em;
-}
-
-.spotlight-card-body {
-  padding: 2rem;
-}
-
-.spotlight-hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.25rem 0.65rem;
-  background: rgba(16, 185, 129, 0.12);
-  border: 1px solid rgba(16, 185, 129, 0.28);
-  border-radius: 9999px;
-  color: #34d399;
-  font-family: var(--font-mono, monospace);
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  margin-bottom: 1.15rem;
-}
-
-.spotlight-heading {
-  font-family: var(--font-heading, 'Outfit', sans-serif);
-  font-size: clamp(1.75rem, 2.5vw, 2.25rem);
-  font-weight: 800;
-  color: #ffffff;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
-  margin-bottom: 1rem;
-}
-
-.spotlight-quote {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #e2e8f0;
-  line-height: 1.55;
-  margin-bottom: 1.65rem;
-  padding-left: 0.85rem;
-  border-left: 3px solid var(--electric-violet, #8b5cf6);
-}
-
-.spotlight-checkpoints {
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-  margin-bottom: 1.75rem;
-}
-
-.checkpoint-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.65rem;
+.inside-desc {
   font-size: 0.875rem;
   color: #cbd5e1;
-  line-height: 1.45;
+  line-height: 1.55;
+  margin: 0;
+  word-wrap: break-word;
 }
 
-.checkpoint-item .cp-icon {
-  color: #10b981;
-  flex-shrink: 0;
-  margin-top: 2px;
+.inside-bottom-accent {
+  width: 100%;
+  height: 3px;
+  border-radius: 2px;
+  margin-top: 0.75rem;
+  opacity: 0.8;
 }
 
-/* Mock CLI box */
-.spotlight-terminal-cli {
-  background: rgba(7, 6, 11, 0.95);
-  border: 1px solid rgba(139, 92, 246, 0.18);
-  border-radius: 8px;
-  padding: 0.85rem 1rem;
-  font-family: var(--font-mono, monospace);
-  font-size: 0.775rem;
-}
-
-.cli-line {
-  color: #f1f5f9;
-  margin-bottom: 0.25rem;
-}
-
-.cli-prompt {
-  color: #ec4899;
-  font-weight: 700;
-  margin-right: 0.35rem;
-}
-
-.cli-response {
-  color: #34d399;
-}
-
-.cli-status {
-  color: #8b5cf6;
-  font-weight: 700;
-  margin-right: 0.35rem;
-}
-
-/* Right Benefits Column (Vertical Rail) */
-.why-join-benefits-col {
+/* Doors Styling */
+.doors {
+  z-index: 5;
+  display: grid;
+  grid: "left right" 1fr / 1fr 1fr;
+  place-content: center;
   position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.door {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  display: grid;
+  transition: translate 700ms cubic-bezier(0.77, 0, 0.18, 1);
+  will-change: translate;
+  z-index: 5;
+}
+
+.door::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--gray-600) linear-gradient(to bottom,
+      #0007,
+      18%,
+      var(--gray-400) 30% 32%,
+      var(--gray-500) 42%,
+      #fff2,
+      60%,
+      var(--gray-600) 78% 80%,
+      #0003);
+  mix-blend-mode: multiply;
+  filter: url(#brushedMetalEffect) invert(7%) contrast(105%);
+}
+
+.door::before {
+  content: attr(data-floor);
+  position: absolute;
+  top: 50%;
+  font-size: 10rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--white);
+  z-index: 6;
+  -webkit-text-stroke: 2px var(--gray-800);
+  opacity: 0.9;
+  pointer-events: none;
+  user-select: none;
+}
+
+.left-door {
+  grid-area: left;
+  transform-origin: left center;
+  box-shadow: inset -2px 0 2.5px -1px #0007;
+  border-inline-end: 1px solid var(--gray-800);
+}
+
+.left-door::before {
+  right: 0;
+  transform: translate(50%, -50%);
+}
+
+.right-door {
+  grid-area: right;
+  transform-origin: right center;
+  box-shadow: inset 2px 0 2.5px -1px #0007;
+  border-inline-start: 1px solid var(--gray-800);
+}
+
+.right-door::before {
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+
+/* Door hover trigger: ONLY open when hovered over (unless doors locked shut)! */
+.frame:not(.doors-locked-shut):hover .left-door {
+  translate: -100% 0;
+}
+
+.frame:not(.doors-locked-shut):hover .right-door {
+  translate: 100% 0;
+}
+
+.frame.doors-locked-shut .door {
+  translate: 0 0 !important;
+}
+
+/* Panel & Buttons Interface */
+.center {
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
 }
 
-/* Connecting Vertical Circuit Track */
-.benefits-rail-track {
+.panel {
+  width: 140px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+  background-color: hsla(0, 0%, 90%, 1);
+  background-image: linear-gradient(-45deg, hsla(0, 0%, 0%, 0), hsla(0, 0%, 0%, 0.05));
+  background-size: 5px;
+  border-radius: 12px;
+  border: 1px solid #777;
+  padding-bottom: 0.75rem;
+  box-sizing: border-box;
+}
+
+.panel-title {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-align: center;
+  color: #444;
+  padding: 0.4rem 0 0.2rem;
+  letter-spacing: 0.1em;
+}
+
+.num {
+  background: #111;
+  padding: 0.75rem 0.5rem;
+  text-align: center;
+  border-radius: 6px;
+  margin: 0 0.75rem;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.8);
+  border: 1px solid #333;
+}
+
+.num canvas {
+  display: block;
+  margin: 0 auto;
+}
+
+.direct-floor-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: center;
+  padding: 0.75rem 0.5rem 0.25rem;
+}
+
+.floor-num-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.btn-floor-num {
+  position: relative;
+  z-index: 10;
+}
+
+.active-floor-btn {
+  color: hsl(210, 100%, 40%) !important;
+  text-shadow: hsla(210, 100%, 20%, 0.3) 0 -1px 0, hsl(210, 100%, 85%) 0 2px 1px, hsla(200, 100%, 80%, 1) 0 0 5px, hsla(210, 100%, 50%, 0.6) 0 0 20px !important;
+  box-shadow: inset hsla(210, 100%, 30%, 1) 0 0px 0px 4px,
+    inset hsla(210, 100%, 15%, 0.4) 0 -1px 5px 4px,
+    inset hsla(210, 100%, 20%, 0.25) 0 -1px 0px 7px,
+    inset hsla(210, 100%, 100%, 0.7) 0 2px 1px 7px,
+    hsla(210, 100%, 75%, 0.8) 0 0px 3px 2px,
+    hsla(210, 50%, 40%, 0.25) 0 -5px 6px 4px,
+    hsla(210, 80%, 95%, 1) 0 5px 6px 4px !important;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+}
+
+.metal {
+  position: relative;
+  outline: none;
+  border: none;
+  text-align: center;
+  color: hsla(0, 0%, 20%, 1);
+  text-shadow: hsla(0, 0%, 40%, 0.5) 0 -1px 0, hsla(0, 0%, 100%, 0.6) 0 2px 1px;
+  background-color: hsl(0, 0%, 90%);
+  box-shadow: inset hsla(0, 0%, 15%, 1) 0 0px 0px 4px,
+    inset hsla(0, 0%, 15%, 0.8) 0 -1px 5px 4px,
+    inset hsla(0, 0%, 0%, 0.25) 0 -1px 0px 7px,
+    inset hsla(0, 0%, 100%, 0.7) 0 2px 1px 7px,
+    hsla(0, 0%, 0%, 0.15) 0 -5px 6px 4px,
+    hsla(0, 0%, 100%, 0.5) 0 5px 6px 4px;
+  transition: color 0.2s, transform 0.1s;
+  cursor: pointer;
+}
+
+.metal:hover:not(.disabled) {
+  transform: scale(1.04);
+}
+
+.radial.metal {
+  width: 44px;
+  height: 44px;
+  line-height: 36px;
+  border-radius: 80px;
+  background-image: -webkit-radial-gradient(50% 0%, 8% 50%, hsla(0, 0%, 100%, 0.5) 0%, hsla(0, 0%, 100%, 0) 100%),
+    -webkit-radial-gradient(50% 100%, 12% 50%, hsla(0, 0%, 100%, 0.6) 0%, hsla(0, 0%, 100%, 0) 100%),
+    -webkit-radial-gradient(0% 50%, 50% 7%, hsla(0, 0%, 100%, 0.5) 0%, hsla(0, 0%, 100%, 0) 100%),
+    -webkit-radial-gradient(100% 50%, 50% 5%, hsla(0, 0%, 100%, 0.5) 0%, hsla(0, 0%, 100%, 0) 100%),
+    -webkit-repeating-radial-gradient(50% 50%, 100% 100%, hsla(0, 0%, 0%, 0) 0%, hsla(0, 0%, 0%, 0) 3%, hsla(0, 0%, 0%, 0.1) 3.5%),
+    -webkit-repeating-radial-gradient(50% 50%, 100% 100%, hsla(0, 0%, 100%, 0) 0%, hsla(0, 0%, 100%, 0) 6%, hsla(0, 0%, 100%, 0.1) 7.5%),
+    -webkit-repeating-radial-gradient(50% 50%, 100% 100%, hsla(0, 0%, 100%, 0) 0%, hsla(0, 0%, 100%, 0) 1.2%, hsla(0, 0%, 100%, 0.2) 2.2%),
+    -webkit-radial-gradient(50% 50%, 200% 50%, hsla(0, 0%, 90%, 1) 5%, hsla(0, 0%, 85%, 1) 30%, hsla(0, 0%, 60%, 1) 100%);
+}
+
+.metal.radial:before,
+.metal.radial:after {
+  content: "";
+  top: 0;
+  left: 0;
   position: absolute;
-  top: 28px;
-  bottom: 28px;
-  left: 20px;
-  width: 2px;
-  background: linear-gradient(
-    to bottom,
-    rgba(139, 92, 246, 0.45) 0%,
-    rgba(139, 92, 246, 0.25) 50%,
-    rgba(16, 185, 129, 0.35) 100%
-  );
+  width: inherit;
+  height: inherit;
+  border-radius: inherit;
+  background-image: -webkit-radial-gradient(50% 0%, 10% 50%, hsla(0, 0%, 0%, 0.1) 0%, hsla(0, 0%, 0%, 0) 100%),
+    -webkit-radial-gradient(50% 100%, 10% 50%, hsla(0, 0%, 0%, 0.1) 0%, hsla(0, 0%, 0%, 0) 100%),
+    -webkit-radial-gradient(0% 50%, 50% 10%, hsla(0, 0%, 0%, 0.1) 0%, hsla(0, 0%, 0%, 0) 100%),
+    -webkit-radial-gradient(100% 50%, 50% 6%, hsla(0, 0%, 0%, 0.1) 0%, hsla(0, 0%, 0%, 0) 100%);
   pointer-events: none;
 }
 
-.benefits-stream {
+.metal.radial:before {
+  transform: rotate(65deg);
+}
+
+.metal.radial:after {
+  transform: rotate(-65deg);
+}
+
+.metal:active:not(.disabled) {
+  color: hsl(210, 100%, 40%);
+  text-shadow: hsla(210, 100%, 20%, 0.3) 0 -1px 0, hsl(210, 100%, 85%) 0 2px 1px, hsla(200, 100%, 80%, 1) 0 0 5px, hsla(210, 100%, 50%, 0.6) 0 0 20px;
+  box-shadow: inset hsla(210, 100%, 30%, 1) 0 0px 0px 4px,
+    inset hsla(210, 100%, 15%, 0.4) 0 -1px 5px 4px,
+    inset hsla(210, 100%, 20%, 0.25) 0 -1px 0px 7px,
+    inset hsla(210, 100%, 100%, 0.7) 0 2px 1px 7px,
+    hsla(210, 100%, 75%, 0.8) 0 0px 3px 2px,
+    hsla(210, 50%, 40%, 0.25) 0 -5px 6px 4px,
+    hsla(210, 80%, 95%, 1) 0 5px 6px 4px;
+}
+
+.metal.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.floor-quick-legend {
+  margin: 0.5rem 0.5rem 0;
   display: flex;
   flex-direction: column;
-  gap: 1.15rem;
-  position: relative;
-  z-index: 2;
+  gap: 0.25rem;
+  border-top: 1px dashed #bbb;
+  padding-top: 0.4rem;
 }
 
-.benefit-row-card {
-  display: flex;
-  align-items: flex-start;
-  gap: 1.25rem;
-  transition: transform 0.25s ease;
-}
-
-.benefit-rail-pin {
+.legend-item {
   display: flex;
   align-items: center;
-  justify-content: center;
-  position: relative;
-  flex-shrink: 0;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: #0b0b0e;
-  border: 1px solid rgba(139, 92, 246, 0.35);
-  box-shadow: 0 0 14px rgba(0, 0, 0, 0.8);
-  margin-top: 4px;
-}
-
-.pin-number {
-  font-family: var(--font-mono, monospace);
-  font-size: 0.75rem;
-  font-weight: 800;
-  color: #cbd5e1;
-}
-
-.pin-glow-node {
-  position: absolute;
-  inset: -1px;
-  border-radius: 50%;
-  border: 1px solid var(--benefit-accent, #8b5cf6);
-  opacity: 0;
-  transition: opacity 0.25s ease;
-}
-
-.benefit-row-card:hover .pin-glow-node,
-.benefit-row-card.benefit-hovered .pin-glow-node {
-  opacity: 1;
-}
-
-.benefit-card-content {
-  flex-grow: 1;
-  background: rgba(18, 14, 26, 0.72);
-  border: 1px solid rgba(139, 92, 246, 0.16);
-  border-radius: 12px;
-  padding: 1.25rem 1.45rem;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.benefit-row-card:hover .benefit-card-content,
-.benefit-row-card.benefit-hovered .benefit-card-content {
-  border-color: rgba(139, 92, 246, 0.38);
-  background: rgba(26, 21, 40, 0.85);
-  transform: translateX(4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-}
-
-.benefit-header-row {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  margin-bottom: 0.45rem;
-}
-
-.benefit-icon-badge {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
-  background: rgba(139, 92, 246, 0.12);
-  border: 1px solid rgba(139, 92, 246, 0.24);
-  color: var(--benefit-accent, #8b5cf6);
-  flex-shrink: 0;
-}
-
-.benefit-titles {
-  display: flex;
-  flex-direction: column;
-}
-
-.benefit-category {
-  font-family: var(--font-mono, monospace);
+  gap: 0.4rem;
   font-size: 0.65rem;
+  color: #666;
+  cursor: default;
+  padding: 0.15rem 0.25rem;
+  border-radius: 4px;
+  user-select: none;
+  pointer-events: none;
+}
+
+.legend-item.active {
+  background: rgba(139, 92, 246, 0.12);
+  color: #000;
   font-weight: 700;
-  color: var(--benefit-accent, #8b5cf6);
-  letter-spacing: 0.06em;
 }
 
-.benefit-title {
-  font-family: var(--font-heading, 'Outfit', sans-serif);
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #ffffff;
-  line-height: 1.25;
-}
-
-.benefit-description {
-  font-size: 0.875rem;
-  line-height: 1.55;
-  color: var(--text-secondary, #9ca3af);
-  margin-left: calc(34px + 0.85rem);
-}
-
-/* ==========================================================================
-   PART 5: TECH STACK TICKER MARQUEE
-   ========================================================================== */
-
-.about-tech-ribbon-wrapper {
-  margin-top: 4.5rem;
-  padding-top: 2rem;
-  border-top: 1px dashed rgba(139, 92, 246, 0.15);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-}
-
-.tech-ribbon-label {
+.legend-num {
   font-family: var(--font-mono, monospace);
-  font-size: 0.725rem;
-  font-weight: 700;
-  color: #64748b;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-weight: 800;
+  background: #333;
+  color: #fff;
+  padding: 0.05rem 0.25rem;
+  border-radius: 3px;
+  font-size: 0.6rem;
 }
 
-.about-tech-loop-container {
-  width: 100%;
-  max-width: 1100px;
+.legend-item.active .legend-num {
+  background: #ff3b30;
+}
+
+.legend-label {
+  white-space: nowrap;
   overflow: hidden;
-  opacity: 0.85;
+  text-overflow: ellipsis;
 }
 
-/* ==========================================================================
-   RESPONSIVENESS & BREAKPOINTS
-   ========================================================================== */
+@media (max-width: 1440px) {
+  .about-section-logo-loop-column.left-loop {
+    display: none;
+  }
+}
 
-@media (max-width: 1100px) {
-  .about-four-pillars-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem;
+@media (max-width: 1240px) {
+  .about-section-logo-loop-column.right-loop {
+    display: none;
   }
 }
 
 @media (max-width: 960px) {
-  .about-intro-grid {
-    grid-template-columns: 1fr;
-    gap: 2.75rem;
-  }
-
-  .about-overview-text {
-    max-width: 100%;
-  }
-
-  .why-join-layout {
+  .about-grid {
     grid-template-columns: 1fr;
     gap: 2.5rem;
   }
 
-  .why-join-spotlight-col {
-    position: relative;
-    top: 0;
-  }
-
-  .benefit-description {
-    margin-left: 0;
-    margin-top: 0.5rem;
-  }
-}
-
-@media (max-width: 640px) {
-  .about-section {
-    padding: 4.5rem 0 3rem;
-  }
-
-  .about-container {
-    padding: 0 1rem;
-  }
-
-  .about-intro-grid {
-    margin-bottom: 3.5rem;
-  }
-
-  .about-mission-card {
-    padding: 1.65rem 1.35rem 1.5rem;
-  }
-
-  .mission-pillars-row {
+  .elevator-layout {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 0.65rem;
   }
 
-  .mission-pillar-sep {
-    display: none;
+  .elevator-frame-container {
+    max-width: 100%;
   }
 
-  /* 2-column grid for four pillars on mobile where readable */
-  .about-four-pillars-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.85rem;
-    margin-bottom: 3.5rem;
+  .panel {
+    width: 280px;
   }
 
-  .pillar-feature-card {
-    padding: 1.15rem 0.95rem 1rem;
-    border-radius: 12px;
+  .direct-floor-buttons {
+    flex-direction: row;
+    justify-content: center;
   }
 
-  .pillar-icon-box {
-    width: 36px;
-    height: 36px;
-    margin-bottom: 0.85rem;
-  }
-
-  .pillar-card-title {
-    font-size: 0.975rem;
-    line-height: 1.25;
-    margin-bottom: 0.5rem;
-  }
-
-  .pillar-card-desc {
-    font-size: 0.775rem;
-    line-height: 1.5;
-    margin-bottom: 0.85rem;
-  }
-
-  .pillar-tags-list {
-    gap: 0.3rem;
-  }
-
-  .pillar-tag-chip {
-    font-size: 0.625rem;
-    padding: 0.15rem 0.4rem;
-  }
-
-  .spotlight-card-body {
-    padding: 1.5rem 1.25rem;
-  }
-
-  .benefits-rail-track {
-    left: 17px;
-  }
-
-  .benefit-rail-pin {
-    width: 36px;
-    height: 36px;
-  }
-
-  .pin-number {
-    font-size: 0.7rem;
-  }
-
-  .benefit-card-content {
-    padding: 1rem 1.15rem;
+  .floor-quick-legend {
+    flex-direction: row;
+    justify-content: space-around;
   }
 }
 
-/* Accessibility: Respect Reduced Motion */
-@media (prefers-reduced-motion: reduce) {
-  .about-mission-card,
-  .pillar-feature-card,
-  .benefit-card-content,
-  .badge-pulse-dot,
-  .pulse-indicator {
-    animation: none !important;
-    transition: none !important;
-    transform: none !important;
-  }
+.about-stroke-heading {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+  width: 100%;
+}
+
+.about-stroke-heading .stroke-text {
+  max-width: 100%;
 }

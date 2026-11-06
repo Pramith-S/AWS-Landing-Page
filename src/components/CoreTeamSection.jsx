@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import {
   Users,
@@ -15,12 +15,15 @@ import {
   Globe,
   ExternalLink,
   Github,
-  Mail
+  Mail,
+  LayoutGrid,
+  SlidersHorizontal
 } from 'lucide-react';
 import { coreTeamData } from '../data/coreTeamData';
 import StarfieldBackground from './StarfieldBackground';
 import StrokeText from './StrokeText';
 import TeamTerminalCard from './TeamTerminalCard';
+import CyberTeamCard from './CyberTeamCard';
 import './CoreTeamSection.css';
 
 const teamIcons = {
@@ -174,6 +177,9 @@ const CoreTeamSection = () => {
   const [activePhotoIdx, setActivePhotoIdx] = useState(0); // 0 = Community Grand Stage (first)
   const [activeDepartment, setActiveDepartment] = useState('tech'); // Default to 'tech' so it's open & visible immediately
   const [leadPhotoIdx, setLeadPhotoIdx] = useState(0);
+  const [mobileViewMode, setMobileViewMode] = useState('grid'); // 'grid' (compact 2-col) or 'carousel' (touch-swipe)
+  const [activeCarouselIdx, setActiveCarouselIdx] = useState(0);
+  const carouselRef = useRef(null);
 
   // Auto-switch lead photos every 2 seconds
   useEffect(() => {
@@ -186,6 +192,26 @@ const CoreTeamSection = () => {
   const activePhoto = coreTeamData.groupPhotos[activePhotoIdx];
   const selectedTeam =
     coreTeamData.teams.find((team) => team.id === activeDepartment) || coreTeamData.teams[0];
+
+  const handleCarouselScroll = () => {
+    if (!carouselRef.current) return;
+    const container = carouselRef.current;
+    const cardWidth = container.firstElementChild?.offsetWidth || 220;
+    const scrollLeft = container.scrollLeft;
+    const index = Math.round(scrollLeft / (cardWidth + 12));
+    setActiveCarouselIdx(Math.max(0, Math.min(index, (selectedTeam?.members?.length || 1) - 1)));
+  };
+
+  const scrollCarouselTo = (index) => {
+    if (!carouselRef.current) return;
+    const container = carouselRef.current;
+    const cardWidth = container.firstElementChild?.offsetWidth || 220;
+    container.scrollTo({
+      left: index * (cardWidth + 12),
+      behavior: 'smooth'
+    });
+    setActiveCarouselIdx(index);
+  };
 
   // Helper for initials (filters out symbols like & or /)
   const getInitials = (name) => {
@@ -488,110 +514,57 @@ const CoreTeamSection = () => {
                 </span>
               </div>
 
-              {/* Member Cards Grid */}
-              <div className="members-grid">
-                {selectedTeam.members.map((member) => {
-                  if (member.isEmpty) {
-                    return (
-                      <div
-                        key={member.id}
-                        className="member-card empty-card"
-                        style={{ '--team-accent': selectedTeam.accentColor }}
-                      >
-                        <div className="empty-card-inner">
-                          <div className="empty-avatar-frame">
-                            <UserPlus size={32} className="empty-icon" />
-                          </div>
-                          <div className="empty-slot-badge">OPEN SLOT</div>
-                          <h4 className="member-name">{member.name}</h4>
-                          <p className="member-role">{member.role}</p>
-                          <span className="empty-slot-desc">Recruitment / Announcement Soon</span>
-                        </div>
-                      </div>
-                    );
-                  }
-
-                  return (
-                    <div
-                      key={member.id}
-                      className={`member-card portrait-card ${member.hasGoldenBorder ? 'golden-border-card' : ''}`}
-                      style={{ '--team-accent': selectedTeam.accentColor }}
-                    >
-                      {/* Golden Lead Badge if lead */}
-                      {member.hasGoldenBorder && (
-                        <div className="golden-lead-badge">
-                          <span>LEAD</span>
-                        </div>
-                      )}
-
-                      {/* Full-bleed Photo or Styled Placeholder */}
-                      {member.photo ? (
-                        <div className="portrait-image-wrapper">
-                          <img
-                            src={member.photo}
-                            alt={member.name}
-                            className="member-portrait-img"
-                            loading="lazy"
-                          />
-                          {/* Violet corner lighting accent */}
-                          <div className="portrait-violet-corner-light" />
-                        </div>
-                      ) : (
-                        <div className="member-portrait-placeholder">
-                          <div className="placeholder-avatar-bubble">
-                            <span className="placeholder-initials">
-                              {getInitials(member.name)}
-                            </span>
-                          </div>
-                          <span className="placeholder-tag">{selectedTeam.name}</span>
-                          {/* Violet corner lighting accent */}
-                          <div className="portrait-violet-corner-light" />
-                        </div>
-                      )}
-
-                      {/* Smooth bottom gradient fade overlay */}
-                      <div className="portrait-overlay-gradient" />
-
-                      {/* Integrated Bottom Bar */}
-                      <div className="portrait-content-overlay">
-                        {/* Left column: Name + Role (No stars) */}
-                        <div className="portrait-info-group">
-                          <h4 className="member-name">{member.name}</h4>
-                          <p className="member-role">{member.role}</p>
-                        </div>
-
-                        {/* Right column: ONLY LinkedIn & Instagram */}
-                        <div className="member-socials-row">
-                          {member.linkedin && (
-                            <a
-                              href={member.linkedin}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="member-social-link linkedin"
-                              aria-label={`${member.name} LinkedIn`}
-                              title="LinkedIn"
-                            >
-                              <Linkedin size={15} />
-                            </a>
-                          )}
-                          {member.instagram && (
-                            <a
-                              href={member.instagram}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="member-social-link instagram"
-                              aria-label={`${member.name} Instagram`}
-                              title="Instagram"
-                            >
-                              <Instagram size={15} />
-                            </a>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
+              {/* Mobile View Mode Switcher (Compact 2-Col Grid vs Swipe Carousel) */}
+              <div className="cyber-mobile-view-controls">
+                <button
+                  type="button"
+                  className={`cyber-view-pill ${mobileViewMode === 'grid' ? 'active' : ''}`}
+                  onClick={() => setMobileViewMode('grid')}
+                  aria-label="2-Column Grid View"
+                >
+                  <LayoutGrid size={13} />
+                  <span>2-Col Grid</span>
+                </button>
+                <button
+                  type="button"
+                  className={`cyber-view-pill ${mobileViewMode === 'carousel' ? 'active' : ''}`}
+                  onClick={() => setMobileViewMode('carousel')}
+                  aria-label="Swipe Carousel View"
+                >
+                  <SlidersHorizontal size={13} />
+                  <span>Swipe Carousel</span>
+                </button>
               </div>
+
+              {/* Cyberpunk Member Cards Grid */}
+              <div
+                ref={carouselRef}
+                className={`cyber-members-grid ${mobileViewMode === 'carousel' ? 'carousel-mode' : ''}`}
+                onScroll={handleCarouselScroll}
+              >
+                {selectedTeam.members.map((member) => (
+                  <CyberTeamCard
+                    key={member.id}
+                    member={member}
+                    accentColor={selectedTeam.accentColor}
+                  />
+                ))}
+              </div>
+
+              {/* Carousel Peek Indicators (Visible on mobile in carousel mode) */}
+              {mobileViewMode === 'carousel' && (
+                <div className="cyber-carousel-indicators">
+                  {selectedTeam.members.map((member, idx) => (
+                    <button
+                      key={member.id}
+                      type="button"
+                      className={`cyber-indicator-dot ${activeCarouselIdx === idx ? 'active' : ''}`}
+                      onClick={() => scrollCarouselTo(idx)}
+                      aria-label={`Go to ${member.name}`}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>

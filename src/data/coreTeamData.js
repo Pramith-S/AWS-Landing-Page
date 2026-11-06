@@ -13,7 +13,7 @@ export const coreTeamData = {
           role: 'Tech Lead',
           isLead: true,
           hasGoldenBorder: true,
-          photo: '/images/core-team/members/pramith.jpg',
+          photo: '/images/core-team/members/pramith.png',
           instagram: '',
           linkedin: ''
         },
@@ -21,7 +21,7 @@ export const coreTeamData = {
           id: 'tech-2',
           name: 'Chirag NS',
           role: 'Member',
-          photo: '/images/core-team/members/chirag-ns.jpg',
+          photo: '/images/core-team/members/chirag-ns.png',
           instagram: 'https://www.instagram.com/chirag_ns?dlrf=MXQ0cmN0dTNrMWtm',
           linkedin: 'https://www.linkedin.com/in/chirag-n-s-a3ab70372'
         },
@@ -29,7 +29,7 @@ export const coreTeamData = {
           id: 'tech-3',
           name: 'Kushal Kumar',
           role: 'Member',
-          photo: '/images/core-team/members/kushal-kumar.jpg',
+          photo: '/images/core-team/members/kushal-kumar.png',
           instagram: '',
           linkedin: ''
         },
@@ -37,7 +37,7 @@ export const coreTeamData = {
           id: 'tech-4',
           name: 'Parth',
           role: 'Member',
-          photo: '/images/core-team/members/parth.jpg',
+          photo: '/images/core-team/members/parth.png',
           instagram: '',
           linkedin: ''
         },
@@ -45,7 +45,7 @@ export const coreTeamData = {
           id: 'tech-5',
           name: 'Raksha R',
           role: 'Member',
-          photo: '/images/core-team/members/raksha-r.jpg',
+          photo: '/images/core-team/members/raksha-r.png',
           instagram: '',
           linkedin: ''
         },
@@ -53,7 +53,7 @@ export const coreTeamData = {
           id: 'tech-6',
           name: 'Adarsh VH',
           role: 'Member',
-          photo: '/images/core-team/members/adarsh-vh.jpg',
+          photo: '/images/core-team/members/adarsh-vh.png',
           instagram: '',
           linkedin: ''
         },
@@ -61,7 +61,7 @@ export const coreTeamData = {
           id: 'tech-7',
           name: 'Shriya Sharma',
           role: 'Member',
-          photo: '/images/core-team/members/shriya-sharma.jpg',
+          photo: '/images/core-team/members/shriya-sharma.png',
           instagram: '',
           linkedin: ''
         }
@@ -80,7 +80,7 @@ export const coreTeamData = {
           role: 'Events Lead',
           isLead: true,
           hasGoldenBorder: true,
-          photo: '/images/core-team/members/sai-dhyan-santosh.jpg',
+          photo: '/images/core-team/members/sai-dhyan-santosh.png',
           instagram: '',
           linkedin: ''
         },
@@ -88,7 +88,7 @@ export const coreTeamData = {
           id: 'events-2',
           name: 'Lakshitha R',
           role: 'Member',
-          photo: '/images/core-team/members/lakshitha-r.jpg',
+          photo: '/images/core-team/members/lakshitha-r.png',
           instagram: '',
           linkedin: ''
         },
@@ -96,7 +96,7 @@ export const coreTeamData = {
           id: 'events-3',
           name: 'Ayushi Anand',
           role: 'Member',
-          photo: '/images/core-team/members/ayushi-anand.jpg',
+          photo: '/images/core-team/members/ayushi-anand.png',
           instagram: '',
           linkedin: ''
         },
@@ -128,7 +128,7 @@ export const coreTeamData = {
           id: 'events-7',
           name: 'Amulya',
           role: 'Member',
-          photo: '/images/core-team/members/amulya.jpg',
+          photo: '/images/core-team/members/amulya.png',
           instagram: '',
           linkedin: ''
         },
@@ -136,7 +136,7 @@ export const coreTeamData = {
           id: 'events-8',
           name: 'Apurva R Kumar',
           role: 'Member',
-          photo: '/images/core-team/members/apurva-r-kumar.jpg',
+          photo: '/images/core-team/members/apurva-r-kumar.png',
           instagram: '',
           linkedin: ''
         },
@@ -144,7 +144,7 @@ export const coreTeamData = {
           id: 'events-9',
           name: 'Tejus AR',
           role: 'Member',
-          photo: '/images/core-team/members/tejas-ar.jpg',
+          photo: '/images/core-team/members/tejas-ar.png',
           instagram: '',
           linkedin: ''
         },
@@ -152,7 +152,7 @@ export const coreTeamData = {
           id: 'events-10',
           name: 'Mouna',
           role: 'Member',
-          photo: '/images/core-team/members/mouna.jpg',
+          photo: '/images/core-team/members/mouna.png',
           instagram: '',
           linkedin: ''
         }
@@ -171,7 +171,7 @@ export const coreTeamData = {
           role: 'Marketing Lead',
           isLead: true,
           hasGoldenBorder: true,
-          photo: '/images/core-team/members/preethi.jpg',
+          photo: '/images/core-team/members/preethi.png',
           instagram: '',
           linkedin: ''
         },
@@ -179,7 +179,7 @@ export const coreTeamData = {
           id: 'marketing-2',
           name: 'Bhumika HG',
           role: 'Member',
-          photo: '/images/core-team/members/bhumika-hg.jpg',
+          photo: '/images/core-team/members/bhumika-hg.png',
           instagram: '',
           linkedin: ''
         },
@@ -195,7 +195,7 @@ export const coreTeamData = {
           id: 'marketing-4',
           name: 'Disha R',
           role: 'Member',
-          photo: '/images/core-team/members/disha-r.jpg',
+          photo: '/images/core-team/members/disha-r.png',
           instagram: '',
           linkedin: ''
         },
@@ -203,7 +203,7 @@ export const coreTeamData = {
           id: 'marketing-5',
           name: 'Sagar Kumar',
           role: 'Member',
-          photo: '/images/core-team/members/sagar-kumar.jpg',
+          photo: '/images/core-team/members/sagar-kumar.png',
           instagram: '',
           linkedin: ''
         },
@@ -211,7 +211,7 @@ export const coreTeamData = {
           id: 'marketing-6',
           name: 'Devansh S Mukka',
           role: 'Member',
-          photo: '/images/core-team/members/devansh-s-mukka.jpg',
+          photo: '/images/core-team/members/devansh-s-mukka.png',
           instagram: '',
           linkedin: ''
         },
@@ -238,7 +238,7 @@ export const coreTeamData = {
           role: 'Operational Lead',
           isLead: true,
           hasGoldenBorder: true,
-          photo: '/images/core-team/members/pramath.jpg',
+          photo: '/images/core-team/members/pramath.png',
           instagram: '',
           linkedin: ''
         },
@@ -246,7 +246,7 @@ export const coreTeamData = {
           id: 'operations-2',
           name: 'Disha Varanashi',
           role: 'Member',
-          photo: '/images/core-team/members/disha-varanashi.jpg',
+          photo: '/images/core-team/members/disha-varanashi.png',
           instagram: '',
           linkedin: ''
         },
@@ -254,7 +254,7 @@ export const coreTeamData = {
           id: 'operations-3',
           name: 'Pratheeksha V',
           role: 'Member',
-          photo: '/images/core-team/members/pratheeksha-v.jpg',
+          photo: '/images/core-team/members/pratheeksha-v.png',
           instagram: '',
           linkedin: ''
         },
@@ -262,7 +262,7 @@ export const coreTeamData = {
           id: 'operations-4',
           name: 'Dimple',
           role: 'Member',
-          photo: '/images/core-team/members/dimple.jpg',
+          photo: '/images/core-team/members/dimple.png',
           instagram: '',
           linkedin: ''
         }
