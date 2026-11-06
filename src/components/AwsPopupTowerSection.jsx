@@ -131,6 +131,10 @@ export default function AwsPopupTowerSection({ onOpenJoinModal }) {
         }
       } else if (e.data.type === 'POPUP_PAUSED') {
         setIsPaused(e.data.paused);
+      } else if (e.data.type === 'OPEN_JOIN_MODAL') {
+        if (typeof onOpenJoinModal === 'function') {
+          onOpenJoinModal();
+        }
       }
     };
 
@@ -161,7 +165,7 @@ export default function AwsPopupTowerSection({ onOpenJoinModal }) {
   };
 
   const handleRestart = () => {
-    seekToTime(7.5, 'entrance');
+    seekToTime(7.0, 'entrance');
   };
 
   const toggleFullscreen = () => {
@@ -289,7 +293,7 @@ export default function AwsPopupTowerSection({ onOpenJoinModal }) {
           <div className="popup-iframe-wrapper">
             <iframe
               ref={iframeRef}
-              src="/popup/index.html"
+              src="/popup/index.html?t=6.8"
               title="AWS SBG JSSATEB 3D Pop-Up Tower"
               className="popup-iframe"
               allow="autoplay; fullscreen"
@@ -504,3 +508,4 @@ export default function AwsPopupTowerSection({ onOpenJoinModal }) {
     </section>
   );
 }
+
