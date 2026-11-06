@@ -670,3 +670,4 @@ content = content.replace(
 
 fs.writeFileSync(filePath, content, 'utf-8');
 console.log('Successfully updated public/popup/index.html with AWS SBG HUD and default autoplay!');
+
