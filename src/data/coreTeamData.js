@@ -142,7 +142,7 @@ export const coreTeamData = {
         },
         {
           id: 'events-9',
-          name: 'Tejas AR',
+          name: 'Tejus AR',
           role: 'Member',
           photo: '/images/core-team/members/tejas-ar.jpg',
           instagram: '',
