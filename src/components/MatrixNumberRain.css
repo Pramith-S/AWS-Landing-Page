@@ -1,5 +1,5 @@
 /* ==========================================================================
-   MATRIX NUMBER RAIN BACKGROUND (Falling Numbers Animation)
+   MATRIX CODE RAIN BACKGROUND (Static Light Symbols with Moving Blue Light)
    ========================================================================== */
 
 .matrix-number-rain-canvas {
@@ -10,9 +10,5 @@
   height: 100%;
   pointer-events: none;
   z-index: 0;
-  
-  /* Soft gradient fade toward top and bottom for seamless blend */
-  mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0.6) 70%, transparent 95%);
-  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0.6) 70%, transparent 95%);
+  opacity: 0.85;
 }
-

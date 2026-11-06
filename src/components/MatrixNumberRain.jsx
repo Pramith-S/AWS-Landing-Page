@@ -2,8 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import './MatrixNumberRain.css';
 
 const MatrixNumberRain = ({
-  speed = 0.38, // Slow, gentle cascading speed requested by user
-  opacity = 0.65
+  speed = 0.22, // Slow, gentle downward movement
+  opacity = 0.75 // High clarity and visibility
 }) => {
   const canvasRef = useRef(null);
 
@@ -17,116 +17,152 @@ const MatrixNumberRain = ({
     let width = (canvas.width = canvas.parentElement ? canvas.parentElement.offsetWidth : window.innerWidth);
     let height = (canvas.height = canvas.parentElement ? canvas.parentElement.offsetHeight : 950);
 
-    // Tech symbols + numbers + hex letters matching user's reference image
+    // Rich character set: Numbers + Tech symbols + Cloud symbols + Hex letters
     const charList = [
+      // Numbers
       '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-      '+', '#', '<', '>', '*', '=', '$', '-', '/', '%', '&', '_', '~', '^', '|', ':', ';',
-      '{', '}', '[', ']',
+      // Cloud & AWS infrastructure symbols
+      '☁', '⚡', 'λ', '⚙', '⬡', '◈', '⎇', '⌬', '⌘', '▲', '⛁',
+      // Tech & syntax symbols
+      '+', '#', '<', '>', '*', '=', '$', '-', '/', '%', '&', '_', '~', '^', '|', ':', ';', '{', '}', '[', ']',
+      // Letters & Hex
       'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
       'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
     ];
 
-    const fontSize = 15;
-    const colSpacing = 20; // Comfortable spacing matching the screenshot
-    let columns = Math.floor(width / colSpacing);
+    const fontSize = 14;
+    const colSpacing = 22;
+    const rowSpacing = 20;
 
-    let drops = [];
-    let dropSpeeds = [];
-    let dropTypes = []; // 0: faint gray, 1: electric cyan/blue, 2: AWS orange/amber
-    let dropCharBuffers = [];
+    let cols = Math.floor(width / colSpacing);
+    let rows = Math.floor(height / rowSpacing);
 
-    const initDrops = (colCount) => {
-      drops = [];
-      dropSpeeds = [];
-      dropTypes = [];
-      dropCharBuffers = [];
+    // Static grid of characters so they remain visible and stable
+    let grid = [];
 
-      for (let i = 0; i < colCount; i++) {
-        // Stagger initial Y position across entire height so stream is active immediately
-        drops[i] = Math.random() * (height / fontSize);
-        // Slow speed between 0.25 and 0.55
-        dropSpeeds[i] = (Math.random() * 0.3 + 0.22) * speed;
-
-        // Type distribution matching the reference screenshot:
-        // ~65% subtle faint code, ~20% glowing cyan/blue, ~15% glowing AWS orange
-        const rand = Math.random();
-        if (rand > 0.8) {
-          dropTypes[i] = 'cyan';
-        } else if (rand > 0.65) {
-          dropTypes[i] = 'orange';
-        } else {
-          dropTypes[i] = 'faint';
+    const initGrid = () => {
+      grid = [];
+      for (let r = 0; r < rows; r++) {
+        grid[r] = [];
+        for (let c = 0; c < cols; c++) {
+          grid[r][c] = charList[Math.floor(Math.random() * charList.length)];
         }
-
-        // Keep a cached random character that shifts occasionally
-        dropCharBuffers[i] = charList[Math.floor(Math.random() * charList.length)];
       }
     };
 
-    initDrops(columns);
+    // Moving light beams that cascade from upside to downside
+    let beams = [];
+    const numBeams = Math.max(18, Math.floor(cols * 0.45));
+
+    const initBeams = () => {
+      beams = [];
+      for (let i = 0; i < numBeams; i++) {
+        beams.push({
+          col: Math.floor(Math.random() * cols),
+          row: Math.random() * -rows, // Stagger above screen
+          speed: (Math.random() * 0.16 + 0.12) * speed * 2.5, // Slow downward pace
+          length: Math.floor(Math.random() * 8) + 6, // Length of illuminated streak
+          colorType: Math.random() > 0.2 ? 'blue' : 'cyan' // Dominant electric blue light
+        });
+      }
+    };
+
+    initGrid();
+    initBeams();
 
     const handleResize = () => {
       if (!canvas || !canvas.parentElement) return;
       width = canvas.width = canvas.parentElement.offsetWidth || window.innerWidth;
       height = canvas.height = canvas.parentElement.offsetHeight || 950;
-      columns = Math.floor(width / colSpacing);
-      initDrops(columns);
+      cols = Math.floor(width / colSpacing);
+      rows = Math.floor(height / rowSpacing);
+      initGrid();
+      initBeams();
     };
 
     window.addEventListener('resize', handleResize);
 
     const draw = () => {
-      // Gentle dark trail fade
-      ctx.fillStyle = 'rgba(7, 6, 12, 0.16)';
+      // Clear background
+      ctx.fillStyle = '#07060d';
       ctx.fillRect(0, 0, width, height);
 
+      // Map to quickly look up which cells are currently touched by a moving blue light beam
+      // illuminatedCells[r][c] = { intensity: 0..1, isHead: bool }
+      const illuminated = {};
+
+      for (let i = 0; i < beams.length; i++) {
+        const b = beams[i];
+        const headRow = Math.floor(b.row);
+
+        for (let offset = 0; offset < b.length; offset++) {
+          const r = headRow - offset;
+          if (r >= 0 && r < rows) {
+            const key = `${r}_${b.col}`;
+            const intensity = 1 - (offset / b.length);
+            const isHead = offset === 0;
+
+            if (!illuminated[key] || illuminated[key].intensity < intensity) {
+              illuminated[key] = {
+                intensity,
+                isHead,
+                colorType: b.colorType
+              };
+            }
+          }
+        }
+
+        // Advance beam downward from upside to downside
+        b.row += b.speed;
+
+        // Reset beam when it moves past bottom
+        if (b.row - b.length > rows) {
+          b.row = -Math.floor(Math.random() * 15) - 2;
+          b.col = Math.floor(Math.random() * cols);
+          b.speed = (Math.random() * 0.16 + 0.12) * speed * 2.5;
+          b.length = Math.floor(Math.random() * 8) + 6;
+          b.colorType = Math.random() > 0.2 ? 'blue' : 'cyan';
+        }
+      }
+
       ctx.font = `600 ${fontSize}px "Consolas", "Courier New", monospace`;
+      ctx.textBaseline = 'top';
 
-      for (let i = 0; i < drops.length; i++) {
-        // Occasionally mutate character for lively cyberpunk matrix feel
-        if (Math.random() > 0.94) {
-          dropCharBuffers[i] = charList[Math.floor(Math.random() * charList.length)];
-        }
+      // Draw all characters in the grid
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          // Subtle mutation: ~0.4% chance per frame to mutate character for organic matrix feel
+          if (Math.random() > 0.996) {
+            grid[r][c] = charList[Math.floor(Math.random() * charList.length)];
+          }
 
-        const char = dropCharBuffers[i];
-        const x = i * colSpacing + 4;
-        const y = drops[i] * fontSize;
+          const char = grid[r][c];
+          const x = c * colSpacing + 6;
+          const y = r * rowSpacing + 4;
 
-        const type = dropTypes[i];
+          const light = illuminated[`${r}_${c}`];
 
-        // Color styling matching user's screenshot:
-        // Some bright glowing letters (cyan / blue / white / orange), majority faint atmospheric tech glyphs
-        if (type === 'cyan') {
-          // Electric blue / cyan highlight (like A 2 G N 6 in user's image)
-          const isGlowHead = Math.random() > 0.85;
-          ctx.fillStyle = isGlowHead ? '#E0F2FE' : '#38BDF8';
-          ctx.shadowBlur = isGlowHead ? 10 : 5;
-          ctx.shadowColor = '#0284C7';
-        } else if (type === 'orange') {
-          // AWS Golden / Orange accent
-          const isGlowHead = Math.random() > 0.85;
-          ctx.fillStyle = isGlowHead ? '#FFF7ED' : '#FF9900';
-          ctx.shadowBlur = isGlowHead ? 10 : 5;
-          ctx.shadowColor = '#EA580C';
-        } else {
-          // Subtle muted dark slate / amber background characters
-          ctx.fillStyle = 'rgba(148, 163, 184, 0.22)';
+          if (light) {
+            // Illuminated by moving blue light beam
+            if (light.isHead) {
+              // Glowing white-blue leading head
+              ctx.fillStyle = '#FFFFFF';
+              ctx.shadowBlur = 12;
+              ctx.shadowColor = '#00E5FF';
+            } else {
+              // Electric blue streak
+              ctx.fillStyle = light.colorType === 'cyan' ? '#00E5FF' : '#38BDF8';
+              ctx.shadowBlur = 8 * light.intensity;
+              ctx.shadowColor = '#0284C7';
+            }
+          } else {
+            // Light colour static symbols (clearly visible and legible)
+            ctx.fillStyle = 'rgba(218, 230, 248, 0.55)'; // Sharp, clearly visible light silver-slate
+            ctx.shadowBlur = 0;
+          }
+
+          ctx.fillText(char, x, y);
           ctx.shadowBlur = 0;
-        }
-
-        ctx.fillText(char, x, y);
-        ctx.shadowBlur = 0;
-
-        // Slow downward motion from upside to downside
-        drops[i] += dropSpeeds[i];
-
-        // Reset to top once it falls past bottom
-        if (y > height + 20) {
-          drops[i] = -2;
-          dropSpeeds[i] = (Math.random() * 0.3 + 0.22) * speed;
-          // Re-roll type
-          const rand = Math.random();
-          dropTypes[i] = rand > 0.8 ? 'cyan' : rand > 0.65 ? 'orange' : 'faint';
         }
       }
 
