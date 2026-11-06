@@ -10,6 +10,7 @@ import PillarsSection from './components/PillarsSection';
 import EventsSection from './components/EventsSection';
 import PathwaySection from './components/PathwaySection';
 import DomainsSection from './components/DomainsSection';
+import AwsPopupTowerSection from './components/AwsPopupTowerSection';
 import CoreTeamSection from './components/CoreTeamSection';
 import ContactSection from './components/ContactSection';
 import FaqSection from './components/FaqSection';
@@ -105,6 +106,9 @@ function App() {
 
       {/* 4.6 Our Domains Section */}
       <DomainsSection />
+
+      {/* 4.7 3D Interactive Pop-Up Tower Section */}
+      <AwsPopupTowerSection onOpenJoinModal={handleOpenJoinModal} />
 
       {/* 4.8 Meet Our Core Team Section */}
       <CoreTeamSection />

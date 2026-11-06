@@ -157,7 +157,7 @@ const MatrixNumberRain = ({
             }
           } else {
             // Light colour static symbols (clearly visible and legible)
-            ctx.fillStyle = 'rgba(218, 230, 248, 0.55)'; // Sharp, clearly visible light silver-slate
+            ctx.fillStyle = 'rgba(195, 208, 225, 0.42)'; // Clearly visible light color
             ctx.shadowBlur = 0;
           }
 

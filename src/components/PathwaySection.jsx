@@ -8,8 +8,8 @@ import './PathwaySection.css';
 const PathwaySection = ({ onOpenJoinModal }) => {
   return (
     <section id="pathway" className="section-padding pathway-section">
-      {/* Static Light Symbols with Cascading Moving Electric Blue Light Beams */}
-      <MatrixNumberRain opacity={0.88} speed={0.22} />
+      {/* Falling Numbers & Tech Symbols from Upside to Downside in Background */}
+      <MatrixNumberRain opacity={0.6} speed={0.32} />
 
       <div className="container pathway-content-wrapper">
         
