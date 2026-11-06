@@ -27,3 +27,4 @@ for (let i = 0; i < missing.length; i++) {
 }
 
 console.log('Finished background removal for all members!');
+

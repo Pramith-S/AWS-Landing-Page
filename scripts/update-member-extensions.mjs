@@ -8,3 +8,4 @@ content = content.replace(/(\/images\/core-team\/members\/[^']+)\.jpg/g, '$1.png
 
 fs.writeFileSync(filePath, content, 'utf8');
 console.log('Successfully updated member photos in coreTeamData.js to .png');
+
