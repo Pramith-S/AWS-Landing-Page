@@ -46,6 +46,11 @@
 }
 
 /* Pathway Book Display Shell */
+.pathway-content-wrapper {
+  position: relative;
+  z-index: 1;
+}
+
 .pathway-book-display-container {
   width: 100%;
   display: flex;

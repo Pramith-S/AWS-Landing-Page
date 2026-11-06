@@ -1,13 +1,17 @@
 import React from 'react';
-import { Milestone, BookOpen } from 'lucide-react';
+import { Milestone } from 'lucide-react';
 import StrokeText from './StrokeText';
 import KaelkothPlaylistBook from './KaelkothPlaylistBook';
+import MatrixNumberRain from './MatrixNumberRain';
 import './PathwaySection.css';
 
 const PathwaySection = ({ onOpenJoinModal }) => {
   return (
     <section id="pathway" className="section-padding pathway-section">
-      <div className="container">
+      {/* Falling Numbers & Tech Symbols from Upside to Downside in Background */}
+      <MatrixNumberRain opacity={0.6} speed={0.32} />
+
+      <div className="container pathway-content-wrapper">
         
         {/* Section Header */}
         <div className="pathway-header-box">
