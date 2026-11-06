@@ -1,21 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
-  Play, 
-  Pause, 
-  SkipBack, 
-  SkipForward, 
-  Volume2, 
-  VolumeX, 
-  Music, 
-  Disc3, 
+  ChevronDown, 
+  ChevronUp, 
+  Calendar, 
+  MapPin, 
+  UserCheck, 
   Sparkles, 
-  Radio, 
-  Flame,
-  Bookmark
+  ArrowRight,
+  RotateCcw,
+  Shuffle,
+  Volume2,
+  VolumeX,
+  Play,
+  Pause,
+  SkipBack,
+  SkipForward
 } from 'lucide-react';
 import './KaelkothPlaylistBook.css';
 
-// Crisp vector AWS Logo with official orange smile arrow
+// Crisp vector AWS Logo for the spinning CD center & headers
 const AwsBookLogo = ({ className = '' }) => (
   <svg
     viewBox="0 0 640 512"
@@ -34,73 +37,122 @@ const AwsBookLogo = ({ className = '' }) => (
   </svg>
 );
 
-// The exact 6 tracks specified by user
-export const KAELKOTH_TRACKS = [
+// Pathway Milestones mapped into the exact 6-track Kaelkoth structure
+export const KAELKOTH_EVENTS = [
   {
+    id: 'station-1',
     num: 'I.',
-    title: 'Song Title',
-    artist: 'Artist Name',
+    title: 'Inauguration & AWS Foundations',
+    artist: 'Ms. Omshree Butani',
     duration: '03:42',
     durationSec: 222,
-    tag: 'Station 01 · Genesis'
+    subtitle: 'What Even is AWS? · The Grand Kickoff',
+    timeline: '29 September 2026 · 2:00 PM IST',
+    venue: 'Sem Hall 1, JSSATEB',
+    speaker: 'Ms. Omshree Butani',
+    speakerRole: 'Senior FinOps Analyst @ Cimpress · AWS Golden Jacket Holder · AWS Community Builder',
+    description: 'The historic launch of AWS Student Builder Group at JSSATEB! Ms. Omshree Butani walked builders through cloud fundamentals, breaking down core AWS building blocks in an inspiring live workshop.',
+    highlights: ['Cloud Fundamentals', 'Demystifying AWS', 'FinOps & Architecture', 'Auditorium Kickoff'],
+    tag: 'INAUGURAL EVENT'
   },
   {
+    id: 'station-2',
     num: 'II.',
-    title: 'Song Title',
-    artist: 'Artist Name',
+    title: 'AWS Cloud Practitioner Lab',
+    artist: 'Ms. Abhinaya SV',
     duration: '04:12',
     durationSec: 252,
-    tag: 'Station 02 · Practitioner'
+    subtitle: 'Hands-on Console & Cloud Practitioner Essentials',
+    timeline: '16 October 2026 · Online Mode',
+    venue: 'Online / Virtual Session',
+    speaker: 'Ms. Abhinaya SV',
+    speakerRole: 'AWS Cloud Mentor & Technical Speaker',
+    description: 'Comprehensive virtual hands-on lab conducted on 16th October by Ms. Abhinaya SV. Builders engaged in live console walkthroughs covering core AWS cloud services, architectural patterns, and practical prep for the AWS Certified Cloud Practitioner (CLF-C02).',
+    highlights: ['Online Hands-on Lab', 'Live Console Walkthroughs', 'CLF-C02 Certification Prep', 'Core Cloud Architecture'],
+    tag: 'HANDS-ON LAB'
   },
   {
+    id: 'station-3',
     num: 'III.',
-    title: 'Song Title',
-    artist: 'Artist Name',
+    title: 'AWS Cloud Gamified Quest Event',
+    artist: 'AWS Cloud Quest Arena',
     duration: '02:58',
     durationSec: 178,
-    tag: 'Station 03 · Cloud Quest'
+    subtitle: 'Competitive 3D Cloud Challenge & RPG Tournament',
+    timeline: 'Upcoming Season · Competition Track',
+    venue: 'Virtual Cloud Arena',
+    speaker: 'AWS Cloud Quest Arena',
+    speakerRole: 'Gamified Builder Challenge',
+    description: 'An adrenaline-filled, interactive 3D RPG cloud tournament powered by AWS Cloud Quest! Solve real-world city challenges, deploy live cloud infrastructure, and battle for top ranks on the live leaderboard.',
+    highlights: ['3D RPG Simulation', 'Live Infrastructure Scoring', 'Digital Badges', 'Exclusive Swag & Prizes'],
+    tag: 'GAMIFIED EVENT'
   },
   {
+    id: 'station-4',
     num: 'IV.',
-    title: 'Song Title',
-    artist: 'Artist Name',
+    title: 'Cloud Hackathons & Buildathons',
+    artist: 'Builder Mentors & Industry Leads',
     duration: '05:01',
     durationSec: 301,
-    tag: 'Station 04 · Hackathon'
+    subtitle: '24-Hour Production-Grade Solution Sprint',
+    timeline: 'To Be Announced · 24-Hour Sprint',
+    venue: 'JSSATEB Main Campus',
+    speaker: 'Builder Mentors & Industry Leads',
+    speakerRole: 'Architect Mentorship & Jury',
+    description: 'High-octane 24-hour sprint to architect, build, and deploy serverless, cloud-native, and Generative AI applications using AWS services. Includes mentor guidance, cloud credits, and judging by industry veterans.',
+    highlights: ['Serverless & GenAI Track', 'AWS Cloud Credits', 'Jury Evaluation', 'Incubation & Awards'],
+    tag: 'HACKATHONS'
   },
   {
+    id: 'station-5',
     num: 'V.',
-    title: 'Song Title',
-    artist: 'Artist Name',
+    title: 'Meetups, Community Events & Grand Summit',
+    artist: 'AWS Community Leaders & Alumni',
     duration: '03:36',
     durationSec: 216,
-    tag: 'Station 05 · Community'
+    subtitle: 'Knowledge Sharing, Networking & Project Demos',
+    timeline: 'Ongoing Series & Grand Finale · Monthly Sessions',
+    venue: 'Campus Auditoriums & Tech Spaces',
+    speaker: 'AWS Community Leaders & Alumni',
+    speakerRole: 'AWS User Group & Tech Ecosystem',
+    description: 'Open-floor technical meetups, project showcases, cloud architect tech talks, and our grand annual celebration bringing together builders, alumni, and industry leaders.',
+    highlights: ['Architect Tech Talks', 'Lightning Project Demos', 'Open Networking', 'Global AWS Community'],
+    tag: 'COMMUNITY HUB'
   },
   {
+    id: 'station-6',
     num: 'VI.',
-    title: 'Song Title',
-    artist: 'Artist Name',
-    duration: '04:15',
-    durationSec: 255,
-    tag: 'Grand Summit · Anthem'
+    title: 'AWS SBG Annual Horizon & Cloud Celebration',
+    artist: 'Core Team Leads & Community Champions',
+    duration: '04:20',
+    durationSec: 260,
+    subtitle: 'Celebration of Builders, Project Demos & Leadership Transition',
+    timeline: 'Annual Milestone Ceremony · JSSATEB Campus',
+    venue: 'JSSATEB Main Auditorium & Live Stream',
+    speaker: 'Faculty Mentors, Core Leads & Alumni',
+    speakerRole: 'AWS Student Builder Group Council',
+    description: 'The crowning annual celebration recognizing certified student builders, top hackathon teams, and welcoming the incoming chapter leadership with grand honors.',
+    highlights: ['Builder Recognition', 'Certification Honors', 'Annual Keynote', 'Leadership Handover'],
+    tag: 'GRAND FINALE'
   }
 ];
 
-const KaelkothPlaylistBook = ({ compact = false, activeStationNum = '01' }) => {
-  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
+  const [activeTrackIndex, setActiveTrackIndex] = useState(0);
+  const [expandedTrackId, setExpandedTrackId] = useState('station-1'); // Default open station 1
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTimeSec, setCurrentTimeSec] = useState(0);
-  const [isMuted, setIsMuted] = useState(false);
-  const [bookOpen, setBookOpen] = useState(true);
+  const [isLooping, setIsLooping] = useState(false);
+  const [isShuffling, setIsShuffling] = useState(false);
 
   const audioCtxRef = useRef(null);
   const oscRef = useRef(null);
   const gainRef = useRef(null);
 
-  const currentTrack = KAELKOTH_TRACKS[currentTrackIndex];
+  const currentEvent = KAELKOTH_EVENTS[activeTrackIndex];
 
-  // Web Audio Synth for ambient futuristic soundtrack
-  const startAudioSynth = () => {
+  // Ambient synth generator for soothing medieval-modern cloud tones
+  const startAudioSynth = (trackIdx = activeTrackIndex) => {
     try {
       if (!audioCtxRef.current) {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -118,15 +170,14 @@ const KaelkothPlaylistBook = ({ compact = false, activeStationNum = '01' }) => {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
 
-      // Atmospheric chord frequencies based on track
-      const chordPitches = [220, 261.63, 293.66, 329.63, 392.00, 440.00];
-      const pitch = chordPitches[currentTrackIndex % chordPitches.length];
+      const baseFrequencies = [220, 246.94, 261.63, 293.66, 329.63, 392.00];
+      const freq = baseFrequencies[trackIdx % baseFrequencies.length];
 
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(pitch, ctx.currentTime);
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, ctx.currentTime);
 
-      gain.gain.setValueAtTime(isMuted ? 0 : 0.04, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(isMuted ? 0 : 0.08, ctx.currentTime + 1.5);
+      gain.gain.setValueAtTime(0.02, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.05, ctx.currentTime + 1.2);
 
       osc.connect(gain);
       gain.connect(ctx.destination);
@@ -134,9 +185,7 @@ const KaelkothPlaylistBook = ({ compact = false, activeStationNum = '01' }) => {
 
       oscRef.current = osc;
       gainRef.current = gain;
-    } catch (e) {
-      // Gracefully silent if Web Audio is blocked
-    }
+    } catch (e) {}
   };
 
   const stopAudioSynth = () => {
@@ -154,38 +203,45 @@ const KaelkothPlaylistBook = ({ compact = false, activeStationNum = '01' }) => {
       setIsPlaying(false);
     } else {
       setIsPlaying(true);
-      startAudioSynth();
+      startAudioSynth(activeTrackIndex);
     }
   };
 
-  const selectTrack = (index) => {
-    setCurrentTrackIndex(index);
+  const selectTrack = (index, toggleExpand = true) => {
+    setActiveTrackIndex(index);
     setCurrentTimeSec(0);
     if (!isPlaying) {
       setIsPlaying(true);
     }
-    // Update synth pitch
-    setTimeout(() => {
-      startAudioSynth();
-    }, 50);
+    startAudioSynth(index);
+
+    if (toggleExpand) {
+      const selectedId = KAELKOTH_EVENTS[index].id;
+      setExpandedTrackId((prev) => (prev === selectedId ? null : selectedId));
+    }
+  };
+
+  const toggleExpandOnly = (e, id, idx) => {
+    e.stopPropagation();
+    setActiveTrackIndex(idx);
+    setExpandedTrackId((prev) => (prev === id ? null : id));
   };
 
   const handleNext = () => {
-    const nextIdx = (currentTrackIndex + 1) % KAELKOTH_TRACKS.length;
-    selectTrack(nextIdx);
+    let nextIdx;
+    if (isShuffling) {
+      nextIdx = Math.floor(Math.random() * KAELKOTH_EVENTS.length);
+    } else {
+      nextIdx = (activeTrackIndex + 1) % KAELKOTH_EVENTS.length;
+    }
+    selectTrack(nextIdx, false);
+    setExpandedTrackId(KAELKOTH_EVENTS[nextIdx].id);
   };
 
   const handlePrev = () => {
-    const prevIdx = (currentTrackIndex - 1 + KAELKOTH_TRACKS.length) % KAELKOTH_TRACKS.length;
-    selectTrack(prevIdx);
-  };
-
-  const toggleMute = () => {
-    const nextMuted = !isMuted;
-    setIsMuted(nextMuted);
-    if (gainRef.current && audioCtxRef.current) {
-      gainRef.current.gain.setValueAtTime(nextMuted ? 0 : 0.07, audioCtxRef.current.currentTime);
-    }
+    const prevIdx = (activeTrackIndex - 1 + KAELKOTH_EVENTS.length) % KAELKOTH_EVENTS.length;
+    selectTrack(prevIdx, false);
+    setExpandedTrackId(KAELKOTH_EVENTS[prevIdx].id);
   };
 
   // Timer loop when playing
@@ -194,7 +250,10 @@ const KaelkothPlaylistBook = ({ compact = false, activeStationNum = '01' }) => {
     if (isPlaying) {
       interval = setInterval(() => {
         setCurrentTimeSec((prev) => {
-          if (prev >= currentTrack.durationSec) {
+          if (prev >= currentEvent.durationSec) {
+            if (isLooping) {
+              return 0;
+            }
             handleNext();
             return 0;
           }
@@ -205,9 +264,9 @@ const KaelkothPlaylistBook = ({ compact = false, activeStationNum = '01' }) => {
       clearInterval(interval);
     }
     return () => clearInterval(interval);
-  }, [isPlaying, currentTrackIndex]);
+  }, [isPlaying, activeTrackIndex, isLooping, isShuffling]);
 
-  // Clean up on unmount
+  // Clean up Web Audio
   useEffect(() => {
     return () => {
       stopAudioSynth();
@@ -217,235 +276,279 @@ const KaelkothPlaylistBook = ({ compact = false, activeStationNum = '01' }) => {
     };
   }, []);
 
-  const formatSec = (sec) => {
-    const m = Math.floor(sec / 60);
-    const s = sec % 60;
-    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-  };
+  const progressPercent = Math.min(100, (currentTimeSec / currentEvent.durationSec) * 100);
 
   return (
-    <div className={`kaelkoth-regalo-wrapper ${compact ? 'compact-mode' : ''}`}>
-      {/* Volumetric Magical Spotlight Light (Kaelkoth .storyluz styled with AWS Orange) */}
-      <div className="kaelkoth-storyluz" aria-hidden="true" />
+    <div className="kktmusic-outer-wrapper">
+      
+      {/* Subtle atmospheric beam above book */}
+      <div className="kktmusic-aura-beam" aria-hidden="true" />
 
-      {/* Floating Sparkle Particles (Kaelkoth .espuma-particula) */}
-      <div className="kaelkoth-sparkles-container" aria-hidden="true">
-        <div className="kaelkoth-particula kp-1" />
-        <div className="kaelkoth-particula kp-2" />
-        <div className="kaelkoth-particula kp-3" />
-        <div className="kaelkoth-particula kp-4" />
-        <div className="kaelkoth-particula kp-5" />
-      </div>
+      {/* Main Kaelkoth Book Component matching the exact reference image */}
+      <div className="kktmusic">
+        <div className="kktmusic-pages">
 
-      {/* Main 3D AWS Codex Folio / Book Shell */}
-      <div className={`kaelkoth-book-container ${bookOpen ? 'book-open' : 'book-closed'}`}>
-        
-        {/* =================================================================
-            LEFT FOLIO: AWS BOOK COVER & EMBOSSED BADGE & PLAYER CONTROLS
-            ================================================================= */}
-        <div className="kaelkoth-book-cover-folio">
-          <div className="book-leather-texture" />
-          <div className="book-filigree-corners" />
-
-          {/* Floating animated 3D mini book icon (Kaelkoth .atalestorylibro) */}
-          <div className="atalestorylibro-wrapper">
-            <div className="kaelkoth-floating-book" title="AWS SBG Codex Regalo">
-              <span className="book-spine-accent" />
-              <div className="floating-book-mini-aws">
-                <AwsBookLogo className="mini-aws-svg" />
-              </div>
+          {/* =================================================================
+              LEFT PAGE: SONGS FROM KAELKOTH // AWS SBG & SPINNING CD
+              ================================================================= */}
+          <div className="kktmusic-left">
+            
+            {/* Top Title */}
+            <div className="kktmusic-left-title">
+              <span>SONGS FROM KAELKOTH</span>
+              <h2>Songs of a rotted<br />Heart</h2>
             </div>
-          </div>
 
-          {/* Header Title on Cover */}
-          <div className="book-cover-header">
-            <span className="codex-kicker">// AWS SBG CHRONICLES · VOL. 01</span>
-            <div className="aws-cover-branding">
-              <AwsBookLogo className="cover-big-aws-svg" />
-              <span className="cover-badge-text">COMMUNITY CODEX</span>
-            </div>
-            <p className="cover-lore-quote">
-              "Every line of cloud code connects a milestone. Listen to the soundtrack of builders turning curiosity into architecture."
-            </p>
-          </div>
-
-          {/* Embedded Audio Player Station inside Left Cover */}
-          <div className="book-audio-player-hud">
-            <div className="player-now-playing-row">
-              <div className="disc-spin-box">
-                <Disc3 className={`player-disc-icon ${isPlaying ? 'spinning' : ''}`} size={24} />
-              </div>
-              <div className="player-track-meta">
-                <span className="now-playing-tag">
-                  {isPlaying ? 'NOW PLAYING' : 'AUDIO CODEX PAUSED'}
-                </span>
-                <h5 className="player-track-title">{currentTrack.num} {currentTrack.title}</h5>
-                <span className="player-track-artist">{currentTrack.artist} · {currentTrack.tag}</span>
+            {/* Baroque Golden Frame with Spinning Disc & AWS Smile */}
+            <div className="kktmusic-disc">
+              <div 
+                className={`kktmusic-cd ${isPlaying ? 'spinning' : 'paused'}`}
+                title={isPlaying ? "Click to Pause" : "Click to Play"}
+                onClick={togglePlay}
+              >
+                {/* Official CD artwork from Kaelkoth */}
+                <img src="https://i.imgur.com/OONeop0.png" alt="Playlist cover" />
+                
+                {/* Center hole with official AWS Smile Logo overlay */}
+                <div className="kktmusic-hole">
+                  <AwsBookLogo className="kktmusic-aws-inner-logo" />
+                </div>
               </div>
             </div>
 
-            {/* Soundwave frequency visualizer bars */}
-            <div className={`audio-frequency-bars ${isPlaying ? 'animating' : ''}`} aria-hidden="true">
-              <span className="freq-bar fb-1" />
-              <span className="freq-bar fb-2" />
-              <span className="freq-bar fb-3" />
-              <span className="freq-bar fb-4" />
-              <span className="freq-bar fb-5" />
-              <span className="freq-bar fb-6" />
-              <span className="freq-bar fb-7" />
-              <span className="freq-bar fb-8" />
-              <span className="freq-bar fb-9" />
-              <span className="freq-bar fb-10" />
-            </div>
+            {/* Now Playing Bar with Working Controls */}
+            <div className="kktmusic-nowplaying">
+              <div className="kktmusic-playing">
+                <span>PLAYING NOW:</span>
+                <b>{currentEvent.title}</b>
+              </div>
 
-            {/* Time Scrubber */}
-            <div className="player-progress-bar-wrap">
-              <span className="time-curr">{formatSec(currentTimeSec)}</span>
-              <div className="progress-track">
-                <div 
-                  className="progress-fill" 
-                  style={{ width: `${(currentTimeSec / currentTrack.durationSec) * 100}%` }} 
+              {/* Player Progress Scrubber */}
+              <div className="kktmusic-progress-bar-wrap">
+                <div className="kktmusic-progress-line">
+                  <div 
+                    className="kktmusic-progress-fill" 
+                    style={{ width: `${progressPercent}%` }} 
+                  />
+                  <div 
+                    className="kktmusic-progress-dot" 
+                    style={{ left: `${progressPercent}%` }} 
+                  />
+                </div>
+              </div>
+
+              {/* Visual Controls Sprite Background */}
+              <div className="kktmusic-controls" />
+
+              {/* Working Clickable Buttons Layer directly over sprite icons */}
+              <div className="kktmusic-controls-interactive-layer">
+                {/* Repeat / Loop */}
+                <button 
+                  type="button"
+                  className={`kkt-ctrl-hitbox hitbox-loop ${isLooping ? 'active-loop' : ''}`}
+                  onClick={() => setIsLooping(!isLooping)}
+                  title={isLooping ? "Loop On" : "Loop Off"}
+                  aria-label="Loop toggle"
+                />
+
+                {/* Previous Track */}
+                <button 
+                  type="button"
+                  className="kkt-ctrl-hitbox hitbox-prev"
+                  onClick={handlePrev}
+                  title="Previous Milestone"
+                  aria-label="Previous Track"
+                />
+
+                {/* Play / Pause Toggle */}
+                <button 
+                  type="button"
+                  className="kkt-ctrl-hitbox hitbox-play"
+                  onClick={togglePlay}
+                  title={isPlaying ? "Pause" : "Play"}
+                  aria-label={isPlaying ? "Pause" : "Play"}
+                />
+
+                {/* Next Track */}
+                <button 
+                  type="button"
+                  className="kkt-ctrl-hitbox hitbox-next"
+                  onClick={handleNext}
+                  title="Next Milestone"
+                  aria-label="Next Track"
+                />
+
+                {/* Shuffle */}
+                <button 
+                  type="button"
+                  className={`kkt-ctrl-hitbox hitbox-shuffle ${isShuffling ? 'active-shuffle' : ''}`}
+                  onClick={() => setIsShuffling(!isShuffling)}
+                  title={isShuffling ? "Shuffle On" : "Shuffle Off"}
+                  aria-label="Shuffle toggle"
                 />
               </div>
-              <span className="time-dur">{currentTrack.duration}</span>
             </div>
 
-            {/* Controls Bar */}
-            <div className="player-controls-row">
-              <button 
-                className="audio-ctrl-btn" 
-                onClick={handlePrev} 
-                title="Previous Track"
-                aria-label="Previous Track"
-              >
-                <SkipBack size={15} />
-              </button>
-
-              <button 
-                className="audio-play-main-btn" 
-                onClick={togglePlay}
-                title={isPlaying ? "Pause Soundtrack" : "Play Soundtrack"}
-                aria-label={isPlaying ? "Pause" : "Play"}
-              >
-                {isPlaying ? <Pause size={18} /> : <Play size={18} className="play-triangle" />}
-              </button>
-
-              <button 
-                className="audio-ctrl-btn" 
-                onClick={handleNext} 
-                title="Next Track"
-                aria-label="Next Track"
-              >
-                <SkipForward size={15} />
-              </button>
-
-              <button 
-                className={`audio-ctrl-btn volume-btn ${isMuted ? 'muted' : ''}`} 
-                onClick={toggleMute}
-                title={isMuted ? "Unmute Audio" : "Mute Audio"}
-                aria-label="Toggle Mute"
-              >
-                {isMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
-              </button>
+            {/* Left Page Footer */}
+            <div className="kktmusic-left-footer">
+              <span>✦</span>
+              <p>MELODIAS DE AWS STUDENT BUILDER GROUP</p>
+              <i>JSSATEB Chapter · Community Chronicles</i>
             </div>
+
           </div>
 
-          <div className="cover-bottom-stamp">
-            <span className="stamp-symbol">✦</span>
-            <span>JSSATEB BUILDERS CHAPTER · KAELKOTH REGALO</span>
-            <span className="stamp-symbol">✦</span>
-          </div>
-        </div>
-
-        {/* Book Spine Divider (Golden / Neon seam) */}
-        <div className="kaelkoth-book-spine" aria-hidden="true">
-          <div className="spine-ribbon-stitch" />
-        </div>
-
-        {/* =================================================================
-            RIGHT FOLIO: KAELKOTH PLAYLIST REGALO (TABLE OF TRACKS)
-            ================================================================= */}
-        <div className="kaelkoth-book-playlist-folio">
-          <div className="folio-parchment-glow" />
-          <div className="book-filigree-corners top-right" />
-
-          {/* Heading with Ornate Kaelkoth Style & AWS Accents */}
-          <div className="playlist-folio-header">
-            <div className="header-ornament-line">
-              <span className="ornament-cross">❖</span>
-              <span className="ornament-bar" />
-              <span className="ornament-label">REGALO DE MÚSICA</span>
-              <span className="ornament-bar" />
-              <span className="ornament-cross">❖</span>
-            </div>
+          {/* =================================================================
+              RIGHT PAGE: PLAYLIST REGALO & EXPANDABLE EVENT DETAILS
+              ================================================================= */}
+          <div className="kktmusic-right">
             
-            <h4 className="kaelkoth-playlist-title">
-              <span>COMMUNITY</span> PLAYLIST REGALO
-            </h4>
-            <p className="kaelkoth-playlist-desc">
-              Dedicated chapters of community rhythm, hackathon focus beats, and cloud workshop themes.
-            </p>
-          </div>
+            {/* Header */}
+            <div className="kktmusic-right-header">
+              <span>VOLUME I · MUSICAL COLLECTION</span>
+              <h3>Titulo de tu Playlist</h3>
+              <div className="kktmusic-divider">✦</div>
+            </div>
 
-          {/* Tracks List matching user's exact specification */}
-          <div className="kaelkoth-tracklist" role="list">
-            {KAELKOTH_TRACKS.map((track, idx) => {
-              const isCurrent = idx === currentTrackIndex;
-              return (
-                <div 
-                  key={track.num}
-                  className={`kaelkoth-track-row ${isCurrent ? 'active-track' : ''}`}
-                  onClick={() => selectTrack(idx)}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      selectTrack(idx);
-                    }
-                  }}
-                  aria-label={`Play Track ${track.num}: ${track.title} by ${track.artist}`}
-                >
-                  {/* Left: Roman Numeral */}
-                  <span className="track-roman-num">{track.num}</span>
+            {/* Tracklist with Expandable Event Details & Arrow Marks */}
+            <div className="kktmusic-tracks" role="list">
+              {KAELKOTH_EVENTS.map((event, idx) => {
+                const isActive = idx === activeTrackIndex;
+                const isExpanded = expandedTrackId === event.id;
 
-                  {/* Play Button Icon on Row */}
-                  <div className="track-row-play-icon">
-                    {isCurrent && isPlaying ? (
-                      <span className="track-playing-pulse" />
-                    ) : (
-                      <Play size={11} className="track-play-glyph" />
+                return (
+                  <div 
+                    key={event.id}
+                    className={`kktmusic-track-item ${isActive ? 'active-playing-track' : ''} ${isExpanded ? 'is-expanded' : ''}`}
+                  >
+                    {/* Track Header Bar (Clickable) */}
+                    <div 
+                      className="kktmusic-track"
+                      onClick={() => selectTrack(idx, true)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          selectTrack(idx, true);
+                        }
+                      }}
+                      aria-expanded={isExpanded}
+                      aria-label={`${event.title} by ${event.artist}`}
+                    >
+                      {/* Roman Numeral */}
+                      <span className="kktmusic-number">{event.num}</span>
+
+                      {/* Song/Event Title & Artist */}
+                      <div className="kktmusic-song">
+                        <b>{event.title}</b>
+                        <small>{event.artist}</small>
+                      </div>
+
+                      {/* Duration */}
+                      <span className="kktmusic-duration">{event.duration}</span>
+
+                      {/* Expand Arrow Mark requested by User */}
+                      <button 
+                        type="button"
+                        className={`kktmusic-expand-arrow-btn ${isExpanded ? 'rotated' : ''}`}
+                        onClick={(e) => toggleExpandOnly(e, event.id, idx)}
+                        title={isExpanded ? "Collapse Event Details" : "Expand Event Details"}
+                        aria-label="Toggle details"
+                      >
+                        {isExpanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
+                      </button>
+                    </div>
+
+                    {/* Expandable Event Details Box (Accordioned directly inside the book page) */}
+                    {isExpanded && (
+                      <div className="kktmusic-event-details-card">
+                        
+                        {/* Subtitle */}
+                        <div className="kkt-event-subtitle">
+                          {event.subtitle}
+                        </div>
+
+                        {/* Meta Rows */}
+                        <div className="kkt-event-meta-grid">
+                          <div className="kkt-meta-item">
+                            <span className="kkt-meta-label">
+                              <Calendar size={11} className="kkt-meta-icon" />
+                              TIMELINE
+                            </span>
+                            <span className="kkt-meta-value">{event.timeline}</span>
+                          </div>
+
+                          <div className="kkt-meta-item">
+                            <span className="kkt-meta-label">
+                              <MapPin size={11} className="kkt-meta-icon" />
+                              VENUE
+                            </span>
+                            <span className="kkt-meta-value">{event.venue}</span>
+                          </div>
+
+                          <div className="kkt-meta-item speaker-highlight">
+                            <span className="kkt-meta-label">
+                              <UserCheck size={11} className="kkt-meta-icon" />
+                              KEY SPEAKER / MENTOR
+                            </span>
+                            <span className="kkt-meta-value speaker-name">{event.speaker}</span>
+                            <span className="kkt-meta-sub">{event.speakerRole}</span>
+                          </div>
+                        </div>
+
+                        {/* Description */}
+                        <p className="kkt-event-description">
+                          {event.description}
+                        </p>
+
+                        {/* Highlights Pill Badges */}
+                        <div className="kkt-event-tags-row">
+                          {event.highlights.map((h, hIdx) => (
+                            <span key={hIdx} className="kkt-event-tag">
+                              <Sparkles size={9} className="kkt-tag-sparkle" />
+                              {h}
+                            </span>
+                          ))}
+                        </div>
+
+                        {/* Join Station / Action Button */}
+                        {onOpenJoinModal && (
+                          <button 
+                            type="button"
+                            className="kkt-event-join-action"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onOpenJoinModal();
+                            }}
+                          >
+                            <span>Join This Station</span>
+                            <ArrowRight size={12} />
+                          </button>
+                        )}
+                      </div>
                     )}
                   </div>
-
-                  {/* Middle: Title & Artist with dotted leader */}
-                  <div className="track-info-cell">
-                    <div className="track-title-lead-line">
-                      <span className="track-song-title">{track.title}</span>
-                      <span className="track-dotted-leader" aria-hidden="true" />
-                    </div>
-                    <div className="track-artist-line">
-                      <span className="track-artist-name">{track.artist}</span>
-                      <span className="track-station-badge">{track.tag}</span>
-                    </div>
-                  </div>
-
-                  {/* Right: Duration */}
-                  <span className="track-duration-pill">{track.duration}</span>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Footer inside Right Page */}
-          <div className="playlist-folio-footer">
-            <div className="folio-footnote">
-              <Music size={12} className="footer-music-icon" />
-              <span>Select any track above to play and synchronize your journey</span>
+                );
+              })}
             </div>
-            <div className="folio-page-num">FOLIO // 0{currentTrackIndex + 1}</div>
-          </div>
-        </div>
 
+            {/* Right Page Footer */}
+            <div className="kktmusic-right-footer">
+              <a 
+                href="#contact" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (onOpenJoinModal) onOpenJoinModal();
+                }}
+              >
+                LISTEN TO THE FULL COLLECTION
+              </a>
+              <span>NOMBRE DE LA PLAYLIST EN SPOTIFY · ✦</span>
+            </div>
+
+          </div>
+
+        </div>
       </div>
     </div>
   );
