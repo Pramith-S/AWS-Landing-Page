@@ -1657,15 +1657,15 @@
   width: 100%;
   max-width: 290px;
   margin: 0 auto;
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   will-change: transform;
 }
 
 .ecell-card-container:hover {
-  transform: translateY(-8px);
+  transform: translateY(-10px);
 }
 
-/* The Solid 3D Purple Extrusion / Shadow on the Right */
+/* The Solid 3D Purple Extrusion / Shadow on the Right with Dynamic Glow */
 .ecell-card-3d-shadow {
   position: absolute;
   top: 0;
@@ -1682,24 +1682,28 @@
     0% 18px
   );
   z-index: 1;
-  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 0 15px rgba(124, 58, 237, 0.35);
 }
 
 .ecell-card-container:hover .ecell-card-3d-shadow {
   background: #8b5cf6;
-  right: -14px;
-  box-shadow: 0 0 25px rgba(124, 58, 237, 0.7);
+  right: -15px;
+  top: -2px;
+  box-shadow: 0 0 32px rgba(139, 92, 246, 0.8), 0 0 50px rgba(124, 58, 237, 0.4);
 }
 
 /* Domain Lead variation: Golden 3D shadow */
 .ecell-card-container.is-lead .ecell-card-3d-shadow {
   background: #f59e0b;
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.4);
 }
 
 .ecell-card-container.is-lead:hover .ecell-card-3d-shadow {
   background: #fbbf24;
-  right: -14px;
-  box-shadow: 0 0 25px rgba(245, 158, 11, 0.75);
+  right: -15px;
+  top: -2px;
+  box-shadow: 0 0 32px rgba(251, 191, 36, 0.85), 0 0 55px rgba(245, 158, 11, 0.45);
 }
 
 /* --------------------------------------------------------------------------
@@ -1724,12 +1728,16 @@
   align-items: center;
   text-align: center;
   box-sizing: border-box;
-  transition: border-color 0.35s ease, box-shadow 0.35s ease;
+  overflow: hidden;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
 }
 
 .ecell-card-container:hover .ecell-card-main {
   border-color: #a855f7;
-  box-shadow: 0 0 22px rgba(139, 92, 246, 0.45);
+  box-shadow: 
+    0 14px 35px rgba(0, 0, 0, 0.85),
+    0 0 25px rgba(139, 92, 246, 0.5),
+    inset 0 0 20px rgba(139, 92, 246, 0.15);
 }
 
 .ecell-card-container.is-lead .ecell-card-main {
@@ -1738,11 +1746,33 @@
 
 .ecell-card-container.is-lead:hover .ecell-card-main {
   border-color: #fbbf24;
-  box-shadow: 0 0 22px rgba(245, 158, 11, 0.5);
+  box-shadow: 
+    0 14px 35px rgba(0, 0, 0, 0.85),
+    0 0 25px rgba(245, 158, 11, 0.55),
+    inset 0 0 20px rgba(245, 158, 11, 0.18);
+}
+
+/* Interactive Cursor Spotlight that glides across the card surface */
+.ecell-card-spotlight {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(
+    280px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(168, 85, 247, 0.14),
+    transparent 75%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.ecell-card-container:hover .ecell-card-spotlight {
+  opacity: 1;
 }
 
 /* --------------------------------------------------------------------------
-   Photo Box with Clean White Rounded Border
+   Photo Box with Clean White Rounded Border & Cyberpunk Decals
    -------------------------------------------------------------------------- */
 .ecell-photo-box {
   position: relative;
@@ -1756,7 +1786,84 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 14px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7);
+  transition: border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.ecell-card-container:hover .ecell-photo-box {
+  border-color: #ffffff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.85), 0 0 16px rgba(255, 255, 255, 0.25);
+}
+
+/* Cyberpunk Sci-Fi Corner Reticle Brackets */
+.cyber-bracket {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  pointer-events: none;
+  z-index: 4;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.cyber-bracket.top-left {
+  top: 6px;
+  left: 6px;
+  border-top: 2px solid #06b6d4;
+  border-left: 2px solid #06b6d4;
+  border-top-left-radius: 4px;
+}
+
+.cyber-bracket.bottom-right {
+  bottom: 6px;
+  right: 6px;
+  border-bottom: 2px solid #8b5cf6;
+  border-right: 2px solid #8b5cf6;
+  border-bottom-right-radius: 4px;
+}
+
+.ecell-card-container:hover .cyber-bracket.top-left {
+  box-shadow: -2px -2px 10px #06b6d4;
+  transform: translate(-1.5px, -1.5px);
+}
+
+.ecell-card-container:hover .cyber-bracket.bottom-right {
+  box-shadow: 2px 2px 10px #8b5cf6;
+  transform: translate(1.5px, 1.5px);
+}
+
+/* Animated Biometric Hologram Scanner Laser Line */
+.cyber-scanner-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 5%, #06b6d4 45%, #a855f7 75%, transparent 95%);
+  box-shadow: 0 0 12px #06b6d4, 0 0 20px rgba(168, 85, 247, 0.85);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.ecell-card-container:hover .cyber-scanner-line {
+  animation: cyberScannerSweep 1.8s ease-in-out infinite;
+}
+
+@keyframes cyberScannerSweep {
+  0% {
+    top: 0%;
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.95;
+  }
+  85% {
+    opacity: 0.95;
+  }
+  100% {
+    top: 98%;
+    opacity: 0;
+  }
 }
 
 /* Clean Official AWS Logo in the Background behind member cutout (z-index: 1)
@@ -1783,11 +1890,11 @@
 }
 
 .ecell-card-container:hover .aws-huge-watermark-render {
-  transform: scale(1.05);
+  transform: scale(1.04);
   filter: none !important;
 }
 
-/* All member photos strictly Black and White for uniform aesthetic */
+/* All member photos strictly Black and White for uniform aesthetic (z-index: 2) */
 .ecell-member-img {
   position: relative;
   z-index: 2;
@@ -1795,13 +1902,14 @@
   height: 100%;
   object-fit: cover;
   object-position: center 15%;
-  filter: grayscale(100%) contrast(116%) brightness(102%);
+  filter: grayscale(100%) contrast(116%) brightness(102%) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.75));
   transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.4s ease;
+  pointer-events: none;
 }
 
 .ecell-card-container:hover .ecell-member-img {
-  transform: scale(1.05);
-  filter: grayscale(100%) contrast(124%) brightness(108%);
+  transform: scale(1.06) translateY(-2px);
+  filter: grayscale(100%) contrast(124%) brightness(108%) drop-shadow(0 8px 18px rgba(0, 0, 0, 0.95));
 }
 
 /* Placeholder for members without photo */
@@ -1845,34 +1953,105 @@
 }
 
 /* --------------------------------------------------------------------------
-   Member Details: Bold Name, Italic Purple Role
+   Member Details: Bold Name & Enhanced Futuristic Role Pill
    -------------------------------------------------------------------------- */
 .ecell-member-name {
+  position: relative;
+  z-index: 2;
   font-family: var(--font-heading, 'Inter', 'Outfit', sans-serif);
   font-size: 1.15rem;
   font-weight: 700;
   color: #ffffff;
-  margin: 0 0 4px;
+  margin: 0 0 6px;
   letter-spacing: -0.01em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
   line-height: 1.25;
+  transition: color 0.3s ease;
+}
+
+.ecell-card-container:hover .ecell-member-name {
+  color: #ffffff;
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.45);
+}
+
+/* Enhanced Futuristic Role Capsule Pill with Pulsing Status Indicator */
+.ecell-role-pill {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  background: rgba(139, 92, 246, 0.12);
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  padding: 4px 14px;
+  border-radius: 99px;
+  margin: 0 0 14px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.35s ease;
+}
+
+.ecell-card-container:hover .ecell-role-pill {
+  background: rgba(139, 92, 246, 0.22);
+  border-color: rgba(168, 85, 247, 0.7);
+  box-shadow: 0 0 16px rgba(139, 92, 246, 0.4);
+  transform: translateY(-1px);
+}
+
+.is-lead .ecell-role-pill {
+  background: rgba(245, 158, 11, 0.14);
+  border-color: rgba(245, 158, 11, 0.45);
+}
+
+.is-lead:hover .ecell-role-pill {
+  background: rgba(245, 158, 11, 0.26);
+  border-color: rgba(251, 191, 36, 0.8);
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.45);
+}
+
+.ecell-role-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #a855f7;
+  box-shadow: 0 0 8px #a855f7;
+  animation: pulseRoleDot 2s infinite ease-in-out;
+  flex-shrink: 0;
+}
+
+.is-lead .ecell-role-dot {
+  background: #fbbf24;
+  box-shadow: 0 0 8px #fbbf24;
+}
+
+@keyframes pulseRoleDot {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.4);
+    box-shadow: 0 0 12px currentColor;
+  }
 }
 
 .ecell-member-role {
   font-family: 'Playfair Display', Georgia, serif, sans-serif;
   font-style: italic;
-  font-size: 0.95rem;
-  color: #a855f7;
-  margin: 0 0 16px;
+  font-size: 0.92rem;
+  color: #c084fc;
+  margin: 0;
   font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
-  line-height: 1.25;
+  line-height: 1.2;
 }
 
 .is-lead .ecell-member-role {
@@ -1880,9 +2059,11 @@
 }
 
 /* --------------------------------------------------------------------------
-   Social Links: Solid White Circular Buttons with Black Icons
+   Social Links: Animated Circular Buttons with Hover Glow Transitions
    -------------------------------------------------------------------------- */
 .ecell-socials-row {
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1899,19 +2080,45 @@
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, background 0.25s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ecell-card-container:hover .ecell-social-circle {
+  transform: translateY(-2px);
 }
 
 .ecell-social-circle:hover {
-  transform: scale(1.18);
-  box-shadow: 0 0 14px rgba(255, 255, 255, 0.85);
-  background: #f8fafc;
+  transform: translateY(-6px) scale(1.2) !important;
+}
+
+.ecell-social-circle.whatsapp:hover {
+  background: #25D366 !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 18px rgba(37, 211, 102, 0.9);
+}
+
+.ecell-social-circle.linkedin:hover {
+  background: #0A66C2 !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 18px rgba(10, 102, 194, 0.9);
+}
+
+.ecell-social-circle.mail:hover {
+  background: #FF9900 !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 18px rgba(255, 153, 0, 0.9);
 }
 
 .ecell-social-circle svg {
   color: #000000;
   fill: currentColor;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.ecell-social-circle:hover svg {
+  color: #ffffff;
+  transform: scale(1.1);
 }
 
 /* --------------------------------------------------------------------------
@@ -1969,9 +2176,25 @@
     margin-bottom: 2px;
   }
 
+  .ecell-role-pill {
+    padding: 2px 9px;
+    gap: 5px;
+    margin: 0 0 8px;
+  }
+
+  .ecell-role-dot {
+    width: 4px;
+    height: 4px;
+  }
+
   .ecell-member-role {
-    font-size: 0.78rem;
-    margin-bottom: 10px;
+    font-size: 0.75rem;
+    line-height: 1.15;
+  }
+
+  .cyber-bracket {
+    width: 8px;
+    height: 8px;
   }
 
   .ecell-socials-row {

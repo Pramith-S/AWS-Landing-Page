@@ -66,15 +66,36 @@ export const CyberTeamCard = ({ member, accentColor = '#8B5CF6' }) => {
         .toUpperCase() || 'SB'
     : 'SB';
 
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    e.currentTarget.style.setProperty('--mouse-x', `${x}px`);
+    e.currentTarget.style.setProperty('--mouse-y', `${y}px`);
+  };
+
   return (
-    <div className={`ecell-card-container ${isLead ? 'is-lead' : ''}`}>
+    <div
+      className={`ecell-card-container ${isLead ? 'is-lead' : ''}`}
+      onMouseMove={handleMouseMove}
+    >
       {/* 3D Purple/Gold Block Shadow on the Right */}
       <div className="ecell-card-3d-shadow" aria-hidden="true" />
 
       {/* Main Solid Black Card with Chamfered Top Corners and Violet Border */}
       <div className="ecell-card-main">
-        {/* Photo Box with Crisp White Border */}
+        {/* Dynamic Interactive Cursor Spotlight */}
+        <div className="ecell-card-spotlight" aria-hidden="true" />
+
+        {/* Photo Box with Crisp White Border & Cyberpunk Decals */}
         <div className="ecell-photo-box">
+          {/* Cyberpunk Sci-Fi Corner Brackets */}
+          <div className="cyber-bracket top-left" aria-hidden="true" />
+          <div className="cyber-bracket bottom-right" aria-hidden="true" />
+
+          {/* Animated Biometric Hologram Scanner Laser Line */}
+          <div className="cyber-scanner-line" aria-hidden="true" />
+
           {/* Layer 1: Clean Official AWS Logo in the Background strictly behind member cutout (z-index: 1, no glow) */}
           <div className="ecell-photo-aws-bg-full" aria-hidden="true">
             <BigAwsLogo className="aws-huge-watermark-render" />
@@ -100,10 +121,13 @@ export const CyberTeamCard = ({ member, accentColor = '#8B5CF6' }) => {
           {member.name}
         </h3>
 
-        {/* Member Role: Purple Italic Serif / Script Style */}
-        <p className="ecell-member-role" title={member.role}>
-          {member.role}
-        </p>
+        {/* Enhanced Futuristic Role Pill with Pulsing Status Indicator */}
+        <div className="ecell-role-pill">
+          <span className="ecell-role-dot" aria-hidden="true" />
+          <p className="ecell-member-role" title={member.role}>
+            {member.role}
+          </p>
+        </div>
 
         {/* Social Buttons: Solid White Circular Buttons with Black Icons */}
         <div className="ecell-socials-row">
