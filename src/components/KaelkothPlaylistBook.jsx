@@ -139,85 +139,23 @@ export const KAELKOTH_EVENTS = [
 
 const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
   const [activeTrackIndex, setActiveTrackIndex] = useState(0);
-  const [expandedTrackId, setExpandedTrackId] = useState('station-1'); // Default open station 1
+  const [expandedTrackId, setExpandedTrackId] = useState(null); // Default collapsed (clean 6-row view)
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTimeSec, setCurrentTimeSec] = useState(0);
   const [isLooping, setIsLooping] = useState(false);
   const [isShuffling, setIsShuffling] = useState(false);
 
-  const audioCtxRef = useRef(null);
-  const oscRef = useRef(null);
-  const gainRef = useRef(null);
-
   const currentEvent = KAELKOTH_EVENTS[activeTrackIndex];
 
-  // Ambient synth generator for soothing medieval-modern cloud tones
-  const startAudioSynth = (trackIdx = activeTrackIndex) => {
-    try {
-      if (!audioCtxRef.current) {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        audioCtxRef.current = new AudioContext();
-      }
-      if (audioCtxRef.current.state === 'suspended') {
-        audioCtxRef.current.resume();
-      }
-
-      if (oscRef.current) {
-        try { oscRef.current.stop(); } catch (e) {}
-      }
-
-      const ctx = audioCtxRef.current;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-
-      const baseFrequencies = [220, 246.94, 261.63, 293.66, 329.63, 392.00];
-      const freq = baseFrequencies[trackIdx % baseFrequencies.length];
-
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(freq, ctx.currentTime);
-
-      gain.gain.setValueAtTime(0.02, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.05, ctx.currentTime + 1.2);
-
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start();
-
-      oscRef.current = osc;
-      gainRef.current = gain;
-    } catch (e) {}
-  };
-
-  const stopAudioSynth = () => {
-    try {
-      if (oscRef.current) {
-        oscRef.current.stop();
-        oscRef.current = null;
-      }
-    } catch (e) {}
-  };
-
   const togglePlay = () => {
-    if (isPlaying) {
-      stopAudioSynth();
-      setIsPlaying(false);
-    } else {
-      setIsPlaying(true);
-      startAudioSynth(activeTrackIndex);
-    }
+    setIsPlaying((prev) => !prev);
   };
 
-  const selectTrack = (index, toggleExpand = true) => {
+  const selectTrack = (index) => {
     setActiveTrackIndex(index);
     setCurrentTimeSec(0);
     if (!isPlaying) {
       setIsPlaying(true);
-    }
-    startAudioSynth(index);
-
-    if (toggleExpand) {
-      const selectedId = KAELKOTH_EVENTS[index].id;
-      setExpandedTrackId((prev) => (prev === selectedId ? null : selectedId));
     }
   };
 
@@ -234,14 +172,12 @@ const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
     } else {
       nextIdx = (activeTrackIndex + 1) % KAELKOTH_EVENTS.length;
     }
-    selectTrack(nextIdx, false);
-    setExpandedTrackId(KAELKOTH_EVENTS[nextIdx].id);
+    selectTrack(nextIdx);
   };
 
   const handlePrev = () => {
     const prevIdx = (activeTrackIndex - 1 + KAELKOTH_EVENTS.length) % KAELKOTH_EVENTS.length;
-    selectTrack(prevIdx, false);
-    setExpandedTrackId(KAELKOTH_EVENTS[prevIdx].id);
+    selectTrack(prevIdx);
   };
 
   // Timer loop when playing
@@ -265,16 +201,6 @@ const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
     }
     return () => clearInterval(interval);
   }, [isPlaying, activeTrackIndex, isLooping, isShuffling]);
-
-  // Clean up Web Audio
-  useEffect(() => {
-    return () => {
-      stopAudioSynth();
-      if (audioCtxRef.current) {
-        try { audioCtxRef.current.close(); } catch (e) {}
-      }
-    };
-  }, []);
 
   const progressPercent = Math.min(100, (currentTimeSec / currentEvent.durationSec) * 100);
 
@@ -424,12 +350,12 @@ const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
                     {/* Track Header Bar (Clickable) */}
                     <div 
                       className="kktmusic-track"
-                      onClick={() => selectTrack(idx, true)}
+                      onClick={() => selectTrack(idx)}
                       role="button"
                       tabIndex={0}
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
-                          selectTrack(idx, true);
+                          selectTrack(idx);
                         }
                       }}
                       aria-expanded={isExpanded}
