@@ -323,23 +323,16 @@
 .grand-stage-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 2.2rem;
+  gap: 2.5rem;
   margin-bottom: 2rem;
 }
 
 .grand-stage-item-wrapper {
-  background: #0d0b14;
-  border: 1.5px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  padding: 1.2rem;
+  background: transparent;
+  border: none;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  transition: border-color 0.2s ease, transform 0.2s ease;
-}
-
-.grand-stage-item-wrapper:hover {
-  border-color: #ff9900;
-  transform: translateY(-2px);
 }
 
 .stage-polaroid-stack {
@@ -419,24 +412,17 @@
 }
 
 .mentor-card-wrapper {
-  background: #0d0b14;
-  border: 1.5px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  padding: 1.5rem 1.2rem;
+  background: transparent;
+  border: none;
+  padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  transition: border-color 0.2s ease, transform 0.2s ease;
-}
-
-.mentor-card-wrapper:hover {
-  border-color: #ff9900;
-  transform: translateY(-2px);
 }
 
 .mentor-polaroid-stack {
-  max-width: 240px;
+  max-width: 250px;
   margin-bottom: 1rem;
 }
 
@@ -485,19 +471,19 @@
 }
 
 .lead-clean-card {
-  background: #0d0b14;
-  border: 1.5px solid rgba(255, 255, 255, 0.25);
-  border-radius: 10px;
-  padding: 2rem;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 1rem 0;
   display: flex;
   align-items: center;
-  gap: 2.2rem;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  gap: 2.5rem;
+  box-shadow: none;
 }
 
 .lead-clean-card:hover {
-  border-color: #ff9900;
-  box-shadow: 0 10px 30px rgba(255, 153, 0, 0.12);
+  border-color: transparent;
+  box-shadow: none;
 }
 
 .lead-photo-column {
@@ -808,22 +794,23 @@
 }
 
 .member-card-wrapper {
-  background: #0d0b14;
-  border: 1.5px solid rgba(255, 255, 255, 0.16);
-  border-radius: 8px;
-  padding: 1.1rem 0.85rem;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0.4rem 0.2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease;
   position: relative;
+  box-shadow: none;
 }
 
 .member-card-wrapper:hover {
-  border-color: rgba(255, 255, 255, 0.45);
+  border-color: transparent;
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  box-shadow: none;
 }
 
 .member-info-box {
@@ -1058,7 +1045,7 @@
   }
 
   .member-card-wrapper {
-    padding: 0.8rem 0.55rem;
+    padding: 0.2rem 0;
   }
 
   .polaroid-stack {
@@ -1121,7 +1108,7 @@
   /* Lead compact vertical stack */
   .lead-clean-card {
     flex-direction: column;
-    padding: 1.4rem 1.1rem;
+    padding: 0.5rem 0;
     gap: 1.2rem;
     text-align: center;
   }
