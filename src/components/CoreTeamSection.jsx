@@ -22,7 +22,6 @@ import {
   ShieldCheck
 } from 'lucide-react';
 import { coreTeamData } from '../data/coreTeamData';
-import StarfieldBackground from './StarfieldBackground';
 import StrokeText from './StrokeText';
 import './CoreTeamSection.css';
 
@@ -44,8 +43,8 @@ const CoreTeamSection = () => {
   // Primary Navigation Options: 'grand-stage' | 'mentors' | 'lead' | 'members'
   const [activeTab, setActiveTab] = useState('grand-stage');
 
-  // Domain Sub-filter in Team Members: 'all' | 'tech' | 'events' | 'marketing' | 'operations'
-  const [activeDomain, setActiveDomain] = useState('all');
+  // Domain Sub-filter in Team Members: 'tech' | 'events' | 'marketing' | 'operations' (NO 'all' option!)
+  const [activeDomain, setActiveDomain] = useState('tech');
   const [searchQuery, setSearchQuery] = useState('');
 
   // AWS SBG Lead Photo Carousel
@@ -54,48 +53,52 @@ const CoreTeamSection = () => {
   // Grand Stage Lightbox Modal
   const [lightboxPhoto, setLightboxPhoto] = useState(null);
 
-  // Auto-switch Chapter Lead photo every 3.5 seconds
+  // Auto-switch Chapter Lead photo every 4 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setLeadPhotoIdx((prev) => (prev + 1) % coreTeamData.chapterLead.photos.length);
-    }, 3500);
+    }, 4000);
     return () => clearInterval(timer);
   }, []);
 
-  // Filtered members for Domain Teams
-  const filteredMembers = useMemo(() => {
-    let list = [];
-    if (activeDomain === 'all') {
-      coreTeamData.teams.forEach((t) => {
-        t.members.forEach((m) => {
-          list.push({ ...m, domainId: t.id, domainName: t.name, accentColor: t.accentColor });
-        });
-      });
-    } else {
-      const selected = coreTeamData.teams.find((t) => t.id === activeDomain);
-      if (selected) {
-        selected.members.forEach((m) => {
-          list.push({ ...m, domainId: selected.id, domainName: selected.name, accentColor: selected.accentColor });
-        });
-      }
-    }
+  // Current domain team members (only the selected team, no 'all' tab!)
+  const currentDomainTeam = useMemo(() => {
+    return coreTeamData.teams.find((t) => t.id === activeDomain) || coreTeamData.teams[0];
+  }, [activeDomain]);
+
+  const displayedMembers = useMemo(() => {
+    let list = currentDomainTeam.members.map((m) => ({
+      ...m,
+      domainId: currentDomainTeam.id,
+      domainName: currentDomainTeam.name,
+      accentColor: currentDomainTeam.accentColor
+    }));
 
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       list = list.filter(
         (m) =>
           m.name.toLowerCase().includes(q) ||
-          m.role.toLowerCase().includes(q) ||
-          m.domainName.toLowerCase().includes(q)
+          m.role.toLowerCase().includes(q)
       );
     }
 
     return list;
-  }, [activeDomain, searchQuery]);
+  }, [currentDomainTeam, searchQuery]);
 
   return (
     <section id="core-team" className="section-padding core-team-section">
-      <StarfieldBackground />
+      {/* Xenon Choir Plasma Ambient Background */}
+      <div className="xenon-choir-bg-container" aria-hidden="true">
+        <iframe
+          src="/xenon-choir/bg.html"
+          title="Xenon Choir Ambient Background"
+          className="xenon-choir-iframe"
+          tabIndex={-1}
+          loading="lazy"
+        />
+        <div className="xenon-choir-scrim" />
+      </div>
 
       <div className="container">
         {/* Section Header */}
@@ -137,12 +140,12 @@ const CoreTeamSection = () => {
           </div>
 
           <p className="core-team-subtitle">
-            The student leaders, faculty mentors, and domain architects driving technical workshops, 24-hour hackathons, and cloud excellence across JSSATEB.
+            The student leaders, faculty mentors, and domain architects driving technical workshops, hackathons, and cloud excellence across JSSATEB.
           </p>
         </div>
 
         {/* =========================================================================
-            PRIMARY OPTIONS TABS (Zero Long Scrolling • Instant 1-Click Access)
+            PRIMARY OPTIONS TABS (Zero Long Scrolling • Clean Black Blend)
            ========================================================================= */}
         <div className="team-options-container">
           <div className="team-options-tabs" role="tablist" aria-label="Core Team Categories">
@@ -152,7 +155,7 @@ const CoreTeamSection = () => {
               className={`team-opt-btn ${activeTab === 'grand-stage' ? 'active' : ''}`}
               onClick={() => setActiveTab('grand-stage')}
             >
-              <Camera size={16} />
+              <Camera size={15} />
               <span className="opt-title">COMMUNITY GRAND STAGE</span>
               <span className="opt-badge">2 PHOTOS</span>
             </button>
@@ -163,7 +166,7 @@ const CoreTeamSection = () => {
               className={`team-opt-btn ${activeTab === 'mentors' ? 'active' : ''}`}
               onClick={() => setActiveTab('mentors')}
             >
-              <GraduationCap size={16} />
+              <GraduationCap size={15} />
               <span className="opt-title">MENTORS</span>
               <span className="opt-badge">2 FACULTY</span>
             </button>
@@ -174,7 +177,7 @@ const CoreTeamSection = () => {
               className={`team-opt-btn ${activeTab === 'lead' ? 'active' : ''}`}
               onClick={() => setActiveTab('lead')}
             >
-              <Sparkles size={16} />
+              <Sparkles size={15} />
               <span className="opt-title">AWS SBG LEAD</span>
               <span className="opt-badge">KUMAR R SHET</span>
             </button>
@@ -185,9 +188,9 @@ const CoreTeamSection = () => {
               className={`team-opt-btn ${activeTab === 'members' ? 'active' : ''}`}
               onClick={() => setActiveTab('members')}
             >
-              <Users size={16} />
+              <Users size={15} />
               <span className="opt-title">TEAM MEMBERS</span>
-              <span className="opt-badge">4 DOMAINS</span>
+              <span className="opt-badge">4 TEAMS</span>
             </button>
           </div>
         </div>
@@ -203,16 +206,13 @@ const CoreTeamSection = () => {
                 <span>OFFICIAL AWS SBG ARCHIVES</span>
               </span>
               <h3 className="stage-hero-title">
-                COMMUNITY <span className="text-gradient-amber">GRAND STAGE</span> & GESTURES
+                COMMUNITY <span className="text-gradient-amber">GRAND STAGE</span> & FORMATION
               </h3>
-              <p className="stage-hero-desc">
-                Historic milestones from our inaugural launch in the JSSATEB auditorium, congregating student innovators and celebrating the official AWS hand formation.
-              </p>
             </div>
 
             <div className="grand-stage-grid">
               {coreTeamData.groupPhotos.map((photo) => (
-                <div key={photo.id} className="grand-stage-card neo-brutalist-card">
+                <div key={photo.id} className="grand-stage-card neo-black-box">
                   <div className="stage-img-container" onClick={() => setLightboxPhoto(photo)}>
                     <img
                       src={photo.src}
@@ -230,8 +230,8 @@ const CoreTeamSection = () => {
                         }}
                         aria-label="Enlarge Photo"
                       >
-                        <Maximize2 size={18} />
-                        <span>View High-Res</span>
+                        <Maximize2 size={16} />
+                        <span>Enlarge Photo</span>
                       </button>
                     </div>
                     <span className="stage-badge-tag">{photo.badge}</span>
@@ -240,7 +240,7 @@ const CoreTeamSection = () => {
                   <div className="stage-card-body">
                     <h4 className="stage-card-title">{photo.name}</h4>
                     <p className="stage-card-caption">{photo.caption}</p>
-                    <div className="stage-dashed-divider" />
+                    <div className="neo-dashed-divider" />
                     <div className="stage-card-footer">
                       <span className="stage-stat-pill">📍 {photo.venue}</span>
                       <span className="stage-stat-pill">👥 {photo.stats}</span>
@@ -265,15 +265,12 @@ const CoreTeamSection = () => {
               <h3 className="stage-hero-title">
                 OUR FACULTY <span className="text-gradient-amber">MENTORS</span>
               </h3>
-              <p className="stage-hero-desc">
-                Esteemed faculty from the Department of Computer Science & Engineering, JSSATEB, guiding student builders with enterprise architectural depth and academic excellence.
-              </p>
             </div>
 
             <div className="mentors-grid">
               {coreTeamData.mentors.map((mentor) => (
-                <div key={mentor.id} className="mentor-card neo-brutalist-card">
-                  {/* Photo Window */}
+                <div key={mentor.id} className="mentor-card neo-black-box">
+                  {/* Photo Window (Original natural background intact) */}
                   <div className="mentor-img-window">
                     <img
                       src={mentor.photo}
@@ -292,37 +289,30 @@ const CoreTeamSection = () => {
 
                     <p className="mentor-department-text">{mentor.department}</p>
                     <p className="mentor-institution-text">{mentor.institution}</p>
-
                     <p className="mentor-bio-text">{mentor.bio}</p>
 
-                    <div className="mentor-badges-row">
-                      {mentor.badges.map((b, bi) => (
-                        <span key={bi} className="mentor-pill-badge">
-                          {b}
-                        </span>
-                      ))}
-                    </div>
+                    <div className="mentor-card-footer">
+                      <div className="mentor-badges-row">
+                        {mentor.badges.map((b, bi) => (
+                          <span key={bi} className="mentor-pill-badge">
+                            {b}
+                          </span>
+                        ))}
+                      </div>
 
-                    <div className="neo-card-footer">
-                      <a
-                        href={mentor.socials.linkedin}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="neo-social-btn in-btn"
-                        aria-label={`${mentor.name} LinkedIn`}
-                        title="LinkedIn Profile"
-                      >
-                        <Linkedin size={16} />
-                        <span>in</span>
-                      </a>
-                      <a
-                        href={`mailto:${mentor.socials.email}`}
-                        className="neo-social-btn mail-btn"
-                        aria-label={`Email ${mentor.name}`}
-                        title="Institutional Email"
-                      >
-                        <Mail size={16} />
-                      </a>
+                      <div className="neo-social-corner">
+                        <a
+                          href={mentor.socials.linkedin}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="neo-social-btn in-btn"
+                          aria-label={`${mentor.name} LinkedIn`}
+                          title="LinkedIn Profile"
+                        >
+                          <Linkedin size={15} />
+                          <span>in</span>
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -336,14 +326,14 @@ const CoreTeamSection = () => {
            ========================================================================= */}
         {activeTab === 'lead' && (
           <div className="tab-pane-fade-in" id="pane-lead">
-            <div className="chapter-lead-showcase neo-brutalist-card">
+            <div className="chapter-lead-showcase neo-black-box">
               <div className="lead-grid-layout">
-                {/* Left Column: Portrait Showcase with Carousel */}
+                {/* Left Column: Compact Portrait Showcase with Carousel */}
                 <div className="lead-visual-col">
                   <div className="lead-frame-box">
                     <div className="lead-lead-badge-pill">
-                      <Sparkles size={13} />
-                      <span>AWS SBG CHAPTER LEAD</span>
+                      <Sparkles size={12} />
+                      <span>AWS SBG LEAD</span>
                     </div>
 
                     <div className="lead-carousel-wrapper">
@@ -366,7 +356,7 @@ const CoreTeamSection = () => {
                           type="button"
                           className={`lead-dot ${leadPhotoIdx === idx ? 'active' : ''}`}
                           onClick={() => setLeadPhotoIdx(idx)}
-                          aria-label={`Switch to Photo ${idx + 1}`}
+                          aria-label={`Photo ${idx + 1}`}
                         />
                       ))}
                     </div>
@@ -385,35 +375,35 @@ const CoreTeamSection = () => {
                         title="Portfolio Website"
                         aria-label="Kumar R Shet Portfolio"
                       >
-                        <Globe size={15} />
+                        <Globe size={14} />
                       </a>
                       <a
                         href={coreTeamData.chapterLead.socials.github}
                         target="_blank"
                         rel="noreferrer"
                         className="neo-social-btn git-btn"
-                        title="GitHub @imkumar80"
+                        title="GitHub"
                         aria-label="Kumar R Shet GitHub"
                       >
-                        <Github size={15} />
+                        <Github size={14} />
                       </a>
                       <a
                         href={`mailto:${coreTeamData.chapterLead.socials.email}`}
                         className="neo-social-btn mail-btn"
-                        title="Direct Email"
+                        title="Email"
                         aria-label="Email Kumar R Shet"
                       >
-                        <Mail size={15} />
+                        <Mail size={14} />
                       </a>
                       <a
                         href={coreTeamData.chapterLead.socials.linkedin}
                         target="_blank"
                         rel="noreferrer"
                         className="neo-social-btn in-btn"
-                        title="LinkedIn Profile"
+                        title="LinkedIn"
                         aria-label="Kumar R Shet LinkedIn"
                       >
-                        <Linkedin size={15} />
+                        <Linkedin size={14} />
                         <span>in</span>
                       </a>
                     </div>
@@ -451,13 +441,13 @@ const CoreTeamSection = () => {
                   {/* Key Pillars */}
                   <div className="lead-pillars-section">
                     <h5 className="pillars-title">
-                      <ShieldCheck size={16} />
-                      <span>LEADERSHIP PILLARS & FOCUS</span>
+                      <ShieldCheck size={15} />
+                      <span>LEADERSHIP PILLARS</span>
                     </h5>
                     <div className="pillars-list">
                       {coreTeamData.chapterLead.pillars.map((pil, idx) => (
                         <div key={idx} className="pillar-item">
-                          <ChevronRight size={14} className="pillar-icon" />
+                          <ChevronRight size={13} className="pillar-icon" />
                           <span>{pil}</span>
                         </div>
                       ))}
@@ -472,9 +462,9 @@ const CoreTeamSection = () => {
                       rel="noreferrer"
                       className="lead-primary-cta"
                     >
-                      <Globe size={16} />
+                      <Globe size={15} />
                       <span>Visit Portfolio</span>
-                      <ExternalLink size={14} />
+                      <ExternalLink size={13} />
                     </a>
                     <a
                       href={coreTeamData.chapterLead.socials.github}
@@ -482,14 +472,14 @@ const CoreTeamSection = () => {
                       rel="noreferrer"
                       className="lead-secondary-cta"
                     >
-                      <Github size={16} />
+                      <Github size={15} />
                       <span>GitHub</span>
                     </a>
                     <a
                       href={`mailto:${coreTeamData.chapterLead.socials.email}`}
                       className="lead-secondary-cta"
                     >
-                      <Mail size={16} />
+                      <Mail size={15} />
                       <span>Email</span>
                     </a>
                   </div>
@@ -500,24 +490,13 @@ const CoreTeamSection = () => {
         )}
 
         {/* =========================================================================
-            VIEW 4: TEAM MEMBERS (TECH, EVENTS, MARKETING, OPERATIONAL)
+            VIEW 4: TEAM MEMBERS (TECH, EVENTS, MARKETING, OPERATIONAL - NO 'ALL' TAB!)
            ========================================================================= */}
         {activeTab === 'members' && (
           <div className="tab-pane-fade-in" id="pane-members">
-            {/* Domain Filter Sub-bar */}
+            {/* Domain Filter Sub-bar (Only the 4 individual teams, NO 'ALL' TAB!) */}
             <div className="domain-toolbar">
-              <div className="domain-subtabs" role="tablist" aria-label="Domain Filter">
-                <button
-                  type="button"
-                  className={`domain-subtab-btn ${activeDomain === 'all' ? 'active' : ''}`}
-                  onClick={() => setActiveDomain('all')}
-                  style={{ '--domain-accent': '#8B5CF6' }}
-                >
-                  <Users size={14} />
-                  <span>ALL BUILDERS</span>
-                  <span className="subtab-count">28</span>
-                </button>
-
+              <div className="domain-subtabs" role="tablist" aria-label="Domain Teams">
                 {coreTeamData.teams.map((t) => {
                   const Icon = domainIcons[t.id] || Users;
                   const isCur = activeDomain === t.id;
@@ -539,14 +518,14 @@ const CoreTeamSection = () => {
 
               {/* Instant Search Input */}
               <div className="member-search-box">
-                <Search size={15} className="search-icon" />
+                <Search size={14} className="search-icon" />
                 <input
                   type="text"
-                  placeholder="Search builders by name or role..."
+                  placeholder={`Search ${currentDomainTeam.name}...`}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="search-input"
-                  aria-label="Search members"
+                  aria-label="Search team members"
                 />
                 {searchQuery && (
                   <button
@@ -561,50 +540,44 @@ const CoreTeamSection = () => {
               </div>
             </div>
 
-            {/* Active Domain Overview Banner (when a specific domain is picked) */}
-            {activeDomain !== 'all' && (
-              (() => {
-                const curTeam = coreTeamData.teams.find((t) => t.id === activeDomain);
-                if (!curTeam) return null;
-                const Icon = domainIcons[curTeam.id] || Users;
-                return (
-                  <div
-                    className="domain-banner-card"
-                    style={{ '--domain-accent': curTeam.accentColor }}
-                  >
-                    <div className="banner-icon-box">
-                      <Icon size={24} />
-                    </div>
-                    <div className="banner-content">
-                      <div className="banner-header-row">
-                        <h4 className="banner-title">{curTeam.name}</h4>
-                        <span className="banner-badge">{curTeam.badge}</span>
-                      </div>
-                      <p className="banner-desc">{curTeam.description}</p>
-                    </div>
-                  </div>
-                );
-              })()
-            )}
+            {/* Active Domain Overview Banner */}
+            <div
+              className="domain-banner-card neo-black-box"
+              style={{ '--domain-accent': currentDomainTeam.accentColor }}
+            >
+              <div className="banner-icon-box">
+                {(() => {
+                  const Icon = domainIcons[currentDomainTeam.id] || Users;
+                  return <Icon size={22} />;
+                })()}
+              </div>
+              <div className="banner-content">
+                <div className="banner-header-row">
+                  <h4 className="banner-title">{currentDomainTeam.name}</h4>
+                  <span className="banner-badge">{currentDomainTeam.badge}</span>
+                </div>
+                <p className="banner-desc">{currentDomainTeam.description}</p>
+              </div>
+            </div>
 
-            {/* Neo-Brutalist Members Grid (Inspired by Reference Images 1 & 2) */}
-            {filteredMembers.length > 0 ? (
+            {/* Neo-Brutalist Compact Members Grid (Original photos, not big, fits mobile screen!) */}
+            {displayedMembers.length > 0 ? (
               <div className="neo-members-grid">
-                {filteredMembers.map((member) => (
+                {displayedMembers.map((member) => (
                   <div
                     key={member.id}
-                    className={`neo-member-card ${member.isLead ? 'is-team-lead' : ''}`}
+                    className={`neo-member-card neo-black-box ${member.isLead ? 'is-team-lead' : ''}`}
                     style={{ '--member-accent': member.accentColor }}
                   >
                     {/* Team Lead Badge */}
                     {member.isLead && (
                       <div className="lead-ribbon-badge">
-                        <Award size={12} />
-                        <span>TEAM LEAD</span>
+                        <Award size={11} />
+                        <span>LEAD</span>
                       </div>
                     )}
 
-                    {/* Framed Photo Container */}
+                    {/* Framed Photo Container (Original photo with real background intact!) */}
                     <div className="neo-photo-box">
                       <img
                         src={member.photo}
@@ -612,10 +585,12 @@ const CoreTeamSection = () => {
                         className="neo-photo-img"
                         loading="lazy"
                         onError={(e) => {
-                          e.target.style.display = 'none';
+                          // Fallback to png if jpg not found
+                          if (member.photo.endsWith('.jpg')) {
+                            e.target.src = member.photo.replace('.jpg', '.png');
+                          }
                         }}
                       />
-                      <span className="neo-photo-domain-tag">{member.domainName}</span>
                     </div>
 
                     {/* Member Details */}
@@ -623,48 +598,45 @@ const CoreTeamSection = () => {
                       <h4 className="neo-member-name">{member.name}</h4>
                       <p className="neo-member-role">{member.role}</p>
 
-                      {/* Dashed Horizontal Divider (Directly from uploaded reference image) */}
+                      {/* Dashed Horizontal Divider (From reference image) */}
                       <div className="neo-dashed-divider" />
 
                       {/* Social Actions Row with LinkedIn in corner */}
                       <div className="neo-card-footer">
-                        <span className="neo-domain-micro-pill">{member.domainName}</span>
-
-                        <div className="neo-social-icons-group">
-                          {member.instagram && (
-                            <a
-                              href={member.instagram}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="neo-social-btn ig-btn"
-                              title="Instagram"
-                              aria-label={`${member.name} Instagram`}
-                            >
-                              <Instagram size={14} />
-                            </a>
-                          )}
+                        {member.instagram ? (
                           <a
-                            href={member.linkedin || 'https://www.linkedin.com'}
+                            href={member.instagram}
                             target="_blank"
                             rel="noreferrer"
-                            className="neo-social-btn in-btn"
-                            title="LinkedIn"
-                            aria-label={`${member.name} LinkedIn`}
+                            className="neo-social-btn ig-btn"
+                            title="Instagram"
+                            aria-label={`${member.name} Instagram`}
                           >
-                            <Linkedin size={15} />
-                            <span>in</span>
+                            <Instagram size={13} />
                           </a>
-                        </div>
+                        ) : <span />}
+
+                        <a
+                          href={member.linkedin || 'https://www.linkedin.com'}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="neo-social-btn in-btn"
+                          title="LinkedIn"
+                          aria-label={`${member.name} LinkedIn`}
+                        >
+                          <Linkedin size={14} />
+                          <span>in</span>
+                        </a>
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="no-members-found">
-                <Search size={32} />
+              <div className="no-members-found neo-black-box">
+                <Search size={28} />
                 <h4>No builders found</h4>
-                <p>No team members matching "{searchQuery}" in this category.</p>
+                <p>No members in {currentDomainTeam.name} match "{searchQuery}".</p>
                 <button
                   type="button"
                   className="reset-search-btn"
@@ -690,7 +662,7 @@ const CoreTeamSection = () => {
               onClick={() => setLightboxPhoto(null)}
               aria-label="Close Lightbox"
             >
-              <X size={20} />
+              <X size={18} />
             </button>
             <img
               src={lightboxPhoto.src}
