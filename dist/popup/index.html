@@ -10,7 +10,44 @@
 }
 </script>
 </head>
-<body><style>
+<body>
+
+  <!-- Top Chapter Navigation HUD -->
+  <div id="sbg-hud">
+    <button class="sbg-chapter-btn active" onclick="jumpToChapter(0)">01 Book Opening</button>
+    <button class="sbg-chapter-btn" onclick="jumpToChapter(15)">02 Cloud Kingdom</button>
+    <button class="sbg-chapter-btn" onclick="jumpToChapter(35)">03 Horizons</button>
+    <button class="sbg-chapter-btn" onclick="jumpToChapter(40)">04 Builder's Voyage</button>
+    <button class="sbg-chapter-btn" onclick="jumpToChapter(65)">05 The Challenge</button>
+    <button class="sbg-chapter-btn" onclick="jumpToChapter(90)">06 SBG Academy</button>
+    <button class="sbg-chapter-btn" onclick="jumpToChapter(106)">07 The Call</button>
+  </div>
+
+  <!-- Dynamic Cinematic Subtitles -->
+  <div id="sbg-subtitle-container">
+    <div class="sbg-subtitle-card">
+      <div id="sbg-sub-main" class="sbg-sub-main">Every great journey begins with curiosity.</div>
+      <div id="sbg-sub-sec" class="sbg-sub-sec">WELCOME TO THE WORLD OF BUILDERS</div>
+    </div>
+  </div>
+
+  <!-- Final Logo Reveal Overlay -->
+  <div id="sbg-logo-reveal">
+    <div class="sbg-reveal-box">
+      <div class="sbg-badge-pill">AWS STUDENT BUILDER GROUP</div>
+      <h1 class="sbg-title-main">THE BUILDER'S <span class="sbg-title-gold">CHRONICLES</span></h1>
+      <p class="sbg-reveal-sub">
+        <strong>THE JOURNEY STARTS WITH YOU.</strong><br>
+        Learn together. Build together. Innovate together.
+      </p>
+      <div class="sbg-cta-row">
+        <button class="sbg-primary-btn" onclick="triggerJoinModal()">⚡ Join The Journey</button>
+        <button class="sbg-secondary-btn" onclick="replayChronicles()">↺ Replay Chronicles</button>
+        <button class="sbg-secondary-btn" onclick="dismissReveal()">Explore World</button>
+      </div>
+    </div>
+  </div>
+<style>
   html, body { margin: 0; height: 100%; overflow: hidden; background: #020204; }
   canvas { display: block; width: 100%; height: 100%; touch-action: none; }
   /* the film's own still, there the moment the page opens (nothing dark to wait through, and something to see for a
@@ -38,6 +75,206 @@
   #sound.hint { animation: hint 2.6s ease-in-out 3; }
   @keyframes hint { 0%, 100% { box-shadow: 0 0 0 0 rgba(255, 190, 110, 0); } 50% { box-shadow: 0 0 0 5px rgba(255, 190, 110, .14), 0 0 18px rgba(255, 170, 80, .38); } }
   @media (prefers-reduced-motion: reduce) { #sound.hint, #sound.on .wave { animation: none; } }
+
+  /* AWS SBG THE BUILDER'S CHRONICLES HUD */
+  #sbg-hud {
+    position: fixed;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: rgba(12, 14, 24, 0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 153, 0, 0.28);
+    border-radius: 99px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 12px rgba(255, 153, 0, 0.08);
+    pointer-events: auto;
+    max-width: 95vw;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  #sbg-hud::-webkit-scrollbar { display: none; }
+  .sbg-chapter-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    color: #94a3b8;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 5px 11px;
+    border-radius: 99px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .sbg-chapter-btn:hover {
+    color: #f8fafc;
+    background: rgba(255, 255, 255, 0.08);
+  }
+  .sbg-chapter-btn.active {
+    color: #ffffff;
+    background: linear-gradient(135deg, rgba(255, 153, 0, 0.85) 0%, rgba(217, 119, 6, 0.95) 100%);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 14px rgba(255, 153, 0, 0.5);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  }
+  #sbg-subtitle-container {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 50;
+    pointer-events: none;
+    text-align: center;
+    width: 90%;
+    max-width: 820px;
+    transition: opacity 0.5s ease;
+  }
+  .sbg-subtitle-card {
+    display: inline-block;
+    padding: 12px 28px;
+    background: rgba(10, 12, 22, 0.82);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 153, 0, 0.38);
+    border-radius: 99px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.65), 0 0 20px rgba(255, 153, 0, 0.15);
+  }
+  .sbg-sub-main {
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+  }
+  .sbg-sub-sec {
+    color: #ffb03a;
+    font-family: 'SF Mono', Consolas, monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    margin-top: 3px;
+    text-shadow: 0 0 8px rgba(255, 153, 0, 0.4);
+  }
+  #sbg-logo-reveal {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    background: radial-gradient(circle at center, rgba(16, 20, 38, 0.92) 0%, rgba(5, 7, 14, 0.98) 80%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  #sbg-logo-reveal.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .sbg-reveal-box {
+    text-align: center;
+    padding: 2.5rem 3rem;
+    background: rgba(18, 22, 38, 0.85);
+    border: 1px solid rgba(255, 153, 0, 0.45);
+    border-radius: 2rem;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 153, 0, 0.22);
+    max-width: 580px;
+    width: 90%;
+    transform: scale(0.95);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  #sbg-logo-reveal.visible .sbg-reveal-box {
+    transform: scale(1);
+  }
+  .sbg-badge-pill {
+    display: inline-block;
+    padding: 5px 16px;
+    background: rgba(255, 153, 0, 0.15);
+    border: 1px solid rgba(255, 153, 0, 0.5);
+    border-radius: 99px;
+    color: #ff9900;
+    font-family: monospace;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    margin-bottom: 1.2rem;
+  }
+  .sbg-title-main {
+    color: #ffffff;
+    font-size: 1.85rem;
+    font-weight: 900;
+    letter-spacing: 0.03em;
+    margin: 0 0 0.5rem 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  .sbg-title-gold {
+    background: linear-gradient(135deg, #ffd666 0%, #ff9900 50%, #f59e0b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .sbg-reveal-sub {
+    color: #cbd5e1;
+    font-size: 1.02rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+  .sbg-cta-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .sbg-primary-btn {
+    background: linear-gradient(135deg, #ff9900 0%, #d97706 100%);
+    color: #0c0e18;
+    font-weight: 800;
+    font-size: 0.95rem;
+    padding: 12px 28px;
+    border-radius: 99px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(255, 153, 0, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .sbg-primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 28px rgba(255, 153, 0, 0.6);
+  }
+  .sbg-secondary-btn {
+    background: rgba(255, 255, 255, 0.08);
+    color: #f1f5f9;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 12px 24px;
+    border-radius: 99px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .sbg-secondary-btn:hover {
+    background: rgba(255, 255, 255, 0.16);
+  }
+  @media (max-width: 640px) {
+    #sbg-hud { top: 10px; padding: 4px 8px; }
+    .sbg-chapter-btn { font-size: 0.68rem; padding: 4px 8px; }
+    .sbg-sub-main { font-size: 0.88rem; }
+    .sbg-sub-sec { font-size: 0.7rem; }
+    .sbg-reveal-box { padding: 1.8rem 1.4rem; }
+    .sbg-title-main { font-size: 1.4rem; }
+  }
+
 </style>
 <div id="poster" aria-hidden="true"></div>
 <button id="sound" class="hint" type="button" aria-label="Sound on" aria-pressed="false">
@@ -1572,18 +1809,35 @@ function coverPrint(g) {
       for (let k = 0; k < 3; k++) { ctx.beginPath(); ctx.arc(x + sx * (0.9 + k * 0.55), y + sy * (0.9 + k * 0.55), 0.5 + k * 0.25, 0, TAU); ctx.stroke(); }
       ctx.beginPath(); ctx.arc(x + sx * 0.6, y + sy * 0.6, 0.22, 0, TAU); ctx.fill();
     }
-    // the medallion
-    ctx.lineWidth = 0.07; ctx.beginPath(); ctx.ellipse(cx, cy, 5.2, 6.6, 0, 0, TAU); ctx.stroke();
-    ctx.lineWidth = 0.035; ctx.beginPath(); ctx.ellipse(cx, cy, 4.8, 6.2, 0, 0, TAU); ctx.stroke();
-    for (let k = 0; k < 24; k++) { const a = k / 24 * TAU; ctx.beginPath(); ctx.arc(cx + Math.cos(a) * 5.65, cy + Math.sin(a) * 7.05, 0.13, 0, TAU); ctx.fill(); }
-    // a castle tower within it, a crescent moon and stars
+
+    // TOP ENGRAVED TITLES
+    G.text(ctx, 'AWS STUDENT BUILDER GROUP', cx, cy + 10.4, 0.68, c, { weight: 900 });
+    ctx.fillRect(cx - 7.0, cy + 9.5, 14.0, 0.04);
+    G.text(ctx, 'JSSATEB EDITION', cx, cy + 8.7, 0.46, c, { weight: 800 });
+    G.text(ctx, 'VOL. 01 • THE BUILDER\'S CHRONICLES', cx, cy + 7.7, 0.32, '#f59e0b', { weight: 700 });
+
+    // THE MEDALLION WITH AWS SBG EMBLEM & FORTRESS
+    ctx.lineWidth = 0.07; ctx.beginPath(); ctx.ellipse(cx, cy - 0.2, 4.8, 5.8, 0, 0, TAU); ctx.stroke();
+    ctx.lineWidth = 0.035; ctx.beginPath(); ctx.ellipse(cx, cy - 0.2, 4.4, 5.4, 0, 0, TAU); ctx.stroke();
+    for (let k = 0; k < 24; k++) { const a = k / 24 * TAU; ctx.beginPath(); ctx.arc(cx + Math.cos(a) * 5.2, cy - 0.2 + Math.sin(a) * 6.2, 0.12, 0, TAU); ctx.fill(); }
+    
+    // Fortress Tower
     ctx.lineWidth = 0.06;
-    const tw = [[cx - 1.4, cy - 3.2], [cx - 1.4, cy + 1.2], [cx - 1.9, cy + 1.2], [cx - 1.9, cy + 2.2], [cx - 1.2, cy + 2.2], [cx - 1.2, cy + 1.7], [cx - 0.5, cy + 1.7], [cx - 0.5, cy + 2.2], [cx + 0.5, cy + 2.2], [cx + 0.5, cy + 1.7], [cx + 1.2, cy + 1.7], [cx + 1.2, cy + 2.2], [cx + 1.9, cy + 2.2], [cx + 1.9, cy + 1.2], [cx + 1.4, cy + 1.2], [cx + 1.4, cy - 3.2]];
+    const tw = [[cx - 1.3, cy - 2.6], [cx - 1.3, cy + 1.2], [cx - 1.7, cy + 1.2], [cx - 1.7, cy + 2.0], [cx - 1.1, cy + 2.0], [cx - 1.1, cy + 1.6], [cx - 0.45, cy + 1.6], [cx - 0.45, cy + 2.0], [cx + 0.45, cy + 2.0], [cx + 0.45, cy + 1.6], [cx + 1.1, cy + 1.6], [cx + 1.1, cy + 2.0], [cx + 1.7, cy + 2.0], [cx + 1.7, cy + 1.2], [cx + 1.3, cy + 1.2], [cx + 1.3, cy - 2.6]];
     G.path(ctx, tw, false); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(cx - 0.55, cy - 3.2); ctx.lineTo(cx - 0.55, cy - 1.8); ctx.arc(cx, cy - 1.8, 0.55, Math.PI, 0, true); ctx.lineTo(cx + 0.55, cy - 3.2); ctx.stroke();
-    ctx.beginPath(); ctx.arc(cx + 2.4, cy + 4.0, 0.9, -2.2, 2.2); ctx.arc(cx + 2.7, cy + 4.0, 0.72, 1.9, -1.9, true); ctx.fill();
-    for (const [x, y] of [[cx - 2.6, cy + 4.3], [cx - 1.6, cy + 5.1], [cx + 0.9, cy + 5.2], [cx - 3.2, cy - 1.0], [cx + 3.3, cy - 0.6]]) { ctx.beginPath(); for (let k = 0; k < 10; k++) { const a = k / 10 * TAU, rr = k % 2 ? 0.1 : 0.26; ctx.lineTo(x + Math.cos(a) * rr, y + Math.sin(a) * rr); } ctx.fill(); }
-    ctx.lineWidth = 0.05; ctx.beginPath(); ctx.moveTo(cx - 4, cy - 4.4); ctx.quadraticCurveTo(cx, cy - 3.4, cx + 4, cy - 4.4); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx - 0.5, cy - 2.6); ctx.lineTo(cx - 0.5, cy - 1.4); ctx.arc(cx, cy - 1.4, 0.5, Math.PI, 0, true); ctx.lineTo(cx + 0.5, cy - 2.6); ctx.stroke();
+    
+    // AWS smile curve in burnished gold
+    ctx.lineWidth = 0.14; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.arc(cx, cy - 1.5, 2.5, 0.25 * Math.PI, 0.75 * Math.PI); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx + 1.8, cy - 3.1); ctx.lineTo(cx + 2.3, cy - 3.35); ctx.lineTo(cx + 2.2, cy - 2.7); ctx.fill();
+
+    G.text(ctx, 'AWS SBG', cx, cy - 0.15, 0.54, c, { weight: 900 });
+
+    // BOTTOM SUBTITLE
+    G.text(ctx, 'FROM CURIOSITY TO CREATION', cx, cy - 8.2, 0.42, c, { weight: 800 });
+    ctx.fillRect(cx - 5.0, cy - 8.9, 10.0, 0.035);
+    G.text(ctx, 'LEARN • BUILD • INNOVATE • LEAD', cx, cy - 9.6, 0.32, '#f59e0b', { weight: 700 });
   });
 }
 function pageEdges(g, x0, y0, x1, y1, gilt) {
@@ -1941,6 +2195,16 @@ const CASTLE = (() => {
         ctx.fillRect(-2.5, -0.52, 5.0, 0.04);
       });
       G.text(ctx, mirror ? 'AWS STUDENT BUILDER GROUP' : 'JSSATEB BUILDERS CHAPTER', 0, 0, 0.34, '#232f3e', { weight: 800 });
+      // Engraved Core AWS Cloud Concepts
+      G.gold(ctx, (c) => {
+        ctx.fillStyle = c;
+        ctx.fillRect(-2.5, 1.25, 5.0, 0.38);
+        ctx.strokeStyle = '#232f3e';
+        ctx.lineWidth = 0.02;
+        ctx.strokeRect(-2.5, 1.25, 5.0, 0.38);
+      });
+      G.text(ctx, mirror ? 'EC2: COMPUTE • S3: STORAGE' : 'LAMBDA: SERVERLESS • RDS: DB', 0, 1.44, 0.23, '#232f3e', { weight: 900 });
+      G.text(ctx, mirror ? 'VPC: NETWORK • CLOUDFRONT: CDN' : 'WELL-ARCHITECTED CLOUD TOWER', 0, 0.95, 0.20, '#d97706', { weight: 800 });
       G.text(ctx, mirror ? 'GENAI • BEDROCK • ARCHITECTURE' : 'EC2 • S3 • LAMBDA • DYNAMODB', 0, -0.32, 0.23, '#475569', { weight: 700 });
       ctx.restore();
     }];
@@ -2054,33 +2318,56 @@ const CASTLE = (() => {
   // ---- the ground, across both pages: a meadow, the moat round the castle, the road to its gate ----
   SPREADS[1].ground = (g) => {
     const { ctx } = g, r = mulberry32(101), Y = (z) => BH / 2 - z;
-    G.wash(ctx, -BW, 0, BW, BH, '#9bbb66', { k: 0.12, blob: 4, grain: 1.5, rng: r });
-    // fields and hedges, far off
-    for (let k = 0; k < 14; k++) { const x = -BW + r() * 2 * BW, y = r() * BH; ctx.fillStyle = rgb(mixc(hex3('#9bbb66'), r() < 0.5 ? [0.85, 0.75, 0.35] : [0.3, 0.45, 0.2], 0.25), 0.35); ctx.beginPath(); ctx.ellipse(x, y, 2 + r() * 4, 1 + r() * 2.5, r() * 3, 0, TAU); ctx.fill(); }
-    // the moat
+    // Ancient technological kingdom parchment
+    G.wash(ctx, -BW, 0, BW, BH, '#8ea664', { k: 0.12, blob: 4, grain: 1.5, rng: r });
+    
+    // Topographic map contour lines
+    ctx.strokeStyle = 'rgba(40,65,25,0.22)'; ctx.lineWidth = 0.03;
+    for (let c = 0; c < 8; c++) {
+      ctx.beginPath();
+      ctx.ellipse(0, Y(-2), 16 + c * 0.9, 14 + c * 0.85, 0, 0, TAU);
+      ctx.stroke();
+    }
+
+    // Moat (cooling water for cloud infrastructure)
     const cy = Y(-1.8);
-    ctx.lineWidth = 2.4; ctx.strokeStyle = '#4f88a8'; ctx.beginPath(); ctx.ellipse(0, cy, 13.6, 12.8, 0, 0, TAU); ctx.stroke();
+    ctx.lineWidth = 2.4; ctx.strokeStyle = '#387396'; ctx.beginPath(); ctx.ellipse(0, cy, 13.6, 12.8, 0, 0, TAU); ctx.stroke();
     ctx.lineWidth = 0.05; ctx.strokeStyle = INK; for (const rr of [-1.2, 1.2]) { ctx.beginPath(); ctx.ellipse(0, cy, 13.6 + rr, 12.8 + rr, 0, 0, TAU); ctx.stroke(); }
-    ctx.strokeStyle = 'rgba(240,250,255,0.6)'; ctx.lineWidth = 0.03;
-    for (let k = 0; k < 90; k++) { const a = r() * TAU, rr = 13.6 + (r() - 0.5) * 1.6; ctx.beginPath(); ctx.ellipse(0, cy, rr, rr - 0.8, 0, a, a + 0.08); ctx.stroke(); }
-    // the courtyard: packed earth, cobbles
+    
+    // Illuminated Network Circuit Traces across the ground
+    ctx.strokeStyle = 'rgba(56, 189, 248, 0.75)'; ctx.lineWidth = 0.06;
+    for (const [x1, z1, x2, z2] of [
+      [-14, 10, -2, 10], [14, 10, 2, 10], [-10, -8, -1, -3], [10, -8, 1, -3],
+      [-16, 4, -8, 4], [16, 4, 8, 4], [-4, 12, 0, 8], [4, 12, 0, 8]
+    ]) {
+      ctx.beginPath();
+      ctx.moveTo(x1, Y(z1));
+      ctx.lineTo((x1 + x2) / 2, Y(z1));
+      ctx.lineTo(x2, Y(z2));
+      ctx.stroke();
+      // Server node terminals
+      ctx.fillStyle = '#ff9900';
+      ctx.beginPath(); ctx.arc(x1, Y(z1), 0.22, 0, TAU); ctx.fill();
+    }
+
+    // Courtyard cobbles
     ctx.fillStyle = 'rgba(170,140,95,0.45)'; ctx.beginPath(); ctx.ellipse(0, cy, 11.6, 10.8, 0, 0, TAU); ctx.fill();
     G.stones(ctx, -10, cy - 6, 10, cy + 6, 0.5, '#b8a27a', { rng: r });
-    // the road, from the near edge to the drawbridge
+
+    // Road to drawbridge
     ctx.fillStyle = '#cdb27e'; ctx.beginPath(); ctx.moveTo(-2.2, 0); ctx.quadraticCurveTo(-1.5, Y(12), -1.2, Y(10.2)); ctx.lineTo(1.2, Y(10.2)); ctx.quadraticCurveTo(1.8, Y(12), 2.6, 0); ctx.fill();
     G.ink(ctx, [[-2.2, 0], [-1.6, Y(12)], [-1.2, Y(10.2)]], 0.035); G.ink(ctx, [[2.6, 0], [1.8, Y(12)], [1.2, Y(10.2)]], 0.035);
-    G.text(ctx, 'AWS STUDENT BUILDER GROUP', 0, Y(13.8), 0.58, '#232f3e', { weight: 800 });
-    G.text(ctx, 'JSSATEB CHAPTER • GATEWAY', 0, Y(14.8), 0.44, '#d97706', { weight: 800 });
-    G.text(ctx, 'ENTER THE CLOUD REALM', 0, Y(1.0), 0.52, '#232f3e', { weight: 700 });
-    // flowers, little trees, a village in the far corners
-    for (let k = 0; k < 400; k++) { const x = -BW + r() * 2 * BW, y = r() * BH, e = Math.hypot(x / 15, (y - cy) / 14.2); if (e < 1) continue; ctx.fillStyle = ['#e5554a', '#f4e27a', '#ffffff', '#c58ad8'][k % 4]; ctx.beginPath(); ctx.arc(x, y, 0.06 + r() * 0.05, 0, TAU); ctx.fill(); }
-    for (let k = 0; k < 26; k++) { const x = (r() < 0.5 ? -1 : 1) * (15.5 + r() * 6), y = r() * BH; ctx.fillStyle = '#5d8a3f'; ctx.beginPath(); ctx.arc(x, y, 0.5 + r() * 0.5, 0, TAU); ctx.fill(); G.inkShape(ctx, Array.from({ length: 10 }, (_, i) => [x + Math.cos(i / 10 * TAU) * 0.7, y + Math.sin(i / 10 * TAU) * 0.7]), 0.025); }
-    for (const [x, y] of [[-18, 27], [-15.5, 26], [17, 27.5], [19, 25.5], [-19, 4], [18.5, 3.5]]) {
-      ctx.fillStyle = '#d9cdb4'; ctx.fillRect(x - 0.8, y - 0.5, 1.6, 1); ctx.fillStyle = ROOF_R; ctx.beginPath(); ctx.moveTo(x - 1, y + 0.5); ctx.lineTo(x, y + 1.3); ctx.lineTo(x + 1, y + 0.5); ctx.fill();
-      G.inkShape(ctx, [[x - 0.8, y - 0.5], [x + 0.8, y - 0.5], [x + 0.8, y + 0.5], [x - 0.8, y + 0.5]], 0.025);
-      G.text(ctx, 'AWS', x, y, 0.22, '#232f3e', { weight: 800 });
-    }
-    // shadows of the walls printed on the ground (the paper's own darkening where pieces are glued)
+
+    // Cartographic Inscriptions & AWS Region Map Details
+    G.text(ctx, 'AWS STUDENT BUILDER GROUP', 0, Y(13.8), 0.58, '#232f3e', { weight: 900 });
+    G.text(ctx, 'JSSATEB CHAPTER • CLOUD REALM', 0, Y(14.8), 0.44, '#d97706', { weight: 800 });
+    G.text(ctx, 'REGION: AP-SOUTH-1 (BENGALURU)', -11.5, Y(11.5), 0.32, '#1e293b', { weight: 700 });
+    G.text(ctx, 'VPC GATEWAY NORTH', 11.5, Y(11.5), 0.32, '#1e293b', { weight: 700 });
+    G.text(ctx, 'S3 ARCHIVAL VAULT', -11.5, Y(-7.5), 0.32, '#1e293b', { weight: 700 });
+    G.text(ctx, 'BEDROCK SANCTUARY', 11.5, Y(-7.5), 0.32, '#1e293b', { weight: 700 });
+    G.text(ctx, 'ENTER THE CLOUD KINGDOM', 0, Y(1.0), 0.52, '#232f3e', { weight: 800 });
+
+    // Shadows
     ctx.strokeStyle = 'rgba(40,50,25,0.25)'; ctx.lineWidth = 0.35;
     for (const [z, L, a, d] of [[9, 11, 66, -1], [-12.5, 11, 64, 1], [kz, KS, 45, -1], [kb, KS, 45, 1]]) for (const s of [-1, 1]) { const ca = Math.cos(a * D2R) * d, sa = Math.sin(a * D2R) * s; ctx.beginPath(); ctx.moveTo(0, Y(z)); ctx.lineTo(sa * L, Y(z + ca * L)); ctx.stroke(); }
   };
@@ -2165,7 +2452,18 @@ const SEA = (() => {
     ctx.strokeStyle = 'rgba(30,15,5,0.7)'; ctx.lineWidth = 0.025; for (let y = 0.3; y < 4; y += 0.28) { ctx.beginPath(); ctx.moveTo(0, y); ctx.bezierCurveTo(2.5, y - 0.12, 5.5, y - 0.12, HL, y + 0.05); ctx.stroke(); }
     ctx.fillStyle = '#9e3b2a'; ctx.beginPath(); ctx.moveTo(0, 1.25); ctx.bezierCurveTo(2.5, 1.1, 5.5, 1.12, HL, 1.3); ctx.lineTo(HL, 1.62); ctx.bezierCurveTo(5.5, 1.42, 2.5, 1.42, 0, 1.6); ctx.fill();
     G.gold(ctx, (c) => { ctx.fillStyle = c; ctx.fillRect(0, 1.58, HL, 0.06); ctx.beginPath(); ctx.arc(0.35, 2.4, 0.3, 0, TAU); ctx.fill(); });
-    G.text(ctx, 'AWS SBG EXPLORER', HL * 0.45, 1.45, 0.25, '#ffffff', { weight: 800 });
+    G.text(ctx, 'BUILDER ONE', HL * 0.45, 1.45, 0.30, '#ffffff', { weight: 900 });
+    // Cargo barrels marked CLOUD, AI, DEVOPS, DATA
+    const BARRELS = ['CLOUD', 'AI', 'DEVOPS', 'DATA'];
+    for (let bi = 0; bi < 4; bi++) {
+      const bx = 2.4 + bi * 1.2;
+      ctx.fillStyle = '#4a2c14';
+      ctx.fillRect(bx - 0.35, 1.85, 0.7, 0.8);
+      ctx.strokeStyle = '#c9a24f';
+      ctx.lineWidth = 0.03;
+      ctx.strokeRect(bx - 0.35, 1.85, 0.7, 0.8);
+      G.text(ctx, BARRELS[bi], bx, 2.25, 0.14, '#ff9900', { weight: 800 });
+    }
     for (const x of [2.4, 3.6, 4.8, 6.0]) { ctx.fillStyle = '#1c120c'; ctx.beginPath(); ctx.arc(x, 0.75, 0.16, 0, TAU); ctx.fill(); ctx.strokeStyle = '#c9a24f'; ctx.lineWidth = 0.04; ctx.stroke(); }
     G.shade(ctx, 0, 0, HL, 1, 0.45, 0, [0.05, 0.04, 0.08], true);
     G.inkShape(ctx, hullB, 0.05);
@@ -2251,15 +2549,63 @@ const SEA = (() => {
   { const r = mulberry32(470); for (let k = 0; k < 26; k++) { const side = r() < 0.5 ? CA : CB, x = (side === CA ? -1 : 1) * (1.5 + r() * 19), y = 1.0 + r() * 4.5, len = 4 + r() * 3; rain.push({ par: side, x, y, ph: r() * 6.28, f: P({ poly: rect(-0.035, -len, 0.035, 0), t: 0.015, print: (g) => { g.ctx.fillStyle = 'rgba(200,215,230,0.9)'; g.ctx.fillRect(-1, -9, 2, 10); }, backCol: [0.75, 0.82, 0.9], trans: 0.7 }) }); } }
   // ---- the ground: dark water, streaks of foam ----
   SPREADS[2].ground = (g) => {
-    const { ctx } = g, r = mulberry32(480);
-    G.wash(ctx, -BW, 0, BW, BH, '#1d4f6a', { k: 0.15, blob: 4, var: 1.6, grain: 1.5, rng: r });
-    const gr = ctx.createLinearGradient(0, 0, 0, BH); gr.addColorStop(0, 'rgba(60,140,160,0.35)'); gr.addColorStop(1, 'rgba(5,20,35,0.5)');
+    const { ctx } = g, r = mulberry32(480), Y = (z) => BH / 2 - z;
+    G.wash(ctx, -BW, 0, BW, BH, '#163c52', { k: 0.15, blob: 4, var: 1.6, grain: 1.5, rng: r });
+    const gr = ctx.createLinearGradient(0, 0, 0, BH); gr.addColorStop(0, 'rgba(50,120,145,0.35)'); gr.addColorStop(1, 'rgba(4,16,28,0.55)');
     ctx.fillStyle = gr; ctx.fillRect(-BW, 0, 2 * BW, BH);
-    ctx.strokeStyle = 'rgba(230,245,250,0.5)'; ctx.lineWidth = 0.04;
-    for (let k = 0; k < 160; k++) { const x = -BW + r() * 2 * BW, y = r() * BH, l = 0.6 + r() * 2.5; ctx.beginPath(); ctx.moveTo(x, y); ctx.bezierCurveTo(x + l * 0.3, y + 0.25, x + l * 0.7, y - 0.25, x + l, y); ctx.stroke(); }
-    for (let k = 0; k < 50; k++) { const x = -BW + r() * 2 * BW, y = r() * BH; ctx.strokeStyle = 'rgba(10,30,45,0.5)'; ctx.lineWidth = 0.035; ctx.beginPath(); ctx.arc(x, y, 0.4 + r() * 0.9, 0.2, 2.6); ctx.stroke(); }
-    // the ship's wake, behind it
-    ctx.strokeStyle = 'rgba(240,250,255,0.55)'; ctx.lineWidth = 0.06; for (const s of [-1, 1]) { ctx.beginPath(); ctx.moveTo(s * 1.5, BH / 2 - 4.5); ctx.quadraticCurveTo(s * 3.5, BH / 2 + 2, s * 6.5, BH / 2 + 8); ctx.stroke(); }
+
+    // Glowing Voyage Route connecting the 5 Learning Islands
+    ctx.strokeStyle = 'rgba(255, 153, 0, 0.65)';
+    ctx.lineWidth = 0.08;
+    ctx.setLineDash([0.3, 0.35]);
+    ctx.beginPath();
+    ctx.moveTo(-15, Y(10));
+    ctx.quadraticCurveTo(-9, Y(4), -6, Y(1));
+    ctx.quadraticCurveTo(0, Y(6), 3, Y(-3));
+    ctx.quadraticCurveTo(9, Y(3), 15, Y(-6));
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // THE 5 LEARNING ISLANDS IN THE 3D WORLD
+    const ISLANDS = [
+      { x: -15, z: 10, title: 'ISLAND 01 — LEARNING', sub: 'Workshops • Labs • Fundamentals', col: '#22c55e' },
+      { x: -6, z: 1, title: 'ISLAND 02 — INNOVATION', sub: 'AI • Machine Learning • GenAI', col: '#a855f7' },
+      { x: 2, z: -3, title: 'ISLAND 03 — CHALLENGES', sub: 'Hackathons • Problem Solving', col: '#ef4444' },
+      { x: 9, z: 3, title: 'ISLAND 04 — GROWTH', sub: 'Mentorship • Certifications', col: '#06b6d4' },
+      { x: 15, z: -6, title: 'ISLAND 05 — CREATIONS', sub: 'Real-World Solutions • Projects', col: '#f59e0b' }
+    ];
+
+    for (const isl of ISLANDS) {
+      const iy = Y(isl.z);
+      // Island landmass
+      ctx.fillStyle = '#264a2e';
+      ctx.beginPath();
+      ctx.ellipse(isl.x, iy, 2.4, 1.4, 0.2, 0, TAU);
+      ctx.fill();
+      // Sandy beach rim
+      ctx.strokeStyle = '#e2c686';
+      ctx.lineWidth = 0.12;
+      ctx.stroke();
+      // Island beacon tower
+      ctx.fillStyle = isl.col;
+      ctx.beginPath();
+      ctx.arc(isl.x, iy - 0.2, 0.28, 0, TAU);
+      ctx.fill();
+      // Island Nameplate
+      G.gold(ctx, (c) => {
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+        ctx.fillRect(isl.x - 2.8, iy + 1.2, 5.6, 0.7);
+        ctx.strokeStyle = c;
+        ctx.lineWidth = 0.025;
+        ctx.strokeRect(isl.x - 2.8, iy + 1.2, 5.6, 0.7);
+      });
+      G.text(ctx, isl.title, isl.x, iy + 1.45, 0.22, '#f8fafc', { weight: 800 });
+      G.text(ctx, isl.sub, isl.x, iy + 1.72, 0.15, '#cbd5e1', { weight: 600 });
+    }
+
+    // Sea curls and wave textures
+    ctx.strokeStyle = 'rgba(230,245,250,0.45)'; ctx.lineWidth = 0.04;
+    for (let k = 0; k < 140; k++) { const x = -BW + r() * 2 * BW, y = r() * BH, l = 0.6 + r() * 2.5; ctx.beginPath(); ctx.moveTo(x, y); ctx.bezierCurveTo(x + l * 0.3, y + 0.25, x + l * 0.7, y - 0.25, x + l, y); ctx.stroke(); }
   };
   // ---- the lightning: when each bolt strikes ----
   const STRIKES = [[41.6, 0], [44.9, 1], [47.3, 2], [49.8, 0], [52.6, 1], [54.4, 2], [56.3, 0]];
@@ -2372,7 +2718,7 @@ const DRAGON = (() => {
   } });
   // ---- fire: three layers of card, each a cross of two sheets ----
   const flameShape = (L, W) => { const pts = [[0, -W * 0.3]]; for (let k = 1; k <= 8; k++) { const t = k / 8; pts.push([t * L, -W * (0.3 + 0.7 * Math.sin(t * Math.PI * 0.9)) + (k % 2 ? 0.15 : -0.1) * W]); } for (let k = 8; k >= 1; k--) { const t = k / 8; pts.push([t * L * (k === 8 ? 1.08 : 1), W * (0.3 + 0.7 * Math.sin(t * Math.PI * 0.9)) + (k % 2 ? -0.12 : 0.18) * W]); } pts.push([0, W * 0.3]); return pts; };
-  const FL = [[7.5, 1.7, '#e0452a', [3.2, 0.9, 0.3]], [6.2, 1.25, '#ff8a2a', [3.6, 1.7, 0.45]], [4.6, 0.75, '#ffe08a', [3.6, 2.9, 1.3]]].map(([L, W, col, glow], k) => {
+  const FL = [[7.5, 1.7, '#9333ea', [4.2, 1.2, 5.0]], [6.2, 1.25, '#38bdf8', [2.5, 3.8, 5.5]], [4.6, 0.75, '#ff9900', [4.5, 2.5, 0.8]]].map(([L, W, col, glow], k) => {
     const shape = flameShape(L, W), pr = (g) => { const { ctx } = g; ctx.fillStyle = col; ctx.fillRect(-1, -3, L + 2, 6); G.shade(ctx, 0, -W, L, W, 0.0, 0.4, [1, 0.95, 0.7]); G.inkShape(ctx, shape, 0.03, '#6a1a08'); };
     return [0, 1].map(() => P({ poly: shape, t: 0.02, print: pr, back: pr, glow, trans: 0.8, backCol: [1, 0.6, 0.2] }));
   });
@@ -2424,7 +2770,25 @@ const DRAGON = (() => {
       ctx.fillRect(-6.5, Y(2.8), 13, 0.08);
       ctx.fillRect(-6.5, Y(5.4), 13, 0.08);
     });
-    G.text(ctx, 'AMAZON BEDROCK & GENAI LABS', 0, Y(3.7), 0.62, '#f4ead2', { weight: 800 });
+    // THE BUILDER'S CHALLENGE GIANT GLOWING CRYSTAL
+    G.text(ctx, "THE BUILDER'S CHALLENGE", 0, Y(3.7), 0.68, '#ffd27a', { weight: 900 });
+    // Rotating mechanical gears around crystal
+    ctx.strokeStyle = '#d97706'; ctx.lineWidth = 0.05;
+    for (let gi = -1; gi <= 1; gi += 2) {
+      const gx = gi * 4.2, gy = Y(4.5);
+      ctx.beginPath(); ctx.arc(gx, gy, 0.8, 0, TAU); ctx.stroke();
+      for (let gti = 0; gti < 8; gti++) {
+        const a = gti / 8 * TAU;
+        ctx.beginPath(); ctx.moveTo(gx + Math.cos(a) * 0.7, gy + Math.sin(a) * 0.7);
+        ctx.lineTo(gx + Math.cos(a) * 0.95, gy + Math.sin(a) * 0.95); ctx.stroke();
+      }
+    }
+    // Algorithm & puzzle symbols etched around crystal
+    G.text(ctx, '{ code: innovate } • 010101 • NEURAL GRAPH', 0, Y(2.4), 0.28, '#38bdf8', { weight: 700 });
+    // Ancient Treasure Chest with AWS SBG emblem
+    ctx.fillStyle = '#3b2210'; ctx.fillRect(-1.6, Y(6.2) - 0.45, 3.2, 0.9);
+    ctx.strokeStyle = '#ff9900'; ctx.lineWidth = 0.04; ctx.strokeRect(-1.6, Y(6.2) - 0.45, 3.2, 0.9);
+    G.text(ctx, 'AWS SBG TREASURE VAULT', 0, Y(6.2), 0.22, '#ff9900', { weight: 800 });
     G.text(ctx, 'AWS FOUNDATION MODELS • SBG VAULT', 0, Y(4.7), 0.42, '#ff9900', { weight: 700 });
     ctx.strokeStyle = '#efe6d0'; ctx.lineWidth = 0.12; ctx.lineCap = 'round';
     for (let k = 0; k < 8; k++) { const x = (r() < 0.5 ? -1 : 1) * (6 + r() * 13), y = r() * BH, a = r() * 3; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + Math.cos(a) * 1.4, y + Math.sin(a) * 1.4); ctx.stroke(); for (const e of [0, 1.4]) { ctx.beginPath(); ctx.arc(x + Math.cos(a) * e, y + Math.sin(a) * e, 0.13, 0, TAU); ctx.stroke(); } }
@@ -2522,7 +2886,11 @@ const CITY = (() => {
     // (where the street passes the spine: a gateway, half its arch in each half)
     if (o.gate) { pts.push([1.7, 3.2], [0, 3.6]); for (let k = 0; k <= 5; k++) { const a = k / 5 * Math.PI / 2; pts.push([Math.sin(a) * 1.05, 1.45 + Math.cos(a) * 1.05]); } pts[0] = [1.05, 0]; }
     const outline = pts;
-    const AWS_DOMAINS = ['AWS SBG', 'LAMBDA', 'S3 STORAGE', 'DYNAMODB', 'BEDROCK AI', 'ECS DOCKS', 'CLOUD ARCH', 'WELL-ARCH', 'VPC NET', 'DEVSECOPS', 'API GATEWAY', 'IAM VAULT'];
+    const AWS_DOMAINS = [
+    'WORKSHOPS & LABS', 'MENTORSHIP & GUIDANCE', 'HACKATHONS & COMPETE',
+    'PROJECTS & INNOVATION', 'CERTIFICATIONS', 'COMMUNITY & LEAD',
+    'AWS SBG ACADEMY', 'CLOUD ARCHITECTURE', 'GENAI & BEDROCK', 'DEVSECOPS HUB'
+  ];
     const print = (mirror) => (g) => {
       const { ctx } = g, rr = mulberry32(o.seed + (mirror ? 7 : 3)); if (mirror) ctx.scale(-1, 1);
       for (let hi = 0; hi < houses.length; hi++) {
@@ -2564,7 +2932,8 @@ const CITY = (() => {
         ctx.save();
         ctx.translate(0.88, 2.75);
         if (mirror) ctx.scale(-1, 1);
-        G.text(ctx, 'AWS METROPOLIS', 0, 0, 0.22, '#232f3e', { weight: 800 });
+        G.text(ctx, 'AWS SBG ACADEMY', 0, 0.1, 0.24, '#232f3e', { weight: 900 });
+        G.text(ctx, 'FROM CURIOSITY TO CREATION', 0, -0.12, 0.15, '#d97706', { weight: 800 });
         ctx.restore();
       }
       G.inkShape(ctx, outline, 0.045);
@@ -2666,7 +3035,17 @@ const CITY = (() => {
     const ry = Y(4.2); ctx.fillStyle = '#1d3a5f'; ctx.fillRect(-BW, ry - 0.9, 2 * BW, 1.8);
     ctx.strokeStyle = 'rgba(255,210,120,0.55)'; ctx.lineWidth = 0.05; for (let k = 0; k < 60; k++) { const x = -BW + r() * 2 * BW, y = ry + (r() - 0.5) * 1.4; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + 0.3 + r() * 0.5, y); ctx.stroke(); }
     G.ink(ctx, [[-BW, ry - 0.9], [BW, ry - 0.9]], 0.04); G.ink(ctx, [[-BW, ry + 0.9], [BW, ry + 0.9]], 0.04);
-    ctx.fillStyle = '#8a8070'; ctx.fillRect(-1.6, ry - 1.1, 3.2, 2.2); ctx.strokeStyle = INK; ctx.lineWidth = 0.04; ctx.strokeRect(-1.6, ry - 1.1, 3.2, 2.2);
+    ctx.fillStyle = '#8a8070'; ctx.fillRect(-1.6, ry - 1.1, 3.2, 2.2);
+    // Central Courtyard Glowing Cloud Monument on Stone Pedestal
+    ctx.fillStyle = '#ffd666'; ctx.beginPath(); ctx.arc(0, ry - 3.2, 0.85, 0, TAU); ctx.fill();
+    ctx.beginPath(); ctx.arc(-0.65, ry - 3.1, 0.6, 0, TAU); ctx.arc(0.65, ry - 3.1, 0.6, 0, TAU); ctx.fill();
+    G.text(ctx, 'ACADEMY COURTYARD • CLOUD MONUMENT', 0, ry - 4.3, 0.26, '#f8fafc', { weight: 800 });
+    // Stylized Student silhouettes walking towards academy
+    for (const sx of [-2.4, -1.2, 0.8, 2.2]) {
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath(); ctx.arc(sx, ry - 0.5, 0.15, 0, TAU); ctx.fill();
+      ctx.fillRect(sx - 0.1, ry - 0.35, 0.2, 0.5);
+    } ctx.strokeStyle = INK; ctx.lineWidth = 0.04; ctx.strokeRect(-1.6, ry - 1.1, 3.2, 2.2);
     for (const x of [-1.6, 1.6]) for (let k = 0; k < 6; k++) { ctx.fillStyle = '#5a5248'; ctx.fillRect(x - 0.08, ry - 1.1 + k * 0.42, 0.16, 0.2); }
     // lamplight on the cobbles
     for (const [x, y] of LAMPS_AT) { const gr = ctx.createRadialGradient(x, y, 0, x, y, 2.2); gr.addColorStop(0, 'rgba(255,200,110,0.55)'); gr.addColorStop(1, 'rgba(255,200,110,0)'); ctx.fillStyle = gr; ctx.fillRect(x - 2.2, y - 2.2, 4.4, 4.4); }
@@ -3061,11 +3440,89 @@ function unveil() {
   const p = POSTER; POSTER = null;
   p.classList.add('gone'); setTimeout(() => { try { p.remove(); } catch (e) {} }, 800);
 }
+
+// =====================================================================
+// AWS SBG BUILDER'S CHRONICLES - CHAPTERS & CINEMATIC SCRIPT
+// =====================================================================
+const SBG_CHRONICLES = [
+  { t0: 0, t1: 15, chapter: 0, main: "Every great journey begins with curiosity.", sec: "WELCOME TO THE WORLD OF BUILDERS" },
+  { t0: 15, t1: 35, chapter: 1, main: "Discover the power of the cloud.", sec: "LEARN THE TECHNOLOGY POWERING THE DIGITAL WORLD" },
+  { t0: 35, t1: 40, chapter: 2, main: "Think beyond boundaries.", sec: "CLOUD • AI • DATA • INNOVATION" },
+  { t0: 40, t1: 65, chapter: 3, main: "One journey. Countless opportunities.", sec: "LEARN TOGETHER • BUILD TOGETHER • GROW TOGETHER" },
+  { t0: 65, t1: 90, chapter: 4, main: "Great builders aren't born with all the answers.", sec: "THEY LEARN • EXPERIMENT • FAIL • REBUILD • AND RISE" },
+  { t0: 90, t1: 105, chapter: 5, main: "Not just a club. A community of creators.", sec: "WHERE CURIOSITY BECOMES CAPABILITY & INNOVATION" },
+  { t0: 105, t1: 120, chapter: 6, main: "THE JOURNEY STARTS WITH YOU.", sec: "LEARN • BUILD • INNOVATE • LEAD" }
+];
+
+function updateSbgHud(T) {
+  const subMain = document.getElementById('sbg-sub-main');
+  const subSec = document.getElementById('sbg-sub-sec');
+  const btns = document.querySelectorAll('.sbg-chapter-btn');
+  const reveal = document.getElementById('sbg-logo-reveal');
+
+  let current = SBG_CHRONICLES[0];
+  for (const c of SBG_CHRONICLES) {
+    if (T >= c.t0 && T < c.t1) {
+      current = c;
+      break;
+    }
+  }
+
+  if (subMain && subMain.innerText !== current.main) {
+    subMain.innerText = current.main;
+    if (subSec) subSec.innerText = current.sec;
+  }
+
+  if (btns && btns.length) {
+    btns.forEach((btn, idx) => {
+      if (idx === current.chapter) btn.classList.add('active');
+      else btn.classList.remove('active');
+    });
+  }
+
+  if (reveal) {
+    if (T >= 108.5 && T <= 118.5 && !window.__sbgDismissed) {
+      reveal.classList.add('visible');
+    } else {
+      reveal.classList.remove('visible');
+    }
+    if (T < 100) {
+      window.__sbgDismissed = false;
+    }
+  }
+}
+
+window.jumpToChapter = function(targetT) {
+  MAIN.time = targetT;
+  MAIN.offset = 0;
+  window.__sbgDismissed = false;
+  const reveal = document.getElementById('sbg-logo-reveal');
+  if (reveal) reveal.classList.remove('visible');
+};
+
+window.triggerJoinModal = function() {
+  if (window.parent && window.parent !== window) {
+    window.parent.postMessage('aws-sbg-open-join', '*');
+  }
+  const reveal = document.getElementById('sbg-logo-reveal');
+  if (reveal) reveal.classList.remove('visible');
+};
+
+window.replayChronicles = function() {
+  window.jumpToChapter(0);
+};
+
+window.dismissReveal = function() {
+  window.__sbgDismissed = true;
+  const reveal = document.getElementById('sbg-logo-reveal');
+  if (reveal) reveal.classList.remove('visible');
+};
+
 function frame() {
   const now = performance.now(), dtRaw = (now - MAIN.last) / 1000; MAIN.last = now;
   MAIN.time += Math.min(dtRaw, 0.05);
   STORY.T = storyTime(MAIN.time);
-  draw();
+  draw(); updateSbgHud(STORY.T);
   adapt(dtRaw);
   MAIN.frames++;
   if (POSTER && MAIN.frames >= 5) unveil();

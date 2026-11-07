@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './AwsPopupTowerSection.css';
 
 /**
@@ -8,6 +8,16 @@ import './AwsPopupTowerSection.css';
  * and scaled responsively on mobile, with native sound toggle built in.
  */
 export default function AwsPopupTowerSection({ onOpenJoinModal }) {
+  useEffect(() => {
+    const handleMessage = (event) => {
+      if (event.data === 'aws-sbg-open-join' && onOpenJoinModal) {
+        onOpenJoinModal();
+      }
+    };
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, [onOpenJoinModal]);
+
   return (
     <section id="popup-tower" className="aws-popup-fullscreen-section">
       <iframe
