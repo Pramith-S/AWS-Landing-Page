@@ -196,7 +196,7 @@ const CoreTeamSection = () => {
         </div>
 
         {/* =========================================================================
-            VIEW 1: COMMUNITY GRAND STAGE
+            VIEW 1: COMMUNITY GRAND STAGE (Stacked Photo Cards)
            ========================================================================= */}
         {activeTab === 'grand-stage' && (
           <div className="tab-pane-fade-in" id="pane-grand-stage">
@@ -212,38 +212,40 @@ const CoreTeamSection = () => {
 
             <div className="grand-stage-grid">
               {coreTeamData.groupPhotos.map((photo) => (
-                <div key={photo.id} className="grand-stage-card neo-black-box">
-                  <div className="stage-img-container" onClick={() => setLightboxPhoto(photo)}>
-                    <img
-                      src={photo.src}
-                      alt={photo.name}
-                      className="stage-img-element"
-                      loading="lazy"
-                    />
-                    <div className="stage-img-overlay">
-                      <button
-                        type="button"
-                        className="stage-zoom-btn"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setLightboxPhoto(photo);
-                        }}
-                        aria-label="Enlarge Photo"
-                      >
-                        <Maximize2 size={16} />
-                        <span>Enlarge Photo</span>
-                      </button>
+                <div key={photo.id} className="neo-card-stack stage-stack-wrapper">
+                  <div className="grand-stage-card neo-stacked-card">
+                    <div className="stage-img-container" onClick={() => setLightboxPhoto(photo)}>
+                      <img
+                        src={photo.src}
+                        alt={photo.name}
+                        className="stage-img-element"
+                        loading="lazy"
+                      />
+                      <div className="stage-img-overlay">
+                        <button
+                          type="button"
+                          className="stage-zoom-btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setLightboxPhoto(photo);
+                          }}
+                          aria-label="Enlarge Photo"
+                        >
+                          <Maximize2 size={16} />
+                          <span>Enlarge Photo</span>
+                        </button>
+                      </div>
+                      <span className="stage-badge-tag">{photo.badge}</span>
                     </div>
-                    <span className="stage-badge-tag">{photo.badge}</span>
-                  </div>
 
-                  <div className="stage-card-body">
-                    <h4 className="stage-card-title">{photo.name}</h4>
-                    <p className="stage-card-caption">{photo.caption}</p>
-                    <div className="neo-dashed-divider" />
-                    <div className="stage-card-footer">
-                      <span className="stage-stat-pill">📍 {photo.venue}</span>
-                      <span className="stage-stat-pill">👥 {photo.stats}</span>
+                    <div className="stage-card-body">
+                      <h4 className="stage-card-title">{photo.name}</h4>
+                      <p className="stage-card-caption">{photo.caption}</p>
+                      <div className="neo-dashed-divider" />
+                      <div className="stage-card-footer">
+                        <span className="stage-stat-pill">📍 {photo.venue}</span>
+                        <span className="stage-stat-pill">👥 {photo.stats}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -253,7 +255,7 @@ const CoreTeamSection = () => {
         )}
 
         {/* =========================================================================
-            VIEW 2: MENTORS
+            VIEW 2: MENTORS (Stacked Cards)
            ========================================================================= */}
         {activeTab === 'mentors' && (
           <div className="tab-pane-fade-in" id="pane-mentors">
@@ -269,49 +271,51 @@ const CoreTeamSection = () => {
 
             <div className="mentors-grid">
               {coreTeamData.mentors.map((mentor) => (
-                <div key={mentor.id} className="mentor-card neo-black-box">
-                  {/* Photo Window (Original natural background intact) */}
-                  <div className="mentor-img-window">
-                    <img
-                      src={mentor.photo}
-                      alt={mentor.name}
-                      className="mentor-img-element"
-                      loading="lazy"
-                    />
-                    <span className="mentor-role-badge">{mentor.badges[0]}</span>
-                  </div>
+                <div key={mentor.id} className="neo-card-stack mentor-stack-wrapper">
+                  <div className="mentor-card neo-stacked-card">
+                    {/* Photo Window (Original natural background intact) */}
+                    <div className="mentor-img-window">
+                      <img
+                        src={mentor.photo}
+                        alt={mentor.name}
+                        className="mentor-img-element"
+                        loading="lazy"
+                      />
+                      <span className="mentor-role-badge">{mentor.badges[0]}</span>
+                    </div>
 
-                  {/* Body Content */}
-                  <div className="mentor-card-body">
-                    <h4 className="neo-member-name">{mentor.name}</h4>
-                    <p className="neo-member-role">{mentor.role}</p>
-                    <div className="neo-dashed-divider" />
+                    {/* Body Content */}
+                    <div className="mentor-card-body">
+                      <h4 className="neo-member-name">{mentor.name}</h4>
+                      <p className="neo-member-role">{mentor.role}</p>
+                      <div className="neo-dashed-divider" />
 
-                    <p className="mentor-department-text">{mentor.department}</p>
-                    <p className="mentor-institution-text">{mentor.institution}</p>
-                    <p className="mentor-bio-text">{mentor.bio}</p>
+                      <p className="mentor-department-text">{mentor.department}</p>
+                      <p className="mentor-institution-text">{mentor.institution}</p>
+                      <p className="mentor-bio-text">{mentor.bio}</p>
 
-                    <div className="mentor-card-footer">
-                      <div className="mentor-badges-row">
-                        {mentor.badges.map((b, bi) => (
-                          <span key={bi} className="mentor-pill-badge">
-                            {b}
-                          </span>
-                        ))}
-                      </div>
+                      <div className="mentor-card-footer">
+                        <div className="mentor-badges-row">
+                          {mentor.badges.map((b, bi) => (
+                            <span key={bi} className="mentor-pill-badge">
+                              {b}
+                            </span>
+                          ))}
+                        </div>
 
-                      <div className="neo-social-corner">
-                        <a
-                          href={mentor.socials.linkedin}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="neo-social-btn in-btn"
-                          aria-label={`${mentor.name} LinkedIn`}
-                          title="LinkedIn Profile"
-                        >
-                          <Linkedin size={15} />
-                          <span>in</span>
-                        </a>
+                        <div className="neo-social-corner">
+                          <a
+                            href={mentor.socials.linkedin}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="neo-social-btn in-btn"
+                            aria-label={`${mentor.name} LinkedIn`}
+                            title="LinkedIn Profile"
+                          >
+                            <Linkedin size={15} />
+                            <span>in</span>
+                          </a>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -326,162 +330,164 @@ const CoreTeamSection = () => {
            ========================================================================= */}
         {activeTab === 'lead' && (
           <div className="tab-pane-fade-in" id="pane-lead">
-            <div className="chapter-lead-showcase neo-black-box">
-              <div className="lead-grid-layout">
-                {/* Left Column: Compact Portrait Showcase with Carousel */}
-                <div className="lead-visual-col">
-                  <div className="lead-frame-box">
-                    <div className="lead-lead-badge-pill">
-                      <Sparkles size={12} />
-                      <span>AWS SBG LEAD</span>
+            <div className="neo-card-stack lead-stack-wrapper">
+              <div className="chapter-lead-showcase neo-stacked-card">
+                <div className="lead-grid-layout">
+                  {/* Left Column: Compact Portrait Showcase with Carousel */}
+                  <div className="lead-visual-col">
+                    <div className="lead-frame-box">
+                      <div className="lead-lead-badge-pill">
+                        <Sparkles size={12} />
+                        <span>AWS SBG LEAD</span>
+                      </div>
+
+                      <div className="lead-carousel-wrapper">
+                        {coreTeamData.chapterLead.photos.map((photo, idx) => (
+                          <img
+                            key={photo.src}
+                            src={photo.src}
+                            alt={photo.alt}
+                            className={`lead-carousel-img ${leadPhotoIdx === idx ? 'active' : ''}`}
+                            style={{ objectPosition: photo.position }}
+                            loading="lazy"
+                          />
+                        ))}
+                      </div>
+
+                      <div className="lead-photo-dots">
+                        {coreTeamData.chapterLead.photos.map((_, idx) => (
+                          <button
+                            key={idx}
+                            type="button"
+                            className={`lead-dot ${leadPhotoIdx === idx ? 'active' : ''}`}
+                            onClick={() => setLeadPhotoIdx(idx)}
+                            aria-label={`Photo ${idx + 1}`}
+                          />
+                        ))}
+                      </div>
                     </div>
 
-                    <div className="lead-carousel-wrapper">
-                      {coreTeamData.chapterLead.photos.map((photo, idx) => (
-                        <img
-                          key={photo.src}
-                          src={photo.src}
-                          alt={photo.alt}
-                          className={`lead-carousel-img ${leadPhotoIdx === idx ? 'active' : ''}`}
-                          style={{ objectPosition: photo.position }}
-                          loading="lazy"
-                        />
-                      ))}
-                    </div>
-
-                    <div className="lead-photo-dots">
-                      {coreTeamData.chapterLead.photos.map((_, idx) => (
-                        <button
-                          key={idx}
-                          type="button"
-                          className={`lead-dot ${leadPhotoIdx === idx ? 'active' : ''}`}
-                          onClick={() => setLeadPhotoIdx(idx)}
-                          aria-label={`Photo ${idx + 1}`}
-                        />
-                      ))}
+                    <div className="lead-visual-footer">
+                      <h4 className="neo-member-name">{coreTeamData.chapterLead.name}</h4>
+                      <p className="neo-member-role">{coreTeamData.chapterLead.role}</p>
+                      <div className="neo-dashed-divider" />
+                      <div className="lead-quick-actions">
+                        <a
+                          href={coreTeamData.chapterLead.socials.portfolio}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="neo-social-btn globe-btn"
+                          title="Portfolio Website"
+                          aria-label="Kumar R Shet Portfolio"
+                        >
+                          <Globe size={14} />
+                        </a>
+                        <a
+                          href={coreTeamData.chapterLead.socials.github}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="neo-social-btn git-btn"
+                          title="GitHub"
+                          aria-label="Kumar R Shet GitHub"
+                        >
+                          <Github size={14} />
+                        </a>
+                        <a
+                          href={`mailto:${coreTeamData.chapterLead.socials.email}`}
+                          className="neo-social-btn mail-btn"
+                          title="Email"
+                          aria-label="Email Kumar R Shet"
+                        >
+                          <Mail size={14} />
+                        </a>
+                        <a
+                          href={coreTeamData.chapterLead.socials.linkedin}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="neo-social-btn in-btn"
+                          title="LinkedIn"
+                          aria-label="Kumar R Shet LinkedIn"
+                        >
+                          <Linkedin size={14} />
+                          <span>in</span>
+                        </a>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="lead-visual-footer">
-                    <h4 className="neo-member-name">{coreTeamData.chapterLead.name}</h4>
-                    <p className="neo-member-role">{coreTeamData.chapterLead.role}</p>
-                    <div className="neo-dashed-divider" />
-                    <div className="lead-quick-actions">
+                  {/* Right Column: Full Details, Pillars, Metrics & Actions */}
+                  <div className="lead-details-col">
+                    <div className="lead-header-info">
+                      <div className="lead-tags-row">
+                        {coreTeamData.chapterLead.badges.map((b, idx) => (
+                          <span key={idx} className="lead-spec-pill">
+                            {b}
+                          </span>
+                        ))}
+                      </div>
+
+                      <h3 className="lead-hero-name">{coreTeamData.chapterLead.name}</h3>
+                      <p className="lead-hero-tagline">{coreTeamData.chapterLead.tagline}</p>
+                      <p className="lead-hero-dept">{coreTeamData.chapterLead.department}</p>
+                    </div>
+
+                    <p className="lead-main-bio">{coreTeamData.chapterLead.bio}</p>
+
+                    {/* Impact Metrics Counters */}
+                    <div className="lead-metrics-row">
+                      {coreTeamData.chapterLead.stats.map((st, idx) => (
+                        <div key={idx} className="lead-metric-box">
+                          <span className="metric-val">{st.value}</span>
+                          <span className="metric-lbl">{st.label}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Key Pillars */}
+                    <div className="lead-pillars-section">
+                      <h5 className="pillars-title">
+                        <ShieldCheck size={15} />
+                        <span>LEADERSHIP PILLARS</span>
+                      </h5>
+                      <div className="pillars-list">
+                        {coreTeamData.chapterLead.pillars.map((pil, idx) => (
+                          <div key={idx} className="pillar-item">
+                            <ChevronRight size={13} className="pillar-icon" />
+                            <span>{pil}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Primary CTA Row */}
+                    <div className="lead-cta-row">
                       <a
                         href={coreTeamData.chapterLead.socials.portfolio}
                         target="_blank"
                         rel="noreferrer"
-                        className="neo-social-btn globe-btn"
-                        title="Portfolio Website"
-                        aria-label="Kumar R Shet Portfolio"
+                        className="lead-primary-cta"
                       >
-                        <Globe size={14} />
+                        <Globe size={15} />
+                        <span>Visit Portfolio</span>
+                        <ExternalLink size={13} />
                       </a>
                       <a
                         href={coreTeamData.chapterLead.socials.github}
                         target="_blank"
                         rel="noreferrer"
-                        className="neo-social-btn git-btn"
-                        title="GitHub"
-                        aria-label="Kumar R Shet GitHub"
+                        className="lead-secondary-cta"
                       >
-                        <Github size={14} />
+                        <Github size={15} />
+                        <span>GitHub</span>
                       </a>
                       <a
                         href={`mailto:${coreTeamData.chapterLead.socials.email}`}
-                        className="neo-social-btn mail-btn"
-                        title="Email"
-                        aria-label="Email Kumar R Shet"
+                        className="lead-secondary-cta"
                       >
-                        <Mail size={14} />
-                      </a>
-                      <a
-                        href={coreTeamData.chapterLead.socials.linkedin}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="neo-social-btn in-btn"
-                        title="LinkedIn"
-                        aria-label="Kumar R Shet LinkedIn"
-                      >
-                        <Linkedin size={14} />
-                        <span>in</span>
+                        <Mail size={15} />
+                        <span>Email</span>
                       </a>
                     </div>
-                  </div>
-                </div>
-
-                {/* Right Column: Full Details, Pillars, Metrics & Actions */}
-                <div className="lead-details-col">
-                  <div className="lead-header-info">
-                    <div className="lead-tags-row">
-                      {coreTeamData.chapterLead.badges.map((b, idx) => (
-                        <span key={idx} className="lead-spec-pill">
-                          {b}
-                        </span>
-                      ))}
-                    </div>
-
-                    <h3 className="lead-hero-name">{coreTeamData.chapterLead.name}</h3>
-                    <p className="lead-hero-tagline">{coreTeamData.chapterLead.tagline}</p>
-                    <p className="lead-hero-dept">{coreTeamData.chapterLead.department}</p>
-                  </div>
-
-                  <p className="lead-main-bio">{coreTeamData.chapterLead.bio}</p>
-
-                  {/* Impact Metrics Counters */}
-                  <div className="lead-metrics-row">
-                    {coreTeamData.chapterLead.stats.map((st, idx) => (
-                      <div key={idx} className="lead-metric-box">
-                        <span className="metric-val">{st.value}</span>
-                        <span className="metric-lbl">{st.label}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Key Pillars */}
-                  <div className="lead-pillars-section">
-                    <h5 className="pillars-title">
-                      <ShieldCheck size={15} />
-                      <span>LEADERSHIP PILLARS</span>
-                    </h5>
-                    <div className="pillars-list">
-                      {coreTeamData.chapterLead.pillars.map((pil, idx) => (
-                        <div key={idx} className="pillar-item">
-                          <ChevronRight size={13} className="pillar-icon" />
-                          <span>{pil}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Primary CTA Row */}
-                  <div className="lead-cta-row">
-                    <a
-                      href={coreTeamData.chapterLead.socials.portfolio}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="lead-primary-cta"
-                    >
-                      <Globe size={15} />
-                      <span>Visit Portfolio</span>
-                      <ExternalLink size={13} />
-                    </a>
-                    <a
-                      href={coreTeamData.chapterLead.socials.github}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="lead-secondary-cta"
-                    >
-                      <Github size={15} />
-                      <span>GitHub</span>
-                    </a>
-                    <a
-                      href={`mailto:${coreTeamData.chapterLead.socials.email}`}
-                      className="lead-secondary-cta"
-                    >
-                      <Mail size={15} />
-                      <span>Email</span>
-                    </a>
                   </div>
                 </div>
               </div>
@@ -490,7 +496,7 @@ const CoreTeamSection = () => {
         )}
 
         {/* =========================================================================
-            VIEW 4: TEAM MEMBERS (TECH, EVENTS, MARKETING, OPERATIONAL - NO 'ALL' TAB!)
+            VIEW 4: TEAM MEMBERS (STACKED POLAROID CARDS - NO 'ALL' TAB!)
            ========================================================================= */}
         {activeTab === 'members' && (
           <div className="tab-pane-fade-in" id="pane-members">
@@ -542,7 +548,7 @@ const CoreTeamSection = () => {
 
             {/* Active Domain Overview Banner */}
             <div
-              className="domain-banner-card neo-black-box"
+              className="domain-banner-card neo-stacked-card"
               style={{ '--domain-accent': currentDomainTeam.accentColor }}
             >
               <div className="banner-icon-box">
@@ -560,80 +566,80 @@ const CoreTeamSection = () => {
               </div>
             </div>
 
-            {/* Neo-Brutalist Compact Members Grid (Original photos, not big, fits mobile screen!) */}
+            {/* Stacked Cards Grid (Compact fit, original photo, dynamic fanned layers!) */}
             {displayedMembers.length > 0 ? (
               <div className="neo-members-grid">
                 {displayedMembers.map((member) => (
-                  <div
-                    key={member.id}
-                    className={`neo-member-card neo-black-box ${member.isLead ? 'is-team-lead' : ''}`}
-                    style={{ '--member-accent': member.accentColor }}
-                  >
-                    {/* Team Lead Badge */}
-                    {member.isLead && (
-                      <div className="lead-ribbon-badge">
-                        <Award size={11} />
-                        <span>LEAD</span>
+                  <div key={member.id} className="neo-card-stack member-stack-wrapper">
+                    <div
+                      className={`neo-member-card neo-stacked-card ${member.isLead ? 'is-team-lead' : ''}`}
+                      style={{ '--member-accent': member.accentColor }}
+                    >
+                      {/* Team Lead Badge */}
+                      {member.isLead && (
+                        <div className="lead-ribbon-badge">
+                          <Award size={11} />
+                          <span>LEAD</span>
+                        </div>
+                      )}
+
+                      {/* Framed Photo Container (Original photo with real background intact!) */}
+                      <div className="neo-photo-box">
+                        <img
+                          src={member.photo}
+                          alt={member.name}
+                          className="neo-photo-img"
+                          loading="lazy"
+                          onError={(e) => {
+                            if (member.photo.endsWith('.jpg')) {
+                              e.target.src = member.photo.replace('.jpg', '.png');
+                            }
+                          }}
+                        />
                       </div>
-                    )}
 
-                    {/* Framed Photo Container (Original photo with real background intact!) */}
-                    <div className="neo-photo-box">
-                      <img
-                        src={member.photo}
-                        alt={member.name}
-                        className="neo-photo-img"
-                        loading="lazy"
-                        onError={(e) => {
-                          // Fallback to png if jpg not found
-                          if (member.photo.endsWith('.jpg')) {
-                            e.target.src = member.photo.replace('.jpg', '.png');
-                          }
-                        }}
-                      />
-                    </div>
+                      {/* Member Details */}
+                      <div className="neo-card-info">
+                        <h4 className="neo-member-name">{member.name}</h4>
+                        <p className="neo-member-role">{member.role}</p>
 
-                    {/* Member Details */}
-                    <div className="neo-card-info">
-                      <h4 className="neo-member-name">{member.name}</h4>
-                      <p className="neo-member-role">{member.role}</p>
+                        {/* Dashed Horizontal Divider */}
+                        <div className="neo-dashed-divider" />
 
-                      {/* Dashed Horizontal Divider (From reference image) */}
-                      <div className="neo-dashed-divider" />
+                        {/* Social Actions Row with LinkedIn in corner */}
+                        <div className="neo-card-footer">
+                          {member.instagram ? (
+                            <a
+                              href={member.instagram}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="neo-social-btn ig-btn"
+                              title="Instagram"
+                              aria-label={`${member.name} Instagram`}
+                            >
+                              <Instagram size={13} />
+                            </a>
+                          ) : <span />}
 
-                      {/* Social Actions Row with LinkedIn in corner */}
-                      <div className="neo-card-footer">
-                        {member.instagram ? (
                           <a
-                            href={member.instagram}
+                            href={member.linkedin || 'https://www.linkedin.com'}
                             target="_blank"
                             rel="noreferrer"
-                            className="neo-social-btn ig-btn"
-                            title="Instagram"
-                            aria-label={`${member.name} Instagram`}
+                            className="neo-social-btn in-btn"
+                            title="LinkedIn"
+                            aria-label={`${member.name} LinkedIn`}
                           >
-                            <Instagram size={13} />
+                            <Linkedin size={14} />
+                            <span>in</span>
                           </a>
-                        ) : <span />}
-
-                        <a
-                          href={member.linkedin || 'https://www.linkedin.com'}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="neo-social-btn in-btn"
-                          title="LinkedIn"
-                          aria-label={`${member.name} LinkedIn`}
-                        >
-                          <Linkedin size={14} />
-                          <span>in</span>
-                        </a>
+                        </div>
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="no-members-found neo-black-box">
+              <div className="no-members-found neo-stacked-card">
                 <Search size={28} />
                 <h4>No builders found</h4>
                 <p>No members in {currentDomainTeam.name} match "{searchQuery}".</p>

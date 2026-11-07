@@ -1,6 +1,6 @@
 /* ==========================================================================
    AWS SBG JSSATEB - CORE TEAM SECTION
-   Clean Black Neo-Brutalist Aesthetic + White Border & One-Sided White Shadow
+   Clean Black Neo-Brutalist Aesthetic + Stacked Polaroid Cards Effect
    Xenon Choir Ambient Plasma Background
    ========================================================================== */
 
@@ -205,22 +205,72 @@
 }
 
 /* ==========================================================================
-   NEO-BLACK BOX DESIGN WITH ONE-SIDED WHITE BORDER & SHADOW
+   STACKED POLAROID CARD EFFECT (Code Provided by User)
    ========================================================================== */
-.neo-black-box {
-  background: #0d0b14;
-  border: 1.5px solid #ffffff;
-  border-radius: 6px;
-  box-shadow: 4px 4px 0px #ffffff;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  overflow: hidden;
+.neo-card-stack {
   position: relative;
+  width: 100%;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1;
+  padding: 8px 6px;
 }
 
-.neo-black-box:hover {
-  transform: translate(-2px, -2px);
+.neo-card-stack:hover {
+  transform: rotate(3.5deg);
+  z-index: 20;
+}
+
+.neo-stacked-card {
+  position: relative;
+  background: #0d0b14;
+  border: 2px solid #ffffff;
+  border-radius: 6px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  overflow: visible !important;
+}
+
+/* Stacked fanned cards behind (:before and :after) */
+.neo-stacked-card::before,
+.neo-stacked-card::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  background-color: #07060a;
+  transform-origin: center center;
+  border-radius: 6px;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+  pointer-events: none;
+}
+
+.neo-stacked-card::before {
+  transform: translateY(-2%) rotate(-5deg);
+  z-index: -1;
+}
+
+.neo-stacked-card::after {
+  transform: translateY(2%) rotate(5deg);
+  z-index: -2;
+}
+
+/* Hover dynamics on the stacked card */
+.neo-card-stack:hover .neo-stacked-card {
   border-color: #ff9900;
-  box-shadow: 6px 6px 0px #ff9900;
+}
+
+.neo-card-stack:hover .neo-stacked-card::before {
+  transform: translateY(-2.5%) rotate(-7deg);
+  border-color: #ff9900;
+}
+
+.neo-card-stack:hover .neo-stacked-card::after {
+  transform: translateY(2.5%) rotate(7deg);
+  border-color: var(--member-accent, #8b5cf6);
 }
 
 /* ==========================================================================
@@ -229,8 +279,8 @@
 .grand-stage-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1.6rem;
-  margin-bottom: 1.5rem;
+  gap: 2rem;
+  margin-bottom: 2rem;
 }
 
 .grand-stage-card {
@@ -243,7 +293,9 @@
   width: 100%;
   aspect-ratio: 16 / 9.5;
   overflow: hidden;
-  border-bottom: 1.5px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
   cursor: pointer;
   background: #06050a;
 }
@@ -307,6 +359,9 @@
 
 .stage-card-body {
   padding: 1.2rem 1.3rem;
+  background: #0d0b14;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
 .stage-card-title {
@@ -349,14 +404,14 @@
 }
 
 /* ==========================================================================
-   VIEW 2: MENTORS (Compact, natural background, fits screen!)
+   VIEW 2: MENTORS (Stacked Cards, natural background)
    ========================================================================== */
 .mentors-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1.8rem;
-  max-width: 900px;
-  margin: 0 auto 2rem;
+  gap: 2.2rem;
+  max-width: 920px;
+  margin: 0 auto 2.5rem;
 }
 
 .mentor-card {
@@ -370,7 +425,9 @@
   aspect-ratio: 4 / 3.8;
   max-height: 240px;
   overflow: hidden;
-  border-bottom: 1.5px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
   background: #06050a;
 }
 
@@ -401,6 +458,9 @@
   display: flex;
   flex-direction: column;
   flex: 1;
+  background: #0d0b14;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
 .neo-member-name {
@@ -503,19 +563,16 @@
 }
 
 /* ==========================================================================
-   VIEW 3: AWS SBG LEAD (KUMAR R SHET - COMPACT FIT)
+   VIEW 3: AWS SBG LEAD (KUMAR R SHET - STACKED SHOWCASE)
    ========================================================================== */
-.chapter-lead-showcase {
-  max-width: 960px;
-  margin: 0 auto 2rem;
-  padding: 1.8rem;
-  border: 2px solid #ffffff;
-  box-shadow: 6px 6px 0px #ffffff;
+.lead-stack-wrapper {
+  max-width: 980px;
+  margin: 0 auto 2.5rem;
 }
 
-.chapter-lead-showcase:hover {
-  border-color: #ff9900;
-  box-shadow: 8px 8px 0px #ff9900;
+.chapter-lead-showcase {
+  padding: 2rem;
+  border: 2px solid #ffffff;
 }
 
 .lead-grid-layout {
@@ -535,7 +592,7 @@
   width: 100%;
   aspect-ratio: 4 / 4.4;
   max-height: 310px;
-  border: 1.5px solid #ffffff;
+  border: 2px solid #ffffff;
   border-radius: 6px;
   overflow: hidden;
   background: #06050a;
@@ -811,7 +868,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.8rem;
   flex-wrap: wrap;
 }
 
@@ -915,9 +972,8 @@
   align-items: center;
   gap: 14px;
   padding: 0.9rem 1.2rem;
-  margin-bottom: 1.5rem;
-  border: 1.5px solid #ffffff;
-  box-shadow: 4px 4px 0px #ffffff;
+  margin-bottom: 1.8rem;
+  border: 2px solid #ffffff;
 }
 
 .banner-icon-box {
@@ -971,13 +1027,13 @@
 }
 
 /* --------------------------------------------------------------------------
-   Neo-Brutalist Compact Members Grid (Photos NOT too big, fits mobile!)
+   Stacked Members Grid (Photos NOT too big, fits mobile!)
    -------------------------------------------------------------------------- */
 .neo-members-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1.2rem;
-  margin-bottom: 1.5rem;
+  gap: 1.6rem;
+  margin-bottom: 2rem;
 }
 
 .neo-member-card {
@@ -987,12 +1043,12 @@
 
 .neo-member-card.is-team-lead {
   border-color: #ff9900;
-  box-shadow: 4px 4px 0px #ff9900;
 }
-
-.neo-member-card.is-team-lead:hover {
-  border-color: #ffffff;
-  box-shadow: 6px 6px 0px #ffffff;
+.neo-member-card.is-team-lead::before {
+  border-color: #ff9900;
+}
+.neo-member-card.is-team-lead::after {
+  border-color: rgba(255, 153, 0, 0.65);
 }
 
 .lead-ribbon-badge {
@@ -1023,7 +1079,9 @@
   max-height: 175px;
   overflow: hidden;
   background: #06050a;
-  border-bottom: 1.5px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
 }
 
 .neo-photo-img {
@@ -1040,6 +1098,8 @@
   flex-direction: column;
   flex: 1;
   background: #0d0b14;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
 .neo-card-info .neo-member-name {
@@ -1084,6 +1144,7 @@
   text-align: center;
   padding: 2.5rem 1rem;
   color: #64748b;
+  border: 2px solid #ffffff;
 }
 
 .no-members-found h4 {
@@ -1207,7 +1268,7 @@
 @media (max-width: 1024px) {
   .neo-members-grid {
     grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
+    gap: 1.4rem;
   }
 
   .lead-grid-layout {
@@ -1253,15 +1314,32 @@
   /* 2-column compact mobile grid: Fits multiple members on screen! */
   .neo-members-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 9px;
+    gap: 10px;
   }
 
-  .neo-black-box {
-    box-shadow: 3px 3px 0px #ffffff;
+  /* Subtle stacked rotation on mobile to fit screen cleanly */
+  .neo-card-stack {
+    padding: 4px 2px;
   }
 
-  .neo-member-card.is-team-lead {
-    box-shadow: 3px 3px 0px #ff9900;
+  .neo-stacked-card::before {
+    transform: translateY(-1.5%) rotate(-3.5deg);
+  }
+
+  .neo-stacked-card::after {
+    transform: translateY(1.5%) rotate(3.5deg);
+  }
+
+  .neo-card-stack:hover {
+    transform: rotate(2deg);
+  }
+
+  .neo-card-stack:hover .neo-stacked-card::before {
+    transform: translateY(-2%) rotate(-5deg);
+  }
+
+  .neo-card-stack:hover .neo-stacked-card::after {
+    transform: translateY(2%) rotate(5deg);
   }
 
   .neo-photo-box {
@@ -1296,7 +1374,7 @@
   /* Mentors compact fit */
   .mentors-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 1.4rem;
   }
 
   .mentor-img-window {
@@ -1318,7 +1396,7 @@
   /* Grand stage compact fit */
   .grand-stage-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 1.4rem;
   }
 
   .stage-card-body {
@@ -1328,7 +1406,6 @@
   /* Lead compact fit */
   .chapter-lead-showcase {
     padding: 1.1rem;
-    box-shadow: 4px 4px 0px #ffffff;
   }
 
   .lead-grid-layout {
