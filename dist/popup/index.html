@@ -1,6 +1,9 @@
 <!doctype html>
 <html>
 <head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <script type="importmap">
 {
   "imports": {
@@ -12,38 +15,21 @@
 </head>
 <body>
 
-  <!-- Top Chapter Navigation HUD -->
-  <div id="sbg-hud">
-    <button class="sbg-chapter-btn active" onclick="jumpToChapter(0)">01 Book Opening</button>
-    <button class="sbg-chapter-btn" onclick="jumpToChapter(15)">02 Cloud Kingdom</button>
-    <button class="sbg-chapter-btn" onclick="jumpToChapter(35)">03 Horizons</button>
-    <button class="sbg-chapter-btn" onclick="jumpToChapter(40)">04 Builder's Voyage</button>
-    <button class="sbg-chapter-btn" onclick="jumpToChapter(65)">05 The Challenge</button>
-    <button class="sbg-chapter-btn" onclick="jumpToChapter(90)">06 SBG Academy</button>
-    <button class="sbg-chapter-btn" onclick="jumpToChapter(106)">07 The Call</button>
-  </div>
-
-  <!-- Dynamic Cinematic Subtitles -->
+  <!-- Dynamic Cinematic Subtitles: Naked Text, No Background Boxes -->
   <div id="sbg-subtitle-container">
-    <div class="sbg-subtitle-card">
-      <div id="sbg-sub-main" class="sbg-sub-main">Every great journey begins with curiosity.</div>
-      <div id="sbg-sub-sec" class="sbg-sub-sec">WELCOME TO THE WORLD OF BUILDERS</div>
-    </div>
+    <div id="sbg-sub-main" class="sbg-sub-main">Every great journey begins with curiosity.</div>
+    <div id="sbg-sub-sec" class="sbg-sub-sec">WELCOME TO THE WORLD OF BUILDERS</div>
   </div>
 
-  <!-- Final Logo Reveal Overlay -->
+  <!-- Final Ending Overlay: Pure Floating Typography & Only Replay Button -->
   <div id="sbg-logo-reveal">
-    <div class="sbg-reveal-box">
-      <div class="sbg-badge-pill">AWS STUDENT BUILDER GROUP</div>
-      <h1 class="sbg-title-main">THE BUILDER'S <span class="sbg-title-gold">CHRONICLES</span></h1>
-      <p class="sbg-reveal-sub">
-        <strong>THE JOURNEY STARTS WITH YOU.</strong><br>
-        Learn together. Build together. Innovate together.
-      </p>
-      <div class="sbg-cta-row">
-        <button class="sbg-primary-btn" onclick="triggerJoinModal()">⚡ Join The Journey</button>
-        <button class="sbg-secondary-btn" onclick="replayChronicles()">↺ Replay Chronicles</button>
-        <button class="sbg-secondary-btn" onclick="dismissReveal()">Explore World</button>
+    <div class="sbg-reveal-content">
+      <div class="sbg-end-badge">AWS STUDENT BUILDER GROUP • JSSATEB</div>
+      <h1 class="sbg-end-title">THE BUILDER'S <span class="sbg-title-gold">CHRONICLES</span></h1>
+      <div class="sbg-end-creed">THE JOURNEY STARTS WITH YOU.</div>
+      <div class="sbg-end-motto">LEARN • BUILD • INNOVATE • LEAD</div>
+      <div class="sbg-end-actions">
+        <button class="sbg-replay-btn" onclick="replayChronicles()">↺ Replay Journey</button>
       </div>
     </div>
   </div>
@@ -76,101 +62,70 @@
   @keyframes hint { 0%, 100% { box-shadow: 0 0 0 0 rgba(255, 190, 110, 0); } 50% { box-shadow: 0 0 0 5px rgba(255, 190, 110, .14), 0 0 18px rgba(255, 170, 80, .38); } }
   @media (prefers-reduced-motion: reduce) { #sound.hint, #sound.on .wave { animation: none; } }
 
-  /* AWS SBG THE BUILDER'S CHRONICLES HUD */
-  #sbg-hud {
-    position: fixed;
-    top: 18px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 50;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 14px;
-    background: rgba(12, 14, 24, 0.72);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border: 1px solid rgba(255, 153, 0, 0.28);
-    border-radius: 99px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 12px rgba(255, 153, 0, 0.08);
-    pointer-events: auto;
-    max-width: 95vw;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  #sbg-hud::-webkit-scrollbar { display: none; }
-  .sbg-chapter-btn {
-    background: transparent;
-    border: 1px solid transparent;
-    color: #94a3b8;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    font-size: 0.74rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    padding: 5px 11px;
-    border-radius: 99px;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .sbg-chapter-btn:hover {
-    color: #f8fafc;
-    background: rgba(255, 255, 255, 0.08);
-  }
-  .sbg-chapter-btn.active {
-    color: #ffffff;
-    background: linear-gradient(135deg, rgba(255, 153, 0, 0.85) 0%, rgba(217, 119, 6, 0.95) 100%);
-    border-color: rgba(255, 255, 255, 0.4);
-    box-shadow: 0 0 14px rgba(255, 153, 0, 0.5);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-  }
+  /* AWS SBG THE BUILDER'S CHRONICLES - IMMERSIVE TYPOGRAPHY (NO BACKGROUND BOXES) */
   #sbg-subtitle-container {
     position: fixed;
-    bottom: 28px;
+    bottom: 34px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 50;
     pointer-events: none;
     text-align: center;
-    width: 90%;
-    max-width: 820px;
-    transition: opacity 0.5s ease;
-  }
-  .sbg-subtitle-card {
-    display: inline-block;
-    padding: 12px 28px;
-    background: rgba(10, 12, 22, 0.82);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 153, 0, 0.38);
-    border-radius: 99px;
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.65), 0 0 20px rgba(255, 153, 0, 0.15);
+    width: 92%;
+    max-width: 960px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    padding: 0 !important;
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .sbg-sub-main {
-    color: #ffffff;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    font-size: 1.05rem;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    line-height: 1.4;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: clamp(1.2rem, 2.7vw, 1.85rem);
+    font-weight: 900;
+    letter-spacing: 0.03em;
+    line-height: 1.25;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    /* Crazy contrast and luminous glow directly over 3D canvas with zero background box */
+    text-shadow: 
+      0 2px 4px rgba(0, 0, 0, 1),
+      0 6px 20px rgba(0, 0, 0, 0.98),
+      0 0 35px rgba(255, 153, 0, 0.8),
+      0 0 70px rgba(255, 102, 0, 0.45);
+    filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.95));
+    margin: 0;
+    padding: 0;
   }
   .sbg-sub-sec {
-    color: #ffb03a;
-    font-family: 'SF Mono', Consolas, monospace;
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    margin-top: 3px;
-    text-shadow: 0 0 8px rgba(255, 153, 0, 0.4);
+    font-family: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+    font-size: clamp(0.72rem, 1.3vw, 0.92rem);
+    font-weight: 800;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #FFA51F;
+    text-shadow: 
+      0 2px 4px rgba(0, 0, 0, 1),
+      0 4px 14px rgba(0, 0, 0, 0.95),
+      0 0 24px rgba(255, 153, 0, 0.9);
+    margin-top: 8px;
+    padding: 0;
   }
+
+  /* Final Ending Overlay: Pure Floating Typography & Only Replay Button (No Modal Boxes) */
   #sbg-logo-reveal {
     position: fixed;
     inset: 0;
     z-index: 60;
-    background: radial-gradient(circle at center, rgba(16, 20, 38, 0.92) 0%, rgba(5, 7, 14, 0.98) 80%);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: radial-gradient(circle at center, rgba(11, 11, 14, 0.72) 0%, rgba(5, 5, 8, 0.92) 80%);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -183,98 +138,110 @@
     opacity: 1;
     pointer-events: auto;
   }
-  .sbg-reveal-box {
+  .sbg-reveal-content {
     text-align: center;
-    padding: 2.5rem 3rem;
-    background: rgba(18, 22, 38, 0.85);
-    border: 1px solid rgba(255, 153, 0, 0.45);
-    border-radius: 2rem;
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 153, 0, 0.22);
-    max-width: 580px;
+    padding: 1.5rem;
+    max-width: 840px;
     width: 90%;
-    transform: scale(0.95);
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    transform: scale(0.96);
     transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  #sbg-logo-reveal.visible .sbg-reveal-box {
+  #sbg-logo-reveal.visible .sbg-reveal-content {
     transform: scale(1);
   }
-  .sbg-badge-pill {
+  .sbg-end-badge {
     display: inline-block;
-    padding: 5px 16px;
-    background: rgba(255, 153, 0, 0.15);
-    border: 1px solid rgba(255, 153, 0, 0.5);
-    border-radius: 99px;
-    color: #ff9900;
-    font-family: monospace;
-    font-size: 0.82rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    margin-bottom: 1.2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(0.75rem, 1.4vw, 0.95rem);
+    font-weight: 800;
+    letter-spacing: 0.22em;
+    color: #FF9900;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 1), 0 0 20px rgba(255, 153, 0, 0.8);
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
   }
-  .sbg-title-main {
-    color: #ffffff;
-    font-size: 1.85rem;
+  .sbg-end-title {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: clamp(2.1rem, 5.2vw, 3.8rem);
     font-weight: 900;
-    letter-spacing: 0.03em;
-    margin: 0 0 0.5rem 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+    margin: 0 0 1rem 0;
+    color: #FFFFFF;
+    text-transform: uppercase;
+    text-shadow: 
+      0 4px 18px rgba(0, 0, 0, 0.98),
+      0 0 35px rgba(255, 153, 0, 0.75);
   }
   .sbg-title-gold {
-    background: linear-gradient(135deg, #ffd666 0%, #ff9900 50%, #f59e0b 100%);
+    background: linear-gradient(135deg, #FFF3D6 0%, #FFA51F 40%, #FF9900 70%, #E65100 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 30px rgba(255, 153, 0, 0.8));
   }
-  .sbg-reveal-sub {
-    color: #cbd5e1;
-    font-size: 1.02rem;
-    line-height: 1.6;
-    margin-bottom: 2rem;
-  }
-  .sbg-cta-row {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  .sbg-primary-btn {
-    background: linear-gradient(135deg, #ff9900 0%, #d97706 100%);
-    color: #0c0e18;
+  .sbg-end-creed {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(1.15rem, 2.5vw, 1.65rem);
     font-weight: 800;
-    font-size: 0.95rem;
-    padding: 12px 28px;
-    border-radius: 99px;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 0 20px rgba(255, 153, 0, 0.4);
-    transition: transform 0.2s, box-shadow 0.2s;
+    color: #FFFFFF;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.98), 0 0 25px rgba(255, 153, 0, 0.6);
   }
-  .sbg-primary-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 28px rgba(255, 153, 0, 0.6);
-  }
-  .sbg-secondary-btn {
-    background: rgba(255, 255, 255, 0.08);
-    color: #f1f5f9;
+  .sbg-end-motto {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(0.8rem, 1.5vw, 1.05rem);
     font-weight: 700;
-    font-size: 0.95rem;
-    padding: 12px 24px;
+    color: #FFA51F;
+    letter-spacing: 0.24em;
+    margin-bottom: 2.2rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.98), 0 0 20px rgba(255, 153, 0, 0.75);
+  }
+  .sbg-end-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .sbg-replay-btn {
+    background: linear-gradient(135deg, rgba(255, 153, 0, 0.92) 0%, rgba(230, 81, 0, 0.95) 100%);
+    color: #07060A;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 14px 38px;
     border-radius: 99px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.4);
     cursor: pointer;
-    transition: background 0.2s;
+    box-shadow: 0 0 30px rgba(255, 153, 0, 0.65), 0 4px 18px rgba(0, 0, 0, 0.85);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s;
+    pointer-events: auto;
   }
-  .sbg-secondary-btn:hover {
-    background: rgba(255, 255, 255, 0.16);
+  .sbg-replay-btn:hover {
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 0 45px rgba(255, 153, 0, 0.95), 0 8px 25px rgba(0, 0, 0, 0.9);
+    background: linear-gradient(135deg, #FFA51F 0%, #FF9900 100%);
   }
-  @media (max-width: 640px) {
-    #sbg-hud { top: 10px; padding: 4px 8px; }
-    .sbg-chapter-btn { font-size: 0.68rem; padding: 4px 8px; }
-    .sbg-sub-main { font-size: 0.88rem; }
-    .sbg-sub-sec { font-size: 0.7rem; }
-    .sbg-reveal-box { padding: 1.8rem 1.4rem; }
-    .sbg-title-main { font-size: 1.4rem; }
+  .sbg-replay-btn:active {
+    transform: translateY(0) scale(0.98);
   }
 
+  @media (max-width: 640px) {
+    #sbg-subtitle-container { bottom: 20px; width: 94%; }
+    .sbg-sub-main { font-size: 1.05rem; }
+    .sbg-sub-sec { font-size: 0.68rem; letter-spacing: 0.16em; }
+    .sbg-reveal-content { padding: 1rem; }
+    .sbg-end-title { font-size: 1.75rem; }
+    .sbg-end-creed { font-size: 0.95rem; }
+    .sbg-end-motto { font-size: 0.72rem; letter-spacing: 0.16em; margin-bottom: 1.6rem; }
+    .sbg-replay-btn { padding: 11px 26px; font-size: 0.88rem; }
+  }
 </style>
 <div id="poster" aria-hidden="true"></div>
 <button id="sound" class="hint" type="button" aria-label="Sound on" aria-pressed="false">
@@ -2452,7 +2419,7 @@ const SEA = (() => {
     ctx.strokeStyle = 'rgba(30,15,5,0.7)'; ctx.lineWidth = 0.025; for (let y = 0.3; y < 4; y += 0.28) { ctx.beginPath(); ctx.moveTo(0, y); ctx.bezierCurveTo(2.5, y - 0.12, 5.5, y - 0.12, HL, y + 0.05); ctx.stroke(); }
     ctx.fillStyle = '#9e3b2a'; ctx.beginPath(); ctx.moveTo(0, 1.25); ctx.bezierCurveTo(2.5, 1.1, 5.5, 1.12, HL, 1.3); ctx.lineTo(HL, 1.62); ctx.bezierCurveTo(5.5, 1.42, 2.5, 1.42, 0, 1.6); ctx.fill();
     G.gold(ctx, (c) => { ctx.fillStyle = c; ctx.fillRect(0, 1.58, HL, 0.06); ctx.beginPath(); ctx.arc(0.35, 2.4, 0.3, 0, TAU); ctx.fill(); });
-    G.text(ctx, 'BUILDER ONE', HL * 0.45, 1.45, 0.30, '#ffffff', { weight: 900 });
+    G.text(ctx, 'JOIN THE JOURNEY • BUILDER ONE', HL * 0.45, 1.45, 0.25, '#ffffff', { weight: 900 });
     // Cargo barrels marked CLOUD, AI, DEVOPS, DATA
     const BARRELS = ['CLOUD', 'AI', 'DEVOPS', 'DATA'];
     for (let bi = 0; bi < 4; bi++) {
@@ -2480,16 +2447,17 @@ const SEA = (() => {
     ctx.strokeStyle = 'rgba(90,60,40,0.8)'; ctx.lineWidth = 0.025; for (const f of [0.2, 0.32]) { ctx.beginPath(); ctx.moveTo(-w / 2, 0.5 + h * (1 - f)); ctx.quadraticCurveTo(0, 0.5 + h * (1 - f) - 0.25, w / 2, 0.5 + h * (1 - f)); ctx.stroke(); }
     for (let k = 0; k < 7; k++) { const x = -w * 0.4 + k * w * 0.8 / 6; ctx.beginPath(); ctx.moveTo(x, 0.5 + h * 0.8); ctx.lineTo(x + 0.02, 0.5 + h * 0.72); ctx.stroke(); }
     if (w > 5.0) {
-      // Main sail: AWS SBG insignia
+      // Main sail: JOIN THE JOURNEY & AWS SBG
       ctx.save();
       G.gold(ctx, (c) => {
         ctx.fillStyle = c;
         ctx.beginPath();
-        ctx.arc(0, 0.5 + h * 0.58, w * 0.26, 0.15 * Math.PI, 0.85 * Math.PI);
-        ctx.lineWidth = 0.12; ctx.strokeStyle = c; ctx.stroke();
+        ctx.arc(0, 0.5 + h * 0.55, w * 0.28, 0.12 * Math.PI, 0.88 * Math.PI);
+        ctx.lineWidth = 0.14; ctx.strokeStyle = c; ctx.stroke();
       });
-      G.text(ctx, 'AWS SBG', 0, 0.5 + h * 0.68, 0.52, '#232f3e', { weight: 900 });
-      G.text(ctx, 'VOYAGE TO CLOUD', 0, 0.5 + h * 0.32, 0.28, '#ff9900', { weight: 800 });
+      G.text(ctx, 'JOIN THE JOURNEY', 0, 0.5 + h * 0.65, 0.50, '#ff9900', { weight: 900 });
+      G.text(ctx, 'AWS STUDENT BUILDER GROUP', 0, 0.5 + h * 0.36, 0.25, '#232f3e', { weight: 800 });
+      G.text(ctx, 'JSSATEB • BUILDER ONE', 0, 0.5 + h * 0.20, 0.20, '#5a3a20', { weight: 700 });
       ctx.restore();
     } else if (w > 4.0) {
       // Fore sail
@@ -3455,9 +3423,9 @@ const SBG_CHRONICLES = [
 ];
 
 function updateSbgHud(T) {
+  const subContainer = document.getElementById('sbg-subtitle-container');
   const subMain = document.getElementById('sbg-sub-main');
   const subSec = document.getElementById('sbg-sub-sec');
-  const btns = document.querySelectorAll('.sbg-chapter-btn');
   const reveal = document.getElementById('sbg-logo-reveal');
 
   let current = SBG_CHRONICLES[0];
@@ -3473,15 +3441,13 @@ function updateSbgHud(T) {
     if (subSec) subSec.innerText = current.sec;
   }
 
-  if (btns && btns.length) {
-    btns.forEach((btn, idx) => {
-      if (idx === current.chapter) btn.classList.add('active');
-      else btn.classList.remove('active');
-    });
+  const isEnding = (T >= 108.5 && T <= 118.5 && !window.__sbgDismissed);
+  if (subContainer) {
+    subContainer.style.opacity = isEnding ? '0' : '1';
   }
 
   if (reveal) {
-    if (T >= 108.5 && T <= 118.5 && !window.__sbgDismissed) {
+    if (isEnding) {
       reveal.classList.add('visible');
     } else {
       reveal.classList.remove('visible');
@@ -3498,14 +3464,8 @@ window.jumpToChapter = function(targetT) {
   window.__sbgDismissed = false;
   const reveal = document.getElementById('sbg-logo-reveal');
   if (reveal) reveal.classList.remove('visible');
-};
-
-window.triggerJoinModal = function() {
-  if (window.parent && window.parent !== window) {
-    window.parent.postMessage('aws-sbg-open-join', '*');
-  }
-  const reveal = document.getElementById('sbg-logo-reveal');
-  if (reveal) reveal.classList.remove('visible');
+  const subContainer = document.getElementById('sbg-subtitle-container');
+  if (subContainer) subContainer.style.opacity = '1';
 };
 
 window.replayChronicles = function() {
@@ -3516,6 +3476,8 @@ window.dismissReveal = function() {
   window.__sbgDismissed = true;
   const reveal = document.getElementById('sbg-logo-reveal');
   if (reveal) reveal.classList.remove('visible');
+  const subContainer = document.getElementById('sbg-subtitle-container');
+  if (subContainer) subContainer.style.opacity = '1';
 };
 
 function frame() {
