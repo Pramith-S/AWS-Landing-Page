@@ -9,7 +9,7 @@ const PathwaySection = ({ onOpenJoinModal }) => {
   return (
     <section id="pathway" className="section-padding pathway-section">
       {/* Falling Numbers & Tech Symbols from Upside to Downside in Background */}
-      <MatrixNumberRain opacity={0.92} speed={0.22} />
+      <MatrixNumberRain opacity={0.78} speed={0.18} />
 
       <div className="container pathway-content-wrapper">
         

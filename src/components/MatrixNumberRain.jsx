@@ -111,8 +111,15 @@ const MatrixNumberRain = ({
     window.addEventListener('resize', handleWindowResize);
 
     const draw = () => {
-      // Deep dark slate canvas background
-      ctx.fillStyle = '#06070d';
+      // Gentle translucent dark slate canvas background allowing section light to shine through
+      const bgGrad = ctx.createRadialGradient(
+        displayWidth * 0.5, displayHeight * 0.20, 60,
+        displayWidth * 0.5, displayHeight * 0.35, displayWidth * 0.85
+      );
+      bgGrad.addColorStop(0, 'rgba(18, 22, 38, 0.85)'); // Gentle subtle ambient illumination at upper-center
+      bgGrad.addColorStop(0.55, 'rgba(12, 14, 25, 0.92)');
+      bgGrad.addColorStop(1, 'rgba(8, 9, 16, 0.97)');
+      ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, displayWidth, displayHeight);
 
       // Map to quickly look up which cells are illuminated by falling electric blue light
@@ -178,14 +185,14 @@ const MatrixNumberRain = ({
               ctx.shadowColor = '#00E5FF';
             } else {
               // Moving electric blue light
-              const alpha = Math.max(0.45, light.intensity);
+              const alpha = Math.max(0.35, light.intensity * 0.85);
               ctx.fillStyle = light.hueShift === 'cyan' ? `rgba(0, 229, 255, ${alpha})` : `rgba(56, 189, 248, ${alpha})`;
-              ctx.shadowBlur = 10 * light.intensity;
+              ctx.shadowBlur = 8 * light.intensity;
               ctx.shadowColor = '#0284C7';
             }
           } else {
-            // Crisp, clearly visible light slate/blue-gray static symbols (matching Image 2)
-            ctx.fillStyle = 'rgba(175, 192, 218, 0.42)';
+            // Subtle, elegant light slate/blue-gray static symbols providing background depth without clashing with text
+            ctx.fillStyle = 'rgba(160, 182, 214, 0.18)';
             ctx.shadowBlur = 0;
           }
 
