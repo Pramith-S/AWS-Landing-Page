@@ -72,12 +72,12 @@
 }
 
 /* --------------------------------------------------------------------------
-   Primary Category Tabs Bar (Options: Grand Stage, Mentors, Lead, Members)
+   Primary Category Tabs Bar (Teenage Engineering [EP-133 K.O. II] Tactile Keys)
    -------------------------------------------------------------------------- */
 .team-options-container {
   display: flex;
   justify-content: center;
-  margin-bottom: 2.2rem;
+  margin-bottom: 2.5rem;
   position: relative;
   z-index: 10;
 }
@@ -87,65 +87,80 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  background: #0d0b14;
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 1.5px solid #ffffff;
-  box-shadow: 4px 4px 0px #ffffff;
+  gap: 12px;
+  background: transparent;
+  padding: 4px;
+  border-radius: 12px;
+  border: none;
+  box-shadow: none;
   max-width: 100%;
 }
 
 .team-opt-btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 15px;
-  background: #13101c;
+  gap: 10px;
+  padding: 10px 18px;
+  background-color: #201d2a;
   color: #cbd5e1;
   font-family: var(--font-heading, 'Outfit', sans-serif);
   font-size: 0.8rem;
   font-weight: 800;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  border: 1.5px solid rgba(255, 255, 255, 0.4);
-  border-radius: 6px;
+  border: none;
+  outline: none;
+  border-radius: 9px;
   cursor: pointer;
-  box-shadow: 2px 2px 0px #ffffff;
-  transition: all 0.16s ease;
+  /* Teenage Engineering [EP-133 K.O. II] tactile 3D bevel */
+  box-shadow: rgba(0, 0, 0, 0.45) 0px 5px 8px,
+    rgba(255, 255, 255, 0.16) 1.5px 1.5px 2px 0px inset,
+    rgba(0, 0, 0, 0.45) -2.5px -2.5px 6px 0px inset;
+  transition: all 0.12s ease-in-out;
   white-space: nowrap;
+  user-select: none;
 }
 
 .team-opt-btn:hover {
   color: #ffffff;
-  border-color: #ff9900;
-  transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0px #ff9900;
-  background: #1a1626;
+  background-color: #282436;
+  transform: translateY(-1.5px);
+  box-shadow: rgba(0, 0, 0, 0.55) 0px 7px 12px,
+    rgba(255, 255, 255, 0.22) 1.5px 1.5px 2px 0px inset,
+    rgba(0, 0, 0, 0.5) -2.5px -2.5px 6px 0px inset;
 }
 
+/* Active pressed down key - iconic EP-133 Orange */
 .team-opt-btn.active {
-  background: #181424;
-  color: #ffffff;
-  border-color: #ff9900;
-  border-bottom: 3.5px solid #ff9900;
-  box-shadow: 3px 3px 0px #ff9900;
+  background-color: #ff9900;
+  color: #07060a;
+  transform: translateY(2px);
+  box-shadow: rgba(255, 153, 0, 0.45) 0px 0px 12px,
+    rgba(255, 255, 255, 0.7) 1.5px 1.5px 2px 0px inset,
+    rgba(180, 80, 0, 0.55) -2.5px -2.5px 5px 0px inset;
+}
+
+.team-opt-btn:active {
+  transform: translateY(2.5px);
+  box-shadow: rgba(0, 0, 0, 0.377) 0px 0px 0px,
+    inset 0.5px 0.5px 4px #000000;
 }
 
 .team-opt-btn .opt-badge {
   font-family: var(--font-mono, 'JetBrains Mono', monospace);
   font-size: 0.65rem;
-  font-weight: 700;
-  padding: 2px 6px;
+  font-weight: 800;
+  padding: 2px 7px;
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.35);
   color: #ffb84d;
+  letter-spacing: 0.04em;
+  transition: all 0.12s ease-in-out;
 }
 
 .team-opt-btn.active .opt-badge {
-  background: #ff9900;
-  color: #07060a;
-  font-weight: 800;
+  background: #07060a;
+  color: #ff9900;
 }
 
 /* --------------------------------------------------------------------------
@@ -368,16 +383,29 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 12px;
-  background: #ff9900;
+  padding: 8px 14px;
+  background-color: #ff9900;
   color: #07060a;
-  border: 1.5px solid #141416;
-  border-radius: 4px;
+  border: none;
+  border-radius: 6px;
   font-family: var(--font-heading, sans-serif);
   font-size: 0.75rem;
   font-weight: 800;
   cursor: pointer;
-  box-shadow: 2px 2px 0px #141416;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 4px 6px,
+    rgba(255, 255, 255, 0.6) 1.5px 1.5px 2px 0px inset,
+    rgba(180, 80, 0, 0.5) -2px -2px 4px 0px inset;
+  transition: all 0.12s ease-in-out;
+}
+
+.stage-zoom-btn:hover {
+  background-color: #ffa726;
+  transform: translateY(-1px);
+}
+
+.stage-zoom-btn:active {
+  transform: translateY(1.5px);
+  box-shadow: inset 0.5px 0.5px 4px #000000;
 }
 
 .stage-caption-box {
@@ -584,24 +612,36 @@
 .lead-portfolio-btn {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 8px 16px;
-  border-radius: 6px;
-  background: #ff9900;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  background-color: #ff9900;
   color: #07060a;
   font-family: var(--font-heading, sans-serif);
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-weight: 800;
   text-decoration: none;
-  border: 1.5px solid #141416;
-  box-shadow: 2px 2px 0px #ffffff;
-  transition: all 0.18s ease;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 5px 8px,
+    rgba(255, 255, 255, 0.6) 1.5px 1.5px 2px 0px inset,
+    rgba(180, 80, 0, 0.5) -2.5px -2.5px 5px 0px inset;
+  transition: all 0.12s ease-in-out;
+  user-select: none;
 }
 
 .lead-portfolio-btn:hover {
-  background: #ffa726;
-  transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0px #ffffff;
+  background-color: #ffa726;
+  transform: translateY(-1.5px);
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 7px 12px,
+    rgba(255, 255, 255, 0.7) 1.5px 1.5px 2px 0px inset,
+    rgba(180, 80, 0, 0.5) -2.5px -2.5px 5px 0px inset;
+}
+
+.lead-portfolio-btn:active {
+  transform: translateY(2px);
+  box-shadow: inset 0.5px 0.5px 4px #000000;
 }
 
 .lead-social-cluster {
@@ -632,33 +672,47 @@
 .domain-subtab-btn {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 7px 14px;
-  border-radius: 6px;
-  border: 1.5px solid rgba(255, 255, 255, 0.25);
-  background: #0d0b14;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  background-color: #1e1b29;
   color: #94a3b8;
   font-family: var(--font-heading, sans-serif);
-  font-size: 0.76rem;
+  font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.04em;
   cursor: pointer;
-  transition: all 0.18s ease;
+  /* Teenage Engineering [EP-133 K.O. II] tactile 3D bevel */
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 4px 6px,
+    rgba(255, 255, 255, 0.12) 1.5px 1.5px 2px 0px inset,
+    rgba(0, 0, 0, 0.4) -2px -2px 5px 0px inset;
+  transition: all 0.12s ease-in-out;
+  user-select: none;
 }
 
 .domain-subtab-btn:hover {
   color: #ffffff;
-  border-color: var(--domain-accent, #ff9900);
-  background: #151122;
+  background-color: #272335;
   transform: translateY(-1px);
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 6px 10px,
+    rgba(255, 255, 255, 0.18) 1.5px 1.5px 2px 0px inset,
+    rgba(0, 0, 0, 0.45) -2px -2px 5px 0px inset;
 }
 
 .domain-subtab-btn.active {
-  background: #171326;
-  color: #ffffff;
-  border-color: var(--domain-accent, #ff9900);
-  border-bottom: 3px solid var(--domain-accent, #ff9900);
-  box-shadow: 2px 2px 0px var(--domain-accent, #ff9900);
+  background-color: var(--domain-accent, #ff9900);
+  color: #07060a;
+  transform: translateY(1.5px);
+  box-shadow: 0 0 12px var(--domain-accent, #ff9900),
+    rgba(255, 255, 255, 0.6) 1.5px 1.5px 2px 0px inset,
+    rgba(0, 0, 0, 0.35) -2px -2px 4px 0px inset;
+}
+
+.domain-subtab-btn:active {
+  transform: translateY(2px);
+  box-shadow: inset 0.5px 0.5px 4px #000000;
 }
 
 .subtab-count {
@@ -847,7 +901,9 @@
   margin: 6px 0 8px;
 }
 
-/* Social icons on each card */
+/* --------------------------------------------------------------------------
+   Vertical Rolling Social Icons (Matching User Code Snippet)
+   -------------------------------------------------------------------------- */
 .member-social-row {
   display: flex;
   align-items: center;
@@ -855,40 +911,75 @@
   gap: 10px;
 }
 
-.social-icon-btn {
-  display: inline-flex;
+.social-roll-btn {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  overflow: hidden;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: #14111d;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.social-roll-btn:hover {
+  border-color: rgba(255, 255, 255, 0.45);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+}
+
+.social-roll-slot {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.social-roll-btn:hover .social-roll-slot {
+  transform: translateY(-32px);
+}
+
+.social-roll-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 5px;
-  border: 1.5px solid rgba(255, 255, 255, 0.25);
-  background: #13101c;
-  color: #cbd5e1;
-  transition: all 0.18s ease;
-  cursor: pointer;
-  text-decoration: none;
+  flex-shrink: 0;
+  color: #94a3b8;
+  transition: color 0.2s ease;
 }
 
-.social-icon-btn.ig-btn:hover {
-  border-color: #ec4899;
-  color: #ec4899;
-  background: rgba(236, 72, 153, 0.15);
-  transform: translateY(-1px);
-}
-
-.social-icon-btn.in-btn:hover {
-  border-color: #0a66c2;
-  color: #0a66c2;
-  background: rgba(10, 102, 194, 0.15);
-  transform: translateY(-1px);
-}
-
-.social-icon-btn.git-btn:hover {
-  border-color: #ffffff;
+/* Hover colored states matching user snippet */
+.social-roll-icon.ig-hover {
+  background: linear-gradient(
+    72.44deg,
+    #ff7a00 11.92%,
+    #ff0169 51.56%,
+    #d300c5 85.69%
+  );
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.12);
-  transform: translateY(-1px);
+}
+
+.social-roll-icon.in-hover {
+  background: #0a66c2;
+  color: #ffffff;
+}
+
+.social-roll-icon.git-hover {
+  background: linear-gradient(
+    180deg,
+    rgba(129, 34, 144, 1) 0%,
+    rgba(77, 34, 124, 1) 91%
+  );
+  color: #ffffff;
+}
+
+.social-roll-icon.globe-hover {
+  background: #ff9900;
+  color: #07060a;
 }
 
 .no-members-found {
@@ -917,15 +1008,29 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 14px;
-  background: #ff9900;
+  padding: 8px 16px;
+  background-color: #ff9900;
   color: #07060a;
-  border: 1.5px solid #141416;
-  border-radius: 4px;
+  border: none;
+  border-radius: 6px;
   font-family: var(--font-heading, sans-serif);
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 800;
   cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 4px 6px,
+    rgba(255, 255, 255, 0.6) 1.5px 1.5px 2px 0px inset,
+    rgba(180, 80, 0, 0.5) -2px -2px 4px 0px inset;
+  transition: all 0.12s ease-in-out;
+}
+
+.reset-search-btn:hover {
+  background-color: #ffa726;
+  transform: translateY(-1px);
+}
+
+.reset-search-btn:active {
+  transform: translateY(1.5px);
+  box-shadow: inset 0.5px 0.5px 4px #000000;
 }
 
 /* ==========================================================================

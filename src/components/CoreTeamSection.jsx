@@ -29,6 +29,30 @@ const domainIcons = {
   operations: Briefcase
 };
 
+// Reusable Vertical Rolling Social Icon Button (from user snippet)
+const SocialRollBtn = ({ href, type, title, ariaLabel, icon: Icon, size = 14 }) => {
+  const isExternal = href && href !== '#';
+  return (
+    <a
+      href={href || '#'}
+      target={isExternal ? '_blank' : '_self'}
+      rel="noreferrer"
+      className={`social-roll-btn ${type}-roll`}
+      title={title}
+      aria-label={ariaLabel}
+    >
+      <div className="social-roll-slot">
+        <div className="social-roll-icon initial-icon">
+          <Icon size={size} />
+        </div>
+        <div className={`social-roll-icon hover-icon ${type}-hover`}>
+          <Icon size={size} />
+        </div>
+      </div>
+    </a>
+  );
+};
+
 const CoreTeamSection = () => {
   // Primary Navigation Options: 'grand-stage' | 'mentors' | 'lead' | 'members'
   const [activeTab, setActiveTab] = useState('grand-stage');
@@ -135,14 +159,14 @@ const CoreTeamSection = () => {
         </div>
 
         {/* =========================================================================
-            PRIMARY OPTIONS TABS (Zero Long Scrolling • Clean Obsidian Tabs)
+            PRIMARY CATEGORY TABS (Teenage Engineering [EP-133 K.O. II] Style)
            ========================================================================= */}
         <div className="team-options-container">
           <div className="team-options-tabs" role="tablist" aria-label="Core Team Categories">
             <button
               role="tab"
               aria-selected={activeTab === 'grand-stage'}
-              className={`team-opt-btn ${activeTab === 'grand-stage' ? 'active' : ''}`}
+              className={`team-opt-btn ep-btn ${activeTab === 'grand-stage' ? 'active' : ''}`}
               onClick={() => setActiveTab('grand-stage')}
             >
               <Camera size={15} />
@@ -153,7 +177,7 @@ const CoreTeamSection = () => {
             <button
               role="tab"
               aria-selected={activeTab === 'mentors'}
-              className={`team-opt-btn ${activeTab === 'mentors' ? 'active' : ''}`}
+              className={`team-opt-btn ep-btn ${activeTab === 'mentors' ? 'active' : ''}`}
               onClick={() => setActiveTab('mentors')}
             >
               <GraduationCap size={15} />
@@ -164,7 +188,7 @@ const CoreTeamSection = () => {
             <button
               role="tab"
               aria-selected={activeTab === 'lead'}
-              className={`team-opt-btn ${activeTab === 'lead' ? 'active' : ''}`}
+              className={`team-opt-btn ep-btn ${activeTab === 'lead' ? 'active' : ''}`}
               onClick={() => setActiveTab('lead')}
             >
               <Sparkles size={15} />
@@ -175,7 +199,7 @@ const CoreTeamSection = () => {
             <button
               role="tab"
               aria-selected={activeTab === 'members'}
-              className={`team-opt-btn ${activeTab === 'members' ? 'active' : ''}`}
+              className={`team-opt-btn ep-btn ${activeTab === 'members' ? 'active' : ''}`}
               onClick={() => setActiveTab('members')}
             >
               <Users size={15} />
@@ -186,7 +210,7 @@ const CoreTeamSection = () => {
         </div>
 
         {/* =========================================================================
-            VIEW 1: COMMUNITY GRAND STAGE (Stacked Photo Boxes)
+            VIEW 1: COMMUNITY GRAND STAGE (Floating Polaroid Photo Frames)
            ========================================================================= */}
         {activeTab === 'grand-stage' && (
           <div className="tab-pane-fade-in" id="pane-grand-stage">
@@ -203,7 +227,7 @@ const CoreTeamSection = () => {
             <div className="grand-stage-grid">
               {coreTeamData.groupPhotos.map((photo) => (
                 <div key={photo.id} className="grand-stage-item-wrapper">
-                  {/* Stacked Polaroid Box strictly for the photo */}
+                  {/* Floating Polaroid Photo Frame */}
                   <div className="polaroid-stack stage-polaroid-stack">
                     <div className="polaroid-card stage-polaroid-card">
                       <div
@@ -219,7 +243,7 @@ const CoreTeamSection = () => {
                         <div className="stage-img-overlay">
                           <button
                             type="button"
-                            className="stage-zoom-btn"
+                            className="stage-zoom-btn ep-btn"
                             onClick={(e) => {
                               e.stopPropagation();
                               setLightboxPhoto(photo);
@@ -245,7 +269,7 @@ const CoreTeamSection = () => {
         )}
 
         {/* =========================================================================
-            VIEW 2: MENTORS (Stacked Polaroid Photo Boxes • Instagram & LinkedIn)
+            VIEW 2: MENTORS (Floating Polaroid Frames • Rolling Social Handles)
            ========================================================================= */}
         {activeTab === 'mentors' && (
           <div className="tab-pane-fade-in" id="pane-mentors">
@@ -262,7 +286,7 @@ const CoreTeamSection = () => {
             <div className="mentors-grid">
               {coreTeamData.mentors.map((mentor) => (
                 <div key={mentor.id} className="mentor-card-wrapper">
-                  {/* Stacked Polaroid Box strictly around photo */}
+                  {/* Floating Polaroid Frame */}
                   <div className="polaroid-stack mentor-polaroid-stack">
                     <div className="polaroid-card mentor-polaroid-card">
                       <div className="polaroid-image mentor-polaroid-image">
@@ -277,7 +301,7 @@ const CoreTeamSection = () => {
                     </div>
                   </div>
 
-                  {/* Clean details: Name, Role, Dept, Instagram & LinkedIn */}
+                  {/* Clean details: Name, Role, Dept, Rolling Social Handles */}
                   <div className="mentor-info-box">
                     <h4 className="mentor-name-title">{mentor.name}</h4>
                     <p className="mentor-role-title">{mentor.role}</p>
@@ -285,26 +309,22 @@ const CoreTeamSection = () => {
                     <div className="neo-dashed-divider" />
 
                     <div className="social-actions-row">
-                      <a
-                        href={mentor.socials.instagram || '#'}
-                        target={mentor.socials.instagram ? '_blank' : '_self'}
-                        rel="noreferrer"
-                        className="social-icon-btn ig-btn"
+                      <SocialRollBtn
+                        href={mentor.socials.instagram}
+                        type="ig"
                         title={mentor.socials.instagram ? `${mentor.name} Instagram` : 'Instagram (add later)'}
-                        aria-label={`${mentor.name} Instagram`}
-                      >
-                        <Instagram size={15} />
-                      </a>
-                      <a
+                        ariaLabel={`${mentor.name} Instagram`}
+                        icon={Instagram}
+                        size={15}
+                      />
+                      <SocialRollBtn
                         href={mentor.socials.linkedin || 'https://www.linkedin.com'}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="social-icon-btn in-btn"
+                        type="in"
                         title={`${mentor.name} LinkedIn`}
-                        aria-label={`${mentor.name} LinkedIn`}
-                      >
-                        <Linkedin size={15} />
-                      </a>
+                        ariaLabel={`${mentor.name} LinkedIn`}
+                        icon={Linkedin}
+                        size={15}
+                      />
                     </div>
                   </div>
                 </div>
@@ -314,7 +334,7 @@ const CoreTeamSection = () => {
         )}
 
         {/* =========================================================================
-            VIEW 3: AWS SBG LEAD (Clean Minimal Showcase: Photo, Portfolio, Socials)
+            VIEW 3: AWS SBG LEAD (Clean Floating Showcase • EP-133 Action & Rolling Socials)
            ========================================================================= */}
         {activeTab === 'lead' && (
           <div className="tab-pane-fade-in" id="pane-lead">
@@ -353,7 +373,7 @@ const CoreTeamSection = () => {
                   </div>
                 </div>
 
-                {/* Lead Details: Name, Role, Portfolio, Instagram, LinkedIn */}
+                {/* Lead Details: Name, Role, EP-133 Portfolio Button, Rolling Socials */}
                 <div className="lead-info-column">
                   <span className="lead-eyebrow">// CAMPUS ARCHITECT</span>
                   <h3 className="lead-name-text">{coreTeamData.chapterLead.name}</h3>
@@ -366,7 +386,7 @@ const CoreTeamSection = () => {
                       href={coreTeamData.chapterLead.socials.portfolio}
                       target="_blank"
                       rel="noreferrer"
-                      className="lead-portfolio-btn"
+                      className="lead-portfolio-btn ep-btn"
                       title="Visit Portfolio"
                     >
                       <Globe size={15} />
@@ -375,36 +395,30 @@ const CoreTeamSection = () => {
                     </a>
 
                     <div className="lead-social-cluster">
-                      <a
-                        href={coreTeamData.chapterLead.socials.instagram || '#'}
-                        target={coreTeamData.chapterLead.socials.instagram ? '_blank' : '_self'}
-                        rel="noreferrer"
-                        className="social-icon-btn ig-btn"
+                      <SocialRollBtn
+                        href={coreTeamData.chapterLead.socials.instagram}
+                        type="ig"
                         title={coreTeamData.chapterLead.socials.instagram ? 'Instagram' : 'Instagram (add later)'}
-                        aria-label="Instagram"
-                      >
-                        <Instagram size={15} />
-                      </a>
-                      <a
+                        ariaLabel="Kumar R Shet Instagram"
+                        icon={Instagram}
+                        size={15}
+                      />
+                      <SocialRollBtn
                         href={coreTeamData.chapterLead.socials.linkedin || 'https://www.linkedin.com'}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="social-icon-btn in-btn"
-                        title="LinkedIn"
-                        aria-label="LinkedIn"
-                      >
-                        <Linkedin size={15} />
-                      </a>
-                      <a
+                        type="in"
+                        title="Kumar R Shet LinkedIn"
+                        ariaLabel="Kumar R Shet LinkedIn"
+                        icon={Linkedin}
+                        size={15}
+                      />
+                      <SocialRollBtn
                         href={coreTeamData.chapterLead.socials.github || 'https://github.com/imkumar80'}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="social-icon-btn git-btn"
-                        title="GitHub"
-                        aria-label="GitHub"
-                      >
-                        <Github size={15} />
-                      </a>
+                        type="git"
+                        title="Kumar R Shet GitHub"
+                        ariaLabel="Kumar R Shet GitHub"
+                        icon={Github}
+                        size={15}
+                      />
                     </div>
                   </div>
                 </div>
@@ -414,11 +428,11 @@ const CoreTeamSection = () => {
         )}
 
         {/* =========================================================================
-            VIEW 4: TEAM MEMBERS (STACKED POLAROID BOX STRICTLY ON PHOTOS ONLY!)
+            VIEW 4: TEAM MEMBERS (Floating Polaroid Frames • Rolling Social Handles)
            ========================================================================= */}
         {activeTab === 'members' && (
           <div className="tab-pane-fade-in" id="pane-members">
-            {/* Domain Filter Sub-bar (Only the 4 individual teams, NO 'ALL' TAB!) */}
+            {/* Domain Filter Sub-bar (Teenage Engineering button style) */}
             <div className="domain-toolbar">
               <div className="domain-subtabs" role="tablist" aria-label="Domain Teams">
                 {coreTeamData.teams.map((t) => {
@@ -428,7 +442,7 @@ const CoreTeamSection = () => {
                     <button
                       key={t.id}
                       type="button"
-                      className={`domain-subtab-btn ${isCur ? 'active' : ''}`}
+                      className={`domain-subtab-btn ep-btn ${isCur ? 'active' : ''}`}
                       onClick={() => setActiveDomain(t.id)}
                       style={{ '--domain-accent': t.accentColor }}
                     >
@@ -484,7 +498,7 @@ const CoreTeamSection = () => {
               </div>
             </div>
 
-            {/* Stacked Polaroid Cards Grid (Photos framed with stacked layers, Details below) */}
+            {/* Stacked Polaroid Cards Grid (Floating Frames without outer boxes) */}
             {displayedMembers.length > 0 ? (
               <div className="neo-members-grid">
                 {displayedMembers.map((member) => (
@@ -526,28 +540,24 @@ const CoreTeamSection = () => {
 
                       <div className="neo-dashed-divider" />
 
-                      {/* Instagram & LinkedIn on every single card */}
+                      {/* Rolling Social Handles on every card */}
                       <div className="member-social-row">
-                        <a
-                          href={member.instagram || '#'}
-                          target={member.instagram ? '_blank' : '_self'}
-                          rel="noreferrer"
-                          className="social-icon-btn ig-btn"
+                        <SocialRollBtn
+                          href={member.instagram}
+                          type="ig"
                           title={member.instagram ? `${member.name} Instagram` : 'Instagram (add later)'}
-                          aria-label={`${member.name} Instagram`}
-                        >
-                          <Instagram size={14} />
-                        </a>
-                        <a
+                          ariaLabel={`${member.name} Instagram`}
+                          icon={Instagram}
+                          size={14}
+                        />
+                        <SocialRollBtn
                           href={member.linkedin || 'https://www.linkedin.com'}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="social-icon-btn in-btn"
+                          type="in"
                           title={`${member.name} LinkedIn`}
-                          aria-label={`${member.name} LinkedIn`}
-                        >
-                          <Linkedin size={14} />
-                        </a>
+                          ariaLabel={`${member.name} LinkedIn`}
+                          icon={Linkedin}
+                          size={14}
+                        />
                       </div>
                     </div>
                   </div>
@@ -560,7 +570,7 @@ const CoreTeamSection = () => {
                 <p>No members in {currentDomainTeam.name} match "{searchQuery}".</p>
                 <button
                   type="button"
-                  className="reset-search-btn"
+                  className="reset-search-btn ep-btn"
                   onClick={() => setSearchQuery('')}
                 >
                   Reset Search
