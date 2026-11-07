@@ -1,88 +1,64 @@
 /**
  * AWS Student Builder Group (SBG) - JSSATEB
  * Core Team, Mentors, Leadership & Group Archive Data
- * Using original photos with natural backgrounds intact
+ * Using original photos with natural backgrounds intact and custom face framing
  */
 
 export const coreTeamData = {
-  // AWS SBG Chapter Lead Details
+  // AWS SBG Lead Details (Clean minimal profile)
   chapterLead: {
     id: 'kumar-r-shet',
     name: 'Kumar R Shet',
-    role: 'AWS SBG Chapter Lead',
-    tagline: 'Campus Lead · AI Engineer & Researcher',
-    department: 'JSS Academy of Technical Education Bengaluru',
-    bio: 'Directing the AWS Student Builder Group at JSS Academy of Technical Education Bengaluru. Spearheading technical cloud curriculum, community hackathons, AWS Bedrock generative AI workshops, and student developer growth across campus.',
+    role: 'AWS SBG Lead',
     photos: [
       {
         src: '/images/core-team/members/kumar-r-shet.jpg',
-        alt: 'Kumar R Shet - AWS SBG Chapter Lead Studio Portrait',
-        position: 'center 10%'
+        alt: 'Kumar R Shet - AWS SBG Lead Portrait',
+        position: 'center 15%'
       },
       {
         src: '/images/core-team/kumar-r-shet-stage.jpg',
-        alt: 'Kumar R Shet - Inaugural Keynote Address on Stage',
+        alt: 'Kumar R Shet - Keynote Address on Stage',
         position: 'center 20%'
       }
     ],
-    stats: [
-      { label: 'Builders Mentored', value: '500+' },
-      { label: 'Cloud Labs', value: '20+' },
-      { label: 'Hackathons', value: '10+' },
-      { label: 'Community Focus', value: '100%' }
-    ],
-    badges: [
-      'AWS SBG CHAPTER LEAD',
-      'AI RESEARCHER & ENGINEER',
-      'CAMPUS ARCHITECT @ JSSATEB'
-    ],
-    pillars: [
-      'Cloud Architecture & Serverless Ecosystems',
-      'Generative AI & AWS Bedrock Workshops',
-      'Industry Mentorship & Enterprise Collaborations',
-      'Hands-on Hackathons & Student Innovation Sprints'
-    ],
     socials: {
       portfolio: 'https://imkumar80.github.io/KumarShet/',
-      github: 'https://github.com/imkumar80',
-      email: 'kumarrrshet701@gmail.com',
-      linkedin: 'https://www.linkedin.com/in/kumar-r-shet-9952a2223'
+      instagram: '',
+      linkedin: 'https://www.linkedin.com/in/kumar-r-shet-9952a2223',
+      github: 'https://github.com/imkumar80'
     }
   },
 
-  // Faculty Mentors & Academic Leadership (Original natural background photos)
+  // Faculty Mentors (Clean minimal profile: Name, Role, Dept, Instagram & LinkedIn)
   mentors: [
     {
       id: 'mentor-abhilash',
       name: 'Abhilash CB',
-      role: 'Faculty Mentor & Cloud Advisor',
-      department: 'Department of Computer Science & Engineering',
-      institution: 'JSS Academy of Technical Education Bengaluru',
+      role: 'Faculty Mentor',
+      department: 'Dept. of Computer Science & Engineering, JSSATEB',
       photo: '/images/mentors/abhilash-cb.jpg',
-      bio: 'Guiding AWS SBG builders in enterprise cloud architecture, containerized microservices, serverless systems, and hands-on developer bootcamps.',
-      badges: ['CLOUD ARCHITECTURE', 'FACULTY MENTOR', 'SYSTEMS DESIGN'],
+      position: 'center 20%',
       socials: {
-        linkedin: 'https://www.linkedin.com',
-        email: 'abhilashcb@jssateb.ac.in'
+        instagram: '',
+        linkedin: 'https://www.linkedin.com'
       }
     },
     {
       id: 'mentor-sukrutha',
       name: 'Sukrutha C Basappa',
-      role: 'Faculty Mentor & Academic Coordinator',
-      department: 'Department of Computer Science & Engineering',
-      institution: 'JSS Academy of Technical Education Bengaluru',
+      role: 'Faculty Mentor',
+      department: 'Dept. of Computer Science & Engineering, JSSATEB',
       photo: '/images/mentors/sukrutha-c-basappa.png',
-      bio: 'Fostering academic-industry synergy, research collaboration, hackathon sponsorships, and empowering student builder innovation across the institution.',
-      badges: ['ACADEMIC COORDINATOR', 'RESEARCH & SYNERGY', 'COMMUNITY MENTOR'],
+      position: 'center 25%',
       socials: {
-        linkedin: 'https://www.linkedin.com',
-        email: 'sukruthacb@jssateb.ac.in'
+        instagram: '',
+        linkedin: 'https://www.linkedin.com'
       }
     }
   ],
 
-  // Group Archive Photos (Original stage captures)
+  // Group Archive Photos (Removed location & attendee stats)
   groupPhotos: [
     {
       id: 'grand-stage',
@@ -90,9 +66,7 @@ export const coreTeamData = {
       name: 'COMMUNITY GRAND STAGE',
       caption: 'AWS Student Builder Group launch & congregation with institutional leadership, faculty mentors, and student builders across JSSATEB.',
       src: '/images/core-team/group-auditorium.jpg',
-      badge: 'GRAND STAGE • ALL BUILDERS',
-      venue: 'JSSATEB Auditorium',
-      stats: '150+ Builders'
+      badge: 'GRAND STAGE'
     },
     {
       id: 'hand-sign',
@@ -100,13 +74,11 @@ export const coreTeamData = {
       name: 'AWS HAND-SIGN FORMATION',
       caption: 'AWS SBG JSSATEB builders forming the iconic "A - W - S" hand gesture formation on stage.',
       src: '/images/core-team/group-team.jpg',
-      badge: 'AWS HAND FORMATION',
-      venue: 'Celebration Stage',
-      stats: 'Official Gesture'
+      badge: 'AWS HAND FORMATION'
     }
   ],
 
-  // Domain Teams (Original photos with natural backgrounds)
+  // Domain Teams (Original photos, verified face positioning, instagram & linkedin ready)
   teams: [
     {
       id: 'tech',
@@ -121,6 +93,7 @@ export const coreTeamData = {
           role: 'Tech Lead',
           isLead: true,
           photo: '/images/core-team/members/pramith.jpg',
+          position: 'center 25%',
           instagram: '',
           linkedin: 'https://www.linkedin.com'
         },
@@ -130,6 +103,7 @@ export const coreTeamData = {
           role: 'Member',
           isLead: false,
           photo: '/images/core-team/members/chirag-ns.jpg',
+          position: 'center 18%',
           instagram: 'https://www.instagram.com/chirag_ns?dlrf=MXQ0cmN0dTNrMWtm',
           linkedin: 'https://www.linkedin.com/in/chirag-n-s-a3ab70372'
         },
@@ -139,6 +113,7 @@ export const coreTeamData = {
           role: 'Member',
           isLead: false,
           photo: '/images/core-team/members/kushal-kumar.jpg',
+          position: 'center 30%',
           instagram: '',
           linkedin: 'https://www.linkedin.com'
         },
@@ -148,6 +123,7 @@ export const coreTeamData = {
           role: 'Member',
           isLead: false,
           photo: '/images/core-team/members/parth.jpg',
+          position: 'center 35%',
           instagram: '',
           linkedin: 'https://www.linkedin.com'
         },
@@ -157,6 +133,7 @@ export const coreTeamData = {
           role: 'Member',
           isLead: false,
           photo: '/images/core-team/members/raksha-r.jpg',
+          position: 'center 25%',
           instagram: '',
           linkedin: 'https://www.linkedin.com'
         },
@@ -166,6 +143,7 @@ export const coreTeamData = {
           role: 'Member',
           isLead: false,
           photo: '/images/core-team/members/adarsh-vh.jpg',
+          position: '53% 25%',
           instagram: '',
           linkedin: 'https://www.linkedin.com'
         },
@@ -175,6 +153,7 @@ export const coreTeamData = {
           role: 'Member',
           isLead: false,
           photo: '/images/core-team/members/shriya-sharma.jpg',
+          position: 'center 25%',
           instagram: '',
           linkedin: 'https://www.linkedin.com'
         }
@@ -193,6 +172,7 @@ export const coreTeamData = {
           role: 'Events Lead',
           isLead: true,
           photo: '/images/core-team/members/sai-dhyan-santosh.jpg',
+          position: 'center 42%',
           instagram: '',
           linkedin: 'https://www.linkedin.com'
         },
@@ -202,6 +182,7 @@ export const coreTeamData = {
           role: 'Member',
           isLead: false,
           photo: '/images/core-team/members/lakshitha-r.jpg',
+          position: 'center 25%',
           instagram: '',
           linkedin: 'https://www.linkedin.com'
         },
@@ -211,6 +192,7 @@ export const coreTeamData = {
           role: 'Member',
           isLead: false,
           photo: '/images/core-team/members/ayushi-anand.jpg',
+          position: 'center 48%',
           instagram: '',
           linkedin: 'https://www.linkedin.com'
         },
@@ -220,6 +202,7 @@ export const coreTeamData = {
           role: 'Member',
           isLead: false,
           photo: '/images/core-team/members/afiya.png',
+          position: 'center 25%',
           instagram: '',
           linkedin: 'https://www.linkedin.com'
         },
@@ -229,6 +212,7 @@ export const coreTeamData = {
           role: 'Member',
           isLead: false,
           photo: '/images/core-team/members/harshith-naveen.png',
+          position: 'center 42%',
           instagram: '',
           linkedin: 'https://www.linkedin.com'
         },
@@ -238,6 +222,7 @@ export const coreTeamData = {
           role: 'Member',
           isLead: false,
           photo: '/images/core-team/members/gourav.png',
+          position: 'center 48%',
           instagram: '',
           linkedin: 'https://www.linkedin.com'
         },
@@ -247,6 +232,7 @@ export const coreTeamData = {
           role: 'Member',
           isLead: false,
           photo: '/images/core-team/members/amulya.jpg',
+          position: 'center 28%',
           instagram: '',
           linkedin: 'https://www.linkedin.com'
         },
@@ -256,6 +242,7 @@ export const coreTeamData = {
           role: 'Member',
           isLead: false,
           photo: '/images/core-team/members/apurva-r-kumar.jpg',
+          position: 'center 35%',
           instagram: '',
           linkedin: 'https://www.linkedin.com'
         },
@@ -265,6 +252,7 @@ export const coreTeamData = {
           role: 'Member',
           isLead: false,
           photo: '/images/core-team/members/tejas-ar.jpg',
+          position: 'center 25%',
           instagram: '',
           linkedin: 'https://www.linkedin.com'
         },
@@ -274,6 +262,7 @@ export const coreTeamData = {
           role: 'Member',
           isLead: false,
           photo: '/images/core-team/members/mouna.jpg',
+          position: 'center 52%',
           instagram: '',
           linkedin: 'https://www.linkedin.com'
         }
@@ -292,6 +281,7 @@ export const coreTeamData = {
           role: 'Marketing Lead',
           isLead: true,
           photo: '/images/core-team/members/preethi.jpg',
+          position: 'center 38%',
           instagram: '',
           linkedin: 'https://www.linkedin.com'
         },
@@ -301,6 +291,7 @@ export const coreTeamData = {
           role: 'Member',
           isLead: false,
           photo: '/images/core-team/members/bhumika-hg.jpg',
+          position: 'center 32%',
           instagram: '',
           linkedin: 'https://www.linkedin.com'
         },
@@ -310,6 +301,7 @@ export const coreTeamData = {
           role: 'Member',
           isLead: false,
           photo: '/images/core-team/members/aadi-madhok-prasad.png',
+          position: 'center 32%',
           instagram: '',
           linkedin: 'https://www.linkedin.com'
         },
@@ -319,6 +311,7 @@ export const coreTeamData = {
           role: 'Member',
           isLead: false,
           photo: '/images/core-team/members/disha-r.jpg',
+          position: 'center 38%',
           instagram: '',
           linkedin: 'https://www.linkedin.com'
         },
@@ -328,6 +321,7 @@ export const coreTeamData = {
           role: 'Member',
           isLead: false,
           photo: '/images/core-team/members/sagar-kumar.jpg',
+          position: 'center 25%',
           instagram: '',
           linkedin: 'https://www.linkedin.com'
         },
@@ -337,6 +331,7 @@ export const coreTeamData = {
           role: 'Member',
           isLead: false,
           photo: '/images/core-team/members/devansh-s-mukka.jpg',
+          position: 'center 45%',
           instagram: '',
           linkedin: 'https://www.linkedin.com'
         },
@@ -346,6 +341,7 @@ export const coreTeamData = {
           role: 'Member',
           isLead: false,
           photo: '/images/core-team/members/tofail.png',
+          position: 'center 38%',
           instagram: '',
           linkedin: 'https://www.linkedin.com'
         }
@@ -364,6 +360,7 @@ export const coreTeamData = {
           role: 'Operational Lead',
           isLead: true,
           photo: '/images/core-team/members/pramath.jpg',
+          position: 'center 25%',
           instagram: '',
           linkedin: 'https://www.linkedin.com'
         },
@@ -373,6 +370,7 @@ export const coreTeamData = {
           role: 'Member',
           isLead: false,
           photo: '/images/core-team/members/disha-varanashi.jpg',
+          position: 'center 48%',
           instagram: '',
           linkedin: 'https://www.linkedin.com'
         },
@@ -382,6 +380,7 @@ export const coreTeamData = {
           role: 'Member',
           isLead: false,
           photo: '/images/core-team/members/pratheeksha-v.jpg',
+          position: 'center 38%',
           instagram: '',
           linkedin: 'https://www.linkedin.com'
         },
@@ -391,6 +390,7 @@ export const coreTeamData = {
           role: 'Member',
           isLead: false,
           photo: '/images/core-team/members/dimple.jpg',
+          position: 'center 48%',
           instagram: '',
           linkedin: 'https://www.linkedin.com'
         }
