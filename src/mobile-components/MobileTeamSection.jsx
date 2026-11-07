@@ -1,7 +1,7 @@
-import TeamSection from '../components/TeamSection';
+import CoreTeamSection from '../components/CoreTeamSection';
 
 const MobileTeamSection = () => {
-  return <TeamSection />;
+  return <CoreTeamSection />;
 };
 
 export default MobileTeamSection;

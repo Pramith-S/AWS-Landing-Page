@@ -1,5 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
-import styled from 'styled-components';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Users,
   Terminal,
@@ -8,200 +7,94 @@ import {
   Briefcase,
   Linkedin,
   Instagram,
-  Star,
-  UserPlus,
   Sparkles,
   Camera,
   Globe,
   ExternalLink,
   Github,
-  Mail
+  Mail,
+  GraduationCap,
+  Search,
+  Maximize2,
+  X,
+  Award,
+  ChevronRight,
+  ShieldCheck
 } from 'lucide-react';
 import { coreTeamData } from '../data/coreTeamData';
 import StarfieldBackground from './StarfieldBackground';
 import StrokeText from './StrokeText';
-import TeamTerminalCard from './TeamTerminalCard';
-import CyberTeamCard from './CyberTeamCard';
 import './CoreTeamSection.css';
 
-const teamIcons = {
+const domainIcons = {
   tech: Terminal,
   events: Calendar,
   marketing: Megaphone,
   operations: Briefcase
 };
 
-const leadPhotos = [
-  {
-    src: '/images/core-team/members/kumar-r-shet.jpg',
-    alt: 'Kumar R Shet - AWS SBG Chapter Lead',
-    position: 'center 10%'
-  },
-  {
-    src: '/images/core-team/kumar-r-shet-stage.jpg',
-    alt: 'Kumar R Shet - Inaugural Stage Address',
-    position: 'center 20%'
-  }
-];
-
-const StyledRadioWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0.5rem auto 1.5rem;
-  width: 100%;
-
-  .radio-input {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: clamp(8px, 1.8vw, 14px);
-    background-color: #0b0b0e;
-    padding: 10px 14px;
-    border-radius: 12px;
-    border: 1px solid rgba(139, 92, 246, 0.25);
-    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.8), 0 10px 30px rgba(0, 0, 0, 0.5);
-    overflow-x: auto;
-    max-width: 100%;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .radio-input::-webkit-scrollbar {
-    display: none;
-  }
-
-  .radio-input input {
-    display: none;
-  }
-
-  .radio-input .label {
-    width: clamp(88px, 19vw, 132px);
-    height: 84px;
-    background-color: #222228;
-    border-radius: 6px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 6px 8px;
-    border-top: 1px solid #383844;
-    border-left: 1px solid #282832;
-    border-right: 1px solid #16161c;
-    cursor: pointer;
-    transition: all 0.15s linear;
-    position: relative;
-    z-index: 2;
-    user-select: none;
-  }
-
-  .label .back-side {
-    position: absolute;
-    top: -10px;
-    left: 0px;
-    background-color: #222228;
-    border-radius: 4px 4px 2px 2px;
-    width: 100%;
-    height: 14px;
-    box-shadow:
-      inset 0 5px 3px 1px rgba(0, 0, 0, 0.6),
-      inset 0px -5px 2px 0px rgba(139, 92, 246, 0.2);
-    transform: perspective(300px) rotateX(50deg);
-    z-index: 1;
-    opacity: 0;
-    transition: all 0.15s linear;
-  }
-
-  .label:has(input[type="radio"]:checked) .back-side,
-  .label.is-checked .back-side {
-    opacity: 1;
-    box-shadow:
-      inset 0 5px 3px 1px rgba(0, 0, 0, 0.6),
-      inset 0px -5px 2px 0px color-mix(in srgb, var(--radio-accent, #8b5cf6) 40%, transparent);
-  }
-
-  .label:has(input[type="radio"]:checked),
-  .label.is-checked {
-    transform: perspective(200px) rotateX(-18deg);
-    transform-origin: 50% 40%;
-    box-shadow: inset 0px -20px 15px 0px rgba(0, 0, 0, 0.7);
-    border-top: 1px solid var(--radio-accent, #a855f7);
-    margin-top: 6px;
-    border-radius: 0 0 6px 6px;
-    background-color: #191624;
-  }
-
-  .label .text {
-    color: #64748b;
-    font-size: clamp(10px, 2.2vw, 12px);
-    line-height: 1.25;
-    text-align: center;
-    padding: 0px;
-    font-weight: 800;
-    font-family: var(--font-mono, monospace);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    transition: all 0.15s linear;
-    text-shadow: -1px -1px 1px rgba(224, 224, 224, 0.08);
-  }
-
-  .label input[type="radio"]:checked + .text,
-  .label.is-checked .text {
-    color: var(--radio-accent, #a855f7);
-    text-shadow:
-      0px 0px 8px color-mix(in srgb, var(--radio-accent, #a855f7) 75%, transparent),
-      1px 1px 2px rgba(0, 0, 0, 1);
-  }
-
-  .label .bottom-line {
-    width: 100%;
-    height: 4px;
-    border-radius: 999px;
-    background-color: #2a2a34;
-    box-shadow: 0 0 3px 0px rgba(19, 19, 19, 0.8);
-    border-top: 1px solid #383844;
-    transition: all 0.15s linear;
-  }
-
-  .label:has(input[type="radio"]:checked) .bottom-line,
-  .label.is-checked .bottom-line {
-    background-color: var(--radio-accent, #a855f7);
-    border-top: 1px solid var(--radio-accent, #a855f7);
-    box-shadow: 0 0 10px color-mix(in srgb, var(--radio-accent, #a855f7) 85%, transparent);
-  }
-`;
+const domainColors = {
+  tech: '#8B5CF6',
+  events: '#FF9900',
+  marketing: '#EC4899',
+  operations: '#10B981'
+};
 
 const CoreTeamSection = () => {
-  const [activePhotoIdx, setActivePhotoIdx] = useState(0); // 0 = Community Grand Stage (first)
-  const [activeDepartment, setActiveDepartment] = useState('tech'); // Default to 'tech' so it's open & visible immediately
+  // Primary Navigation Options: 'grand-stage' | 'mentors' | 'lead' | 'members'
+  const [activeTab, setActiveTab] = useState('grand-stage');
+
+  // Domain Sub-filter in Team Members: 'all' | 'tech' | 'events' | 'marketing' | 'operations'
+  const [activeDomain, setActiveDomain] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // AWS SBG Lead Photo Carousel
   const [leadPhotoIdx, setLeadPhotoIdx] = useState(0);
 
-  // Auto-switch lead photos every 2 seconds
+  // Grand Stage Lightbox Modal
+  const [lightboxPhoto, setLightboxPhoto] = useState(null);
+
+  // Auto-switch Chapter Lead photo every 3.5 seconds
   useEffect(() => {
     const timer = setInterval(() => {
-      setLeadPhotoIdx((prev) => (prev + 1) % leadPhotos.length);
-    }, 2000);
+      setLeadPhotoIdx((prev) => (prev + 1) % coreTeamData.chapterLead.photos.length);
+    }, 3500);
     return () => clearInterval(timer);
   }, []);
 
-  const activePhoto = coreTeamData.groupPhotos[activePhotoIdx];
-  const selectedTeam =
-    coreTeamData.teams.find((team) => team.id === activeDepartment) || coreTeamData.teams[0];
+  // Filtered members for Domain Teams
+  const filteredMembers = useMemo(() => {
+    let list = [];
+    if (activeDomain === 'all') {
+      coreTeamData.teams.forEach((t) => {
+        t.members.forEach((m) => {
+          list.push({ ...m, domainId: t.id, domainName: t.name, accentColor: t.accentColor });
+        });
+      });
+    } else {
+      const selected = coreTeamData.teams.find((t) => t.id === activeDomain);
+      if (selected) {
+        selected.members.forEach((m) => {
+          list.push({ ...m, domainId: selected.id, domainName: selected.name, accentColor: selected.accentColor });
+        });
+      }
+    }
 
-  // Helper for initials (filters out symbols like & or /)
-  const getInitials = (name) => {
-    return name
-      .split(/\s+/)
-      .filter((w) => /^[a-zA-Z]/.test(w))
-      .map((n) => n[0])
-      .slice(0, 2)
-      .join('')
-      .toUpperCase() || 'SB';
-  };
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      list = list.filter(
+        (m) =>
+          m.name.toLowerCase().includes(q) ||
+          m.role.toLowerCase().includes(q) ||
+          m.domainName.toLowerCase().includes(q)
+      );
+    }
+
+    return list;
+  }, [activeDomain, searchQuery]);
 
   return (
     <section id="core-team" className="section-padding core-team-section">
-      {/* Animated Parallax Starfield Background */}
       <StarfieldBackground />
 
       <div className="container">
@@ -209,7 +102,7 @@ const CoreTeamSection = () => {
         <div className="core-team-header">
           <div className="section-badge">
             <Users size={14} />
-            <span>// MEET THE CORE TEAM</span>
+            <span>// ARCHITECTS & COMMUNITY BUILDERS</span>
           </div>
 
           <div className="about-stroke-heading section-stroke-heading" aria-label="Meet Our Core Team">
@@ -222,287 +115,596 @@ const CoreTeamSection = () => {
               drawDuration={1.4}
               fillDelay={0.2}
               stagger={0.03}
-              fontSize={32}
-              fontWeight={800}
+              fontSize={34}
+              fontWeight={900}
               letterSpacing={-0.5}
               fillMode="wipe"
             />
             <StrokeText
               text="Core Team"
               trigger="scroll"
-              strokeColor="#8B5CF6"
-              fillColor="#8B5CF6"
+              strokeColor="#FF9900"
+              fillColor="#FF9900"
               strokeWidth={1.2}
               drawDuration={1.4}
               fillDelay={0.3}
               stagger={0.03}
-              fontSize={32}
-              fontWeight={800}
+              fontSize={34}
+              fontWeight={900}
               letterSpacing={-0.5}
               fillMode="wipe"
             />
           </div>
 
           <p className="core-team-subtitle">
-            The student architects, organizers, and creative builders powering workshops, hackathons, and cloud communities across JSSATEB.
+            The student leaders, faculty mentors, and domain architects driving technical workshops, 24-hour hackathons, and cloud excellence across JSSATEB.
           </p>
+        </div>
 
-          {/* AWS SBG JSSATEB CHAPTER LEAD Compartment */}
-          <div className="chapter-lead-compartment" id="chapter-lead">
-            <div className="chapter-lead-inner">
-              {/* Left Column: Portrait Card (B&W + Violet Corner Lighting + Golden Border) */}
-              <div className="chapter-lead-portrait-col">
-                <div className="member-card portrait-card golden-border-card chapter-lead-portrait-card">
-                  <div className="golden-lead-badge">
-                    <span>CHAPTER LEAD</span>
+        {/* =========================================================================
+            PRIMARY OPTIONS TABS (Zero Long Scrolling • Instant 1-Click Access)
+           ========================================================================= */}
+        <div className="team-options-container">
+          <div className="team-options-tabs" role="tablist" aria-label="Core Team Categories">
+            <button
+              role="tab"
+              aria-selected={activeTab === 'grand-stage'}
+              className={`team-opt-btn ${activeTab === 'grand-stage' ? 'active' : ''}`}
+              onClick={() => setActiveTab('grand-stage')}
+            >
+              <Camera size={16} />
+              <span className="opt-title">COMMUNITY GRAND STAGE</span>
+              <span className="opt-badge">2 PHOTOS</span>
+            </button>
+
+            <button
+              role="tab"
+              aria-selected={activeTab === 'mentors'}
+              className={`team-opt-btn ${activeTab === 'mentors' ? 'active' : ''}`}
+              onClick={() => setActiveTab('mentors')}
+            >
+              <GraduationCap size={16} />
+              <span className="opt-title">MENTORS</span>
+              <span className="opt-badge">2 FACULTY</span>
+            </button>
+
+            <button
+              role="tab"
+              aria-selected={activeTab === 'lead'}
+              className={`team-opt-btn ${activeTab === 'lead' ? 'active' : ''}`}
+              onClick={() => setActiveTab('lead')}
+            >
+              <Sparkles size={16} />
+              <span className="opt-title">AWS SBG LEAD</span>
+              <span className="opt-badge">KUMAR R SHET</span>
+            </button>
+
+            <button
+              role="tab"
+              aria-selected={activeTab === 'members'}
+              className={`team-opt-btn ${activeTab === 'members' ? 'active' : ''}`}
+              onClick={() => setActiveTab('members')}
+            >
+              <Users size={16} />
+              <span className="opt-title">TEAM MEMBERS</span>
+              <span className="opt-badge">4 DOMAINS</span>
+            </button>
+          </div>
+        </div>
+
+        {/* =========================================================================
+            VIEW 1: COMMUNITY GRAND STAGE
+           ========================================================================= */}
+        {activeTab === 'grand-stage' && (
+          <div className="tab-pane-fade-in" id="pane-grand-stage">
+            <div className="stage-hero-meta">
+              <span className="stage-tag-pill">
+                <Camera size={13} />
+                <span>OFFICIAL AWS SBG ARCHIVES</span>
+              </span>
+              <h3 className="stage-hero-title">
+                COMMUNITY <span className="text-gradient-amber">GRAND STAGE</span> & GESTURES
+              </h3>
+              <p className="stage-hero-desc">
+                Historic milestones from our inaugural launch in the JSSATEB auditorium, congregating student innovators and celebrating the official AWS hand formation.
+              </p>
+            </div>
+
+            <div className="grand-stage-grid">
+              {coreTeamData.groupPhotos.map((photo) => (
+                <div key={photo.id} className="grand-stage-card neo-brutalist-card">
+                  <div className="stage-img-container" onClick={() => setLightboxPhoto(photo)}>
+                    <img
+                      src={photo.src}
+                      alt={photo.name}
+                      className="stage-img-element"
+                      loading="lazy"
+                    />
+                    <div className="stage-img-overlay">
+                      <button
+                        type="button"
+                        className="stage-zoom-btn"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setLightboxPhoto(photo);
+                        }}
+                        aria-label="Enlarge Photo"
+                      >
+                        <Maximize2 size={18} />
+                        <span>View High-Res</span>
+                      </button>
+                    </div>
+                    <span className="stage-badge-tag">{photo.badge}</span>
                   </div>
 
-                  <div className="portrait-image-wrapper">
-                    {leadPhotos.map((photo, idx) => (
-                      <img
-                        key={photo.src}
-                        src={photo.src}
-                        alt={photo.alt}
-                        className={`member-portrait-img lead-carousel-img ${leadPhotoIdx === idx ? 'active' : ''}`}
-                        style={{ objectPosition: photo.position }}
-                        loading="lazy"
-                      />
-                    ))}
-                    <div className="portrait-violet-corner-light" />
+                  <div className="stage-card-body">
+                    <h4 className="stage-card-title">{photo.name}</h4>
+                    <p className="stage-card-caption">{photo.caption}</p>
+                    <div className="stage-dashed-divider" />
+                    <div className="stage-card-footer">
+                      <span className="stage-stat-pill">📍 {photo.venue}</span>
+                      <span className="stage-stat-pill">👥 {photo.stats}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* =========================================================================
+            VIEW 2: MENTORS
+           ========================================================================= */}
+        {activeTab === 'mentors' && (
+          <div className="tab-pane-fade-in" id="pane-mentors">
+            <div className="stage-hero-meta">
+              <span className="stage-tag-pill">
+                <GraduationCap size={13} />
+                <span>ACADEMIC LEADERSHIP & GUIDANCE</span>
+              </span>
+              <h3 className="stage-hero-title">
+                OUR FACULTY <span className="text-gradient-amber">MENTORS</span>
+              </h3>
+              <p className="stage-hero-desc">
+                Esteemed faculty from the Department of Computer Science & Engineering, JSSATEB, guiding student builders with enterprise architectural depth and academic excellence.
+              </p>
+            </div>
+
+            <div className="mentors-grid">
+              {coreTeamData.mentors.map((mentor) => (
+                <div key={mentor.id} className="mentor-card neo-brutalist-card">
+                  {/* Photo Window */}
+                  <div className="mentor-img-window">
+                    <img
+                      src={mentor.photo}
+                      alt={mentor.name}
+                      className="mentor-img-element"
+                      loading="lazy"
+                    />
+                    <span className="mentor-role-badge">{mentor.badges[0]}</span>
+                  </div>
+
+                  {/* Body Content */}
+                  <div className="mentor-card-body">
+                    <h4 className="neo-member-name">{mentor.name}</h4>
+                    <p className="neo-member-role">{mentor.role}</p>
+                    <div className="neo-dashed-divider" />
+
+                    <p className="mentor-department-text">{mentor.department}</p>
+                    <p className="mentor-institution-text">{mentor.institution}</p>
+
+                    <p className="mentor-bio-text">{mentor.bio}</p>
+
+                    <div className="mentor-badges-row">
+                      {mentor.badges.map((b, bi) => (
+                        <span key={bi} className="mentor-pill-badge">
+                          {b}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="neo-card-footer">
+                      <a
+                        href={mentor.socials.linkedin}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="neo-social-btn in-btn"
+                        aria-label={`${mentor.name} LinkedIn`}
+                        title="LinkedIn Profile"
+                      >
+                        <Linkedin size={16} />
+                        <span>in</span>
+                      </a>
+                      <a
+                        href={`mailto:${mentor.socials.email}`}
+                        className="neo-social-btn mail-btn"
+                        aria-label={`Email ${mentor.name}`}
+                        title="Institutional Email"
+                      >
+                        <Mail size={16} />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* =========================================================================
+            VIEW 3: AWS SBG LEAD (KUMAR R SHET)
+           ========================================================================= */}
+        {activeTab === 'lead' && (
+          <div className="tab-pane-fade-in" id="pane-lead">
+            <div className="chapter-lead-showcase neo-brutalist-card">
+              <div className="lead-grid-layout">
+                {/* Left Column: Portrait Showcase with Carousel */}
+                <div className="lead-visual-col">
+                  <div className="lead-frame-box">
+                    <div className="lead-lead-badge-pill">
+                      <Sparkles size={13} />
+                      <span>AWS SBG CHAPTER LEAD</span>
+                    </div>
+
+                    <div className="lead-carousel-wrapper">
+                      {coreTeamData.chapterLead.photos.map((photo, idx) => (
+                        <img
+                          key={photo.src}
+                          src={photo.src}
+                          alt={photo.alt}
+                          className={`lead-carousel-img ${leadPhotoIdx === idx ? 'active' : ''}`}
+                          style={{ objectPosition: photo.position }}
+                          loading="lazy"
+                        />
+                      ))}
+                    </div>
+
                     <div className="lead-photo-dots">
-                      {leadPhotos.map((_, idx) => (
+                      {coreTeamData.chapterLead.photos.map((_, idx) => (
                         <button
                           key={idx}
                           type="button"
-                          className={`lead-photo-dot ${leadPhotoIdx === idx ? 'active' : ''}`}
+                          className={`lead-dot ${leadPhotoIdx === idx ? 'active' : ''}`}
                           onClick={() => setLeadPhotoIdx(idx)}
-                          aria-label={`Photo ${idx + 1}`}
+                          aria-label={`Switch to Photo ${idx + 1}`}
                         />
                       ))}
                     </div>
                   </div>
 
-                  <div className="portrait-overlay-gradient" />
-
-                  <div className="portrait-content-overlay">
-                    <div className="portrait-info-group">
-                      <h4 className="member-name">Kumar R Shet</h4>
-                      <p className="member-role">AWS SBG Chapter Lead</p>
-                    </div>
-
-                    <div className="member-socials-row">
+                  <div className="lead-visual-footer">
+                    <h4 className="neo-member-name">{coreTeamData.chapterLead.name}</h4>
+                    <p className="neo-member-role">{coreTeamData.chapterLead.role}</p>
+                    <div className="neo-dashed-divider" />
+                    <div className="lead-quick-actions">
                       <a
-                        href="https://imkumar80.github.io/KumarShet/"
+                        href={coreTeamData.chapterLead.socials.portfolio}
                         target="_blank"
                         rel="noreferrer"
-                        className="member-social-link portfolio"
-                        aria-label="Kumar R Shet Portfolio"
+                        className="neo-social-btn globe-btn"
                         title="Portfolio Website"
+                        aria-label="Kumar R Shet Portfolio"
                       >
                         <Globe size={15} />
                       </a>
                       <a
-                        href="https://github.com/imkumar80"
+                        href={coreTeamData.chapterLead.socials.github}
                         target="_blank"
                         rel="noreferrer"
-                        className="member-social-link github"
+                        className="neo-social-btn git-btn"
+                        title="GitHub @imkumar80"
                         aria-label="Kumar R Shet GitHub"
-                        title="GitHub"
                       >
                         <Github size={15} />
                       </a>
                       <a
-                        href="mailto:kumarrrshet701@gmail.com"
-                        className="member-social-link email"
+                        href={`mailto:${coreTeamData.chapterLead.socials.email}`}
+                        className="neo-social-btn mail-btn"
+                        title="Direct Email"
                         aria-label="Email Kumar R Shet"
-                        title="Email"
                       >
                         <Mail size={15} />
+                      </a>
+                      <a
+                        href={coreTeamData.chapterLead.socials.linkedin}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="neo-social-btn in-btn"
+                        title="LinkedIn Profile"
+                        aria-label="Kumar R Shet LinkedIn"
+                      >
+                        <Linkedin size={15} />
+                        <span>in</span>
                       </a>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Right Column: Lead Bio, Details & Action Links */}
-              <div className="chapter-lead-info-col">
-                <div className="lead-header-meta">
-                  <span className="lead-tag-badge">
-                    <Sparkles size={13} />
-                    <span>AWS SBG JSSATEB CHAPTER LEAD</span>
-                  </span>
-                  <h3 className="lead-display-name">Kumar R Shet</h3>
-                  <p className="lead-subheading">
-                    Campus Lead · AI Engineer & Researcher
-                  </p>
-                </div>
+                {/* Right Column: Full Details, Pillars, Metrics & Actions */}
+                <div className="lead-details-col">
+                  <div className="lead-header-info">
+                    <div className="lead-tags-row">
+                      {coreTeamData.chapterLead.badges.map((b, idx) => (
+                        <span key={idx} className="lead-spec-pill">
+                          {b}
+                        </span>
+                      ))}
+                    </div>
 
-                <p className="lead-bio-text">
-                  Directing the AWS Student Builder Group at JSS Academy of Technical Education Bengaluru. Driving technical excellence, community hackathons, cloud labs, and hands-on builder mentorship.
-                </p>
+                    <h3 className="lead-hero-name">{coreTeamData.chapterLead.name}</h3>
+                    <p className="lead-hero-tagline">{coreTeamData.chapterLead.tagline}</p>
+                    <p className="lead-hero-dept">{coreTeamData.chapterLead.department}</p>
+                  </div>
 
-                {/* Actions & Links Bar */}
-                <div className="lead-actions-bar">
-                  <a
-                    href="https://imkumar80.github.io/KumarShet/"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="lead-portfolio-btn"
-                  >
-                    <Globe size={16} />
-                    <span>Visit Portfolio</span>
-                    <ExternalLink size={14} />
-                  </a>
-                  <a
-                    href="https://github.com/imkumar80"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="lead-icon-link"
-                    title="GitHub: @imkumar80"
-                    aria-label="Kumar R Shet GitHub"
-                  >
-                    <Github size={16} />
-                  </a>
-                  <a
-                    href="mailto:kumarrrshet701@gmail.com"
-                    className="lead-icon-link"
-                    title="Email: kumarrrshet701@gmail.com"
-                    aria-label="Email Kumar R Shet"
-                  >
-                    <Mail size={16} />
-                  </a>
+                  <p className="lead-main-bio">{coreTeamData.chapterLead.bio}</p>
+
+                  {/* Impact Metrics Counters */}
+                  <div className="lead-metrics-row">
+                    {coreTeamData.chapterLead.stats.map((st, idx) => (
+                      <div key={idx} className="lead-metric-box">
+                        <span className="metric-val">{st.value}</span>
+                        <span className="metric-lbl">{st.label}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Key Pillars */}
+                  <div className="lead-pillars-section">
+                    <h5 className="pillars-title">
+                      <ShieldCheck size={16} />
+                      <span>LEADERSHIP PILLARS & FOCUS</span>
+                    </h5>
+                    <div className="pillars-list">
+                      {coreTeamData.chapterLead.pillars.map((pil, idx) => (
+                        <div key={idx} className="pillar-item">
+                          <ChevronRight size={14} className="pillar-icon" />
+                          <span>{pil}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Primary CTA Row */}
+                  <div className="lead-cta-row">
+                    <a
+                      href={coreTeamData.chapterLead.socials.portfolio}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="lead-primary-cta"
+                    >
+                      <Globe size={16} />
+                      <span>Visit Portfolio</span>
+                      <ExternalLink size={14} />
+                    </a>
+                    <a
+                      href={coreTeamData.chapterLead.socials.github}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="lead-secondary-cta"
+                    >
+                      <Github size={16} />
+                      <span>GitHub</span>
+                    </a>
+                    <a
+                      href={`mailto:${coreTeamData.chapterLead.socials.email}`}
+                      className="lead-secondary-cta"
+                    >
+                      <Mail size={16} />
+                      <span>Email</span>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
 
-        {/* 1. Group Photos Showcase (Grand Stage First, then AWS Hand-Sign Formation Squad) */}
-        <div className="group-photos-showcase">
-          {/* Top Tabs */}
-          <div className="photos-toolbar">
-            <div className="photo-tabs">
-              {coreTeamData.groupPhotos.map((photo, index) => (
+        {/* =========================================================================
+            VIEW 4: TEAM MEMBERS (TECH, EVENTS, MARKETING, OPERATIONAL)
+           ========================================================================= */}
+        {activeTab === 'members' && (
+          <div className="tab-pane-fade-in" id="pane-members">
+            {/* Domain Filter Sub-bar */}
+            <div className="domain-toolbar">
+              <div className="domain-subtabs" role="tablist" aria-label="Domain Filter">
                 <button
-                  key={photo.id}
-                  className={`photo-tab-btn ${activePhotoIdx === index ? 'active' : ''}`}
-                  onClick={() => setActivePhotoIdx(index)}
+                  type="button"
+                  className={`domain-subtab-btn ${activeDomain === 'all' ? 'active' : ''}`}
+                  onClick={() => setActiveDomain('all')}
+                  style={{ '--domain-accent': '#8B5CF6' }}
                 >
-                  <Camera size={15} />
-                  <span>{photo.title}</span>
+                  <Users size={14} />
+                  <span>ALL BUILDERS</span>
+                  <span className="subtab-count">28</span>
                 </button>
-              ))}
-            </div>
-          </div>
 
-          {/* Compact Photo Display Frame (Natural Vibrant Color, Made Compact) */}
-          <div className="photo-display-frame-compact">
-            <div className="photo-glare-effect" />
-            <img
-              key={activePhoto.id}
-              src={activePhoto.src}
-              alt={activePhoto.title}
-              className="photo-img-compact photo-fade-in"
-              loading="lazy"
-            />
-          </div>
-
-          {/* Caption Bar */}
-          <div className="photo-caption-bar">
-            <div className="caption-info">
-              <h3 className="caption-title">{activePhoto.title}</h3>
-              <p className="caption-desc">{activePhoto.caption}</p>
-            </div>
-            <span className="caption-badge">
-              <Sparkles size={13} />
-              <span>{activePhoto.badge}</span>
-            </span>
-          </div>
-        </div>
-
-        {/* 2. Mechanical 3D Radio Switches Console */}
-        <div className="team-compartments-container">
-          <StyledRadioWrapper>
-            <div className="radio-input" role="radiogroup" aria-label="Select Team Compartment">
-              {coreTeamData.teams.map((team) => {
-                const isChecked = activeDepartment === team.id;
-                return (
-                  <label
-                    key={team.id}
-                    className={`label ${isChecked ? 'is-checked active' : ''}`}
-                    htmlFor={`team-radio-${team.id}`}
-                    onClick={() => setActiveDepartment(team.id)}
-                    style={{ '--radio-accent': team.accentColor }}
-                  >
-                    <div className="back-side" />
-                    <input
-                      type="radio"
-                      id={`team-radio-${team.id}`}
-                      name="team-radio-select"
-                      checked={isChecked}
-                      onChange={() => setActiveDepartment(team.id)}
-                    />
-                    <span className="text">{team.name}</span>
-                    <span className="bottom-line" />
-                  </label>
-                );
-              })}
-            </div>
-          </StyledRadioWrapper>
-
-          {/* Selected Team Compartment (Opens after pressing) */}
-          {selectedTeam && (
-            <div
-              key={selectedTeam.id}
-              className="team-compartment open-animated"
-              id={`compartment-${selectedTeam.id}`}
-              style={{ '--team-accent': selectedTeam.accentColor }}
-            >
-              {/* Compartment Header */}
-              <div className="compartment-top-bar">
-                <div className="compartment-left">
-                  <div
-                    className="compartment-icon-bubble"
-                    style={{
-                      borderColor: `${selectedTeam.accentColor}55`,
-                      color: selectedTeam.accentColor
-                    }}
-                  >
-                    {(() => {
-                      const IconComponent = teamIcons[selectedTeam.id] || Users;
-                      return <IconComponent size={22} />;
-                    })()}
-                  </div>
-                  <div className="compartment-heading-group">
-                    <h3 className="compartment-name">{selectedTeam.name}</h3>
-                    <p className="compartment-desc">{selectedTeam.description}</p>
-                  </div>
-                </div>
-                <span
-                  className="compartment-badge"
-                  style={{
-                    borderColor: `${selectedTeam.accentColor}40`,
-                    color: selectedTeam.accentColor
-                  }}
-                >
-                  {selectedTeam.badge}
-                </span>
+                {coreTeamData.teams.map((t) => {
+                  const Icon = domainIcons[t.id] || Users;
+                  const isCur = activeDomain === t.id;
+                  return (
+                    <button
+                      key={t.id}
+                      type="button"
+                      className={`domain-subtab-btn ${isCur ? 'active' : ''}`}
+                      onClick={() => setActiveDomain(t.id)}
+                      style={{ '--domain-accent': t.accentColor }}
+                    >
+                      <Icon size={14} />
+                      <span>{t.name.toUpperCase()}</span>
+                      <span className="subtab-count">{t.members.length}</span>
+                    </button>
+                  );
+                })}
               </div>
 
-              {/* Cyberpunk Member Cards Grid (Unified Compact Frame Fit) */}
-              <div className="cyber-members-grid">
-                {selectedTeam.members.map((member) => (
-                  <CyberTeamCard
+              {/* Instant Search Input */}
+              <div className="member-search-box">
+                <Search size={15} className="search-icon" />
+                <input
+                  type="text"
+                  placeholder="Search builders by name or role..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="search-input"
+                  aria-label="Search members"
+                />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    className="clear-search-btn"
+                    onClick={() => setSearchQuery('')}
+                    aria-label="Clear search"
+                  >
+                    <X size={13} />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Active Domain Overview Banner (when a specific domain is picked) */}
+            {activeDomain !== 'all' && (
+              (() => {
+                const curTeam = coreTeamData.teams.find((t) => t.id === activeDomain);
+                if (!curTeam) return null;
+                const Icon = domainIcons[curTeam.id] || Users;
+                return (
+                  <div
+                    className="domain-banner-card"
+                    style={{ '--domain-accent': curTeam.accentColor }}
+                  >
+                    <div className="banner-icon-box">
+                      <Icon size={24} />
+                    </div>
+                    <div className="banner-content">
+                      <div className="banner-header-row">
+                        <h4 className="banner-title">{curTeam.name}</h4>
+                        <span className="banner-badge">{curTeam.badge}</span>
+                      </div>
+                      <p className="banner-desc">{curTeam.description}</p>
+                    </div>
+                  </div>
+                );
+              })()
+            )}
+
+            {/* Neo-Brutalist Members Grid (Inspired by Reference Images 1 & 2) */}
+            {filteredMembers.length > 0 ? (
+              <div className="neo-members-grid">
+                {filteredMembers.map((member) => (
+                  <div
                     key={member.id}
-                    member={member}
-                    accentColor={selectedTeam.accentColor}
-                  />
+                    className={`neo-member-card ${member.isLead ? 'is-team-lead' : ''}`}
+                    style={{ '--member-accent': member.accentColor }}
+                  >
+                    {/* Team Lead Badge */}
+                    {member.isLead && (
+                      <div className="lead-ribbon-badge">
+                        <Award size={12} />
+                        <span>TEAM LEAD</span>
+                      </div>
+                    )}
+
+                    {/* Framed Photo Container */}
+                    <div className="neo-photo-box">
+                      <img
+                        src={member.photo}
+                        alt={member.name}
+                        className="neo-photo-img"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                        }}
+                      />
+                      <span className="neo-photo-domain-tag">{member.domainName}</span>
+                    </div>
+
+                    {/* Member Details */}
+                    <div className="neo-card-info">
+                      <h4 className="neo-member-name">{member.name}</h4>
+                      <p className="neo-member-role">{member.role}</p>
+
+                      {/* Dashed Horizontal Divider (Directly from uploaded reference image) */}
+                      <div className="neo-dashed-divider" />
+
+                      {/* Social Actions Row with LinkedIn in corner */}
+                      <div className="neo-card-footer">
+                        <span className="neo-domain-micro-pill">{member.domainName}</span>
+
+                        <div className="neo-social-icons-group">
+                          {member.instagram && (
+                            <a
+                              href={member.instagram}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="neo-social-btn ig-btn"
+                              title="Instagram"
+                              aria-label={`${member.name} Instagram`}
+                            >
+                              <Instagram size={14} />
+                            </a>
+                          )}
+                          <a
+                            href={member.linkedin || 'https://www.linkedin.com'}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="neo-social-btn in-btn"
+                            title="LinkedIn"
+                            aria-label={`${member.name} LinkedIn`}
+                          >
+                            <Linkedin size={15} />
+                            <span>in</span>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 ))}
               </div>
-            </div>
-          )}
-        </div>
+            ) : (
+              <div className="no-members-found">
+                <Search size={32} />
+                <h4>No builders found</h4>
+                <p>No team members matching "{searchQuery}" in this category.</p>
+                <button
+                  type="button"
+                  className="reset-search-btn"
+                  onClick={() => setSearchQuery('')}
+                >
+                  Clear Search
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
+
+      {/* =========================================================================
+          LIGHTBOX MODAL FOR GRAND STAGE HIGH-RES PHOTOS
+         ========================================================================= */}
+      {lightboxPhoto && (
+        <div className="grand-stage-lightbox" onClick={() => setLightboxPhoto(null)}>
+          <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              className="lightbox-close-btn"
+              onClick={() => setLightboxPhoto(null)}
+              aria-label="Close Lightbox"
+            >
+              <X size={20} />
+            </button>
+            <img
+              src={lightboxPhoto.src}
+              alt={lightboxPhoto.name}
+              className="lightbox-full-img"
+            />
+            <div className="lightbox-caption">
+              <h4>{lightboxPhoto.name}</h4>
+              <p>{lightboxPhoto.caption}</p>
+              <span className="lightbox-tag">{lightboxPhoto.badge} • {lightboxPhoto.venue}</span>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
