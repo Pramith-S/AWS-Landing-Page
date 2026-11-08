@@ -2,14 +2,14 @@ import React from 'react';
 import { Milestone } from 'lucide-react';
 import StrokeText from './StrokeText';
 import KaelkothPlaylistBook from './KaelkothPlaylistBook';
-import MatrixNumberRain from './MatrixNumberRain';
+import DigitalGlyphBackground from './DigitalGlyphBackground';
 import './PathwaySection.css';
 
 const PathwaySection = ({ onOpenJoinModal }) => {
   return (
     <section id="pathway" className="section-padding pathway-section">
       {/* Falling Numbers & Tech Symbols from Upside to Downside in Background */}
-      <MatrixNumberRain opacity={0.78} speed={0.18} />
+      <DigitalGlyphBackground speed={1.0} opacity={1.0} />
 
       <div className="container pathway-content-wrapper">
         

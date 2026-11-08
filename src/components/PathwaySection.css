@@ -4,24 +4,23 @@
 
 .pathway-section {
   position: relative;
-  background: radial-gradient(circle at 50% 12%, rgba(255, 153, 0, 0.15) 0%, rgba(255, 153, 0, 0.04) 40%, transparent 70%),
-              radial-gradient(circle at 50% 60%, rgba(56, 189, 248, 0.09) 0%, transparent 60%),
-              radial-gradient(circle at 85% 85%, rgba(124, 58, 237, 0.09) 0%, transparent 50%),
-              #0c0e18;
+  background-color: #04050c;
   overflow: hidden;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 4.5rem 0 5.5rem 0;
 }
 
 .pathway-header-box {
   text-align: center;
   max-width: 880px;
-  margin: 0 auto 3.5rem auto;
+  margin: 0 auto 2.25rem auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
   z-index: 2;
+  padding: 0 1.25rem;
 }
 
 .pathway-header-box .about-stroke-heading {
@@ -61,15 +60,22 @@
 /* Pathway Book Display Shell */
 .pathway-content-wrapper {
   position: relative;
-  z-index: 1;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .pathway-book-display-container {
   width: 100%;
+  max-width: 880px;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0 auto;
+  padding: 0 1rem;
 }
 
 /* Metro Transit Main Shell */

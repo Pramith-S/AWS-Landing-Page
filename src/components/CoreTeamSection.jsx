@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { coreTeamData } from '../data/coreTeamData';
 import StrokeText from './StrokeText';
+import TactileTeamTabButton from './TactileTeamTabButton';
 import './CoreTeamSection.css';
 
 const domainIcons = {
@@ -163,49 +164,37 @@ const CoreTeamSection = () => {
            ========================================================================= */}
         <div className="team-options-container">
           <div className="team-options-tabs" role="tablist" aria-label="Core Team Categories">
-            <button
-              role="tab"
-              aria-selected={activeTab === 'grand-stage'}
-              className={`team-opt-btn ep-btn ${activeTab === 'grand-stage' ? 'active' : ''}`}
+            <TactileTeamTabButton
+              active={activeTab === 'grand-stage'}
               onClick={() => setActiveTab('grand-stage')}
-            >
-              <Camera size={15} />
-              <span className="opt-title">COMMUNITY GRAND STAGE</span>
-              <span className="opt-badge">2 PHOTOS</span>
-            </button>
+              icon={Camera}
+              title="COMMUNITY GRAND STAGE"
+              badge="2 PHOTOS"
+            />
 
-            <button
-              role="tab"
-              aria-selected={activeTab === 'mentors'}
-              className={`team-opt-btn ep-btn ${activeTab === 'mentors' ? 'active' : ''}`}
+            <TactileTeamTabButton
+              active={activeTab === 'mentors'}
               onClick={() => setActiveTab('mentors')}
-            >
-              <GraduationCap size={15} />
-              <span className="opt-title">MENTORS</span>
-              <span className="opt-badge">2 FACULTY</span>
-            </button>
+              icon={GraduationCap}
+              title="MENTORS"
+              badge="2 FACULTY"
+            />
 
-            <button
-              role="tab"
-              aria-selected={activeTab === 'lead'}
-              className={`team-opt-btn ep-btn ${activeTab === 'lead' ? 'active' : ''}`}
+            <TactileTeamTabButton
+              active={activeTab === 'lead'}
               onClick={() => setActiveTab('lead')}
-            >
-              <Sparkles size={15} />
-              <span className="opt-title">AWS SBG LEAD</span>
-              <span className="opt-badge">KUMAR R SHET</span>
-            </button>
+              icon={Sparkles}
+              title="AWS SBG LEAD"
+              badge="KUMAR R SHET"
+            />
 
-            <button
-              role="tab"
-              aria-selected={activeTab === 'members'}
-              className={`team-opt-btn ep-btn ${activeTab === 'members' ? 'active' : ''}`}
+            <TactileTeamTabButton
+              active={activeTab === 'members'}
               onClick={() => setActiveTab('members')}
-            >
-              <Users size={15} />
-              <span className="opt-title">TEAM MEMBERS</span>
-              <span className="opt-badge">4 TEAMS</span>
-            </button>
+              icon={Users}
+              title="TEAM MEMBERS"
+              badge="4 TEAMS"
+            />
           </div>
         </div>
 

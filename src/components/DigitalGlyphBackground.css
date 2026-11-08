@@ -1,0 +1,50 @@
+/* ==========================================================================
+   DIGITAL GLYPH BACKGROUND
+   Authentic Purple / Violet Matrix Rain matching Reference Image 1
+   ========================================================================== */
+
+.digital-glyph-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+  user-select: none;
+  background-color: #04030a;
+}
+
+.digital-glyph-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+/* Subtle edge fades to seamlessly blend with adjacent sections */
+.digital-glyph-top-fade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 90px;
+  background: linear-gradient(to bottom, #04030a 0%, rgba(4, 3, 10, 0.4) 60%, transparent 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.digital-glyph-bottom-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: linear-gradient(to top, #04030a 0%, rgba(4, 3, 10, 0.5) 60%, transparent 100%);
+  pointer-events: none;
+  z-index: 1;
+}

@@ -3480,7 +3480,58 @@ window.dismissReveal = function() {
   if (subContainer) subContainer.style.opacity = '1';
 };
 
+// Interactive Approach / Viewport Playback Control
+let IS_IN_IFRAME = false;
+try {
+  IS_IN_IFRAME = window !== window.top;
+} catch (e) {
+  IS_IN_IFRAME = true;
+}
+
+let IS_PLAYING = !IS_IN_IFRAME; // If standalone tab, autoplay; if embedded iframe, wait until user approaches!
+let HAS_BEGUN = false;
+
+window.addEventListener('message', (event) => {
+  const data = typeof event.data === 'string' ? event.data : event.data?.type;
+  if (data === 'aws-sbg-play') {
+    if (!IS_PLAYING) {
+      IS_PLAYING = true;
+      MAIN.last = performance.now();
+      if (!HAS_BEGUN) {
+        HAS_BEGUN = true;
+        MAIN.time = 0;
+        MAIN.offset = 0;
+      }
+      try {
+        if (window.__penAudio && window.__penAudio.want && window.__penAudio.ctx && window.__penAudio.ctx.state === 'suspended') {
+          window.__penAudio.ctx.resume();
+        }
+      } catch (err) {}
+    }
+  } else if (data === 'aws-sbg-pause') {
+    if (IS_PLAYING) {
+      IS_PLAYING = false;
+      try {
+        if (window.__penAudio && window.__penAudio.ctx && window.__penAudio.ctx.state === 'running') {
+          window.__penAudio.ctx.suspend();
+        }
+      } catch (err) {}
+    }
+  } else if (data === 'aws-sbg-replay') {
+    HAS_BEGUN = true;
+    IS_PLAYING = true;
+    MAIN.time = 0;
+    MAIN.offset = 0;
+    MAIN.last = performance.now();
+  }
+});
+
 function frame() {
+  if (!IS_PLAYING) {
+    draw();
+    MAIN.last = performance.now();
+    return;
+  }
   const now = performance.now(), dtRaw = (now - MAIN.last) / 1000; MAIN.last = now;
   MAIN.time += Math.min(dtRaw, 0.05);
   STORY.T = storyTime(MAIN.time);
@@ -3502,6 +3553,13 @@ if (!SOFT) {
   if (typeof audioHook === 'function') audioHook();
   renderer.setAnimationLoop(frame);
 }
+
+// Signal parent that iframe is ready to receive viewport messages
+try {
+  if (window.parent && window.parent !== window) {
+    window.parent.postMessage('aws-sbg-popup-ready', '*');
+  }
+} catch (e) {}
 </script>
 </body>
 </html>

@@ -1,0 +1,317 @@
+/* ==========================================================================
+   AWS SBG - KINETIC HEADLINE SEQUENCER
+   Cinematic Editorial Typography & Glyph Morphing Engine
+   ========================================================================== */
+
+.kinetic-sequencer-banner {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto 2.2rem;
+  background: rgba(13, 11, 20, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  border-radius: 12px;
+  padding: 1.5rem 2rem 1.3rem;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65), 0 0 30px rgba(139, 92, 246, 0.12);
+  overflow: hidden;
+  z-index: 10;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.kinetic-sequencer-banner:hover {
+  border-color: rgba(139, 92, 246, 0.45);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), 0 0 40px rgba(139, 92, 246, 0.2);
+}
+
+/* Subtle Technical Grid Lines Overlay */
+.kinetic-hud-grid-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.6;
+  z-index: 1;
+}
+
+.kinetic-ambient-glow {
+  position: absolute;
+  inset: -50px;
+  pointer-events: none;
+  transition: background 0.8s ease;
+  z-index: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Top HUD Header
+   -------------------------------------------------------------------------- */
+.kinetic-hud-header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 1.2rem;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.hud-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.72rem;
+  color: #94a3b8;
+  letter-spacing: 0.06em;
+}
+
+.hud-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  background: rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  color: #c4b5fd;
+  font-weight: 700;
+}
+
+.dot-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ff9900;
+  box-shadow: 0 0 8px #ff9900;
+  animation: pulseBeacon 2s infinite ease-in-out;
+}
+
+@keyframes pulseBeacon {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+
+.hud-divider {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.hud-system-tag {
+  color: #64748b;
+  font-size: 0.68rem;
+}
+
+.hud-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hud-stepper {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #cbd5e1;
+  letter-spacing: 0.08em;
+}
+
+.current-step {
+  color: #ff9900;
+  font-weight: 800;
+}
+
+.step-slash {
+  margin: 0 3px;
+  color: #64748b;
+}
+
+.total-steps {
+  color: #64748b;
+}
+
+.hud-play-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 5px;
+  background: #181524;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #cbd5e1;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.hud-play-toggle:hover {
+  background: #252038;
+  color: #ff9900;
+  border-color: #ff9900;
+}
+
+/* --------------------------------------------------------------------------
+   Display Viewport: Bold Kinetic Headline
+   -------------------------------------------------------------------------- */
+.kinetic-display-viewport {
+  position: relative;
+  z-index: 2;
+  min-height: 95px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 1.2rem;
+}
+
+.kinetic-primary-headline {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-size: clamp(1.6rem, 3.8vw, 3.1rem);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: #ffffff;
+  word-break: break-word;
+}
+
+.kinetic-context-subline {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono, monospace);
+  font-size: clamp(0.72rem, 1.2vw, 0.82rem);
+  font-weight: 700;
+  color: #94a3b8;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.subline-icon {
+  color: #ff9900;
+  flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Bottom HUD Footer: Pills & Segmented Progress
+   -------------------------------------------------------------------------- */
+.kinetic-hud-footer {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.sequence-pills-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.seq-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #14111d;
+  color: #64748b;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.seq-pill-btn:hover {
+  color: #ffffff;
+  background: #1c182a;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.seq-pill-btn.active {
+  background: var(--pill-accent, #ff9900);
+  color: #07060a;
+  border-color: var(--pill-accent, #ff9900);
+  box-shadow: 0 0 12px var(--pill-accent, #ff9900);
+}
+
+.pill-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.6;
+}
+
+.hud-progress-track {
+  flex: 1;
+  min-width: 140px;
+  height: 3px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  position: relative;
+}
+
+.hud-progress-fill {
+  height: 100%;
+  transition: width 0.4s ease, background-color 0.4s ease;
+  box-shadow: 0 0 8px currentColor;
+}
+
+/* --------------------------------------------------------------------------
+   Mobile Adjustments
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .kinetic-sequencer-banner {
+    padding: 1.1rem 1rem 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+  }
+
+  .kinetic-hud-header {
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.6rem;
+  }
+
+  .hud-system-tag,
+  .hud-divider {
+    display: none;
+  }
+
+  .kinetic-display-viewport {
+    min-height: 80px;
+    margin-bottom: 0.9rem;
+  }
+
+  .kinetic-primary-headline {
+    font-size: 1.45rem;
+    line-height: 1.2;
+  }
+
+  .sequence-pills-row {
+    gap: 5px;
+  }
+
+  .seq-pill-btn {
+    padding: 3px 6px;
+    font-size: 0.62rem;
+  }
+
+  .hud-progress-track {
+    min-width: 100%;
+    order: 3;
+    margin-top: 6px;
+  }
+}

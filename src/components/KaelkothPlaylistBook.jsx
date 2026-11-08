@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   ChevronDown, 
   ChevronUp, 
@@ -6,15 +6,7 @@ import {
   MapPin, 
   UserCheck, 
   Sparkles, 
-  ArrowRight,
-  RotateCcw,
-  Shuffle,
-  Volume2,
-  VolumeX,
-  Play,
-  Pause,
-  SkipBack,
-  SkipForward
+  ArrowRight
 } from 'lucide-react';
 import './KaelkothPlaylistBook.css';
 
@@ -37,8 +29,9 @@ const AwsBookLogo = ({ className = '' }) => (
   </svg>
 );
 
-// Pathway Milestones mapped into the exact 6-track Kaelkoth structure
-export const KAELKOTH_EVENTS = [
+// Pathway Milestones with professional matching website theme colors:
+// Gold (AWS), Green (DevOps), Violet (AI/Quest), Red (Hackathons), Cyan (Community), Royal Purple (Finale)
+const KAELKOTH_EVENTS = [
   {
     id: 'station-1',
     num: 'I.',
@@ -53,7 +46,12 @@ export const KAELKOTH_EVENTS = [
     speakerRole: 'Senior FinOps Analyst @ Cimpress · AWS Golden Jacket Holder · AWS Community Builder',
     description: 'The historic launch of AWS Student Builder Group at JSSATEB! Ms. Omshree Butani walked builders through cloud fundamentals, breaking down core AWS building blocks in an inspiring live workshop.',
     highlights: ['Cloud Fundamentals', 'Demystifying AWS', 'FinOps & Architecture', 'Auditorium Kickoff'],
-    tag: 'INAUGURAL EVENT'
+    tag: 'INAUGURAL EVENT',
+    themeColor: '#D97706', // AWS Gold / Amber
+    themeAccent: '#B45309',
+    badgeBg: 'rgba(217, 119, 6, 0.14)',
+    badgeBorder: 'rgba(217, 119, 6, 0.45)',
+    btnGradient: 'linear-gradient(135deg, #B45309, #78350F)'
   },
   {
     id: 'station-2',
@@ -68,8 +66,13 @@ export const KAELKOTH_EVENTS = [
     speaker: 'Ms. Abhinaya SV',
     speakerRole: 'AWS Cloud Mentor & Technical Speaker',
     description: 'Comprehensive virtual hands-on lab conducted on 16th October by Ms. Abhinaya SV. Builders engaged in live console walkthroughs covering core AWS cloud services, architectural patterns, and practical prep for the AWS Certified Cloud Practitioner (CLF-C02).',
-    highlights: ['Online Hands-on Lab', 'Live Console Walkthroughs', 'CLF-C02 Certification Prep', 'Core Cloud Architecture'],
-    tag: 'HANDS-ON LAB'
+    highlights: ['Online Hands-on Lab', 'Live Console Walkthroughs', 'CLF-C02 Prep', 'Core Cloud Architecture'],
+    tag: 'HANDS-ON LAB',
+    themeColor: '#059669', // DevOps Emerald / Green
+    themeAccent: '#047857',
+    badgeBg: 'rgba(5, 150, 105, 0.14)',
+    badgeBorder: 'rgba(5, 150, 105, 0.45)',
+    btnGradient: 'linear-gradient(135deg, #047857, #064E3B)'
   },
   {
     id: 'station-3',
@@ -85,7 +88,12 @@ export const KAELKOTH_EVENTS = [
     speakerRole: 'Gamified Builder Challenge',
     description: 'An adrenaline-filled, interactive 3D RPG cloud tournament powered by AWS Cloud Quest! Solve real-world city challenges, deploy live cloud infrastructure, and battle for top ranks on the live leaderboard.',
     highlights: ['3D RPG Simulation', 'Live Infrastructure Scoring', 'Digital Badges', 'Exclusive Swag & Prizes'],
-    tag: 'GAMIFIED EVENT'
+    tag: 'GAMIFIED EVENT',
+    themeColor: '#7C3AED', // Electric Violet / Purple
+    themeAccent: '#6D28D9',
+    badgeBg: 'rgba(124, 58, 237, 0.14)',
+    badgeBorder: 'rgba(124, 58, 237, 0.45)',
+    btnGradient: 'linear-gradient(135deg, #6D28D9, #4C1D95)'
   },
   {
     id: 'station-4',
@@ -101,7 +109,12 @@ export const KAELKOTH_EVENTS = [
     speakerRole: 'Architect Mentorship & Jury',
     description: 'High-octane 24-hour sprint to architect, build, and deploy serverless, cloud-native, and Generative AI applications using AWS services. Includes mentor guidance, cloud credits, and judging by industry veterans.',
     highlights: ['Serverless & GenAI Track', 'AWS Cloud Credits', 'Jury Evaluation', 'Incubation & Awards'],
-    tag: 'HACKATHONS'
+    tag: 'HACKATHONS',
+    themeColor: '#DC2626', // Crimson / Coral Red
+    themeAccent: '#B91C1C',
+    badgeBg: 'rgba(220, 38, 38, 0.14)',
+    badgeBorder: 'rgba(220, 38, 38, 0.45)',
+    btnGradient: 'linear-gradient(135deg, #B91C1C, #7F1D1D)'
   },
   {
     id: 'station-5',
@@ -117,7 +130,12 @@ export const KAELKOTH_EVENTS = [
     speakerRole: 'AWS User Group & Tech Ecosystem',
     description: 'Open-floor technical meetups, project showcases, cloud architect tech talks, and our grand annual celebration bringing together builders, alumni, and industry leaders.',
     highlights: ['Architect Tech Talks', 'Lightning Project Demos', 'Open Networking', 'Global AWS Community'],
-    tag: 'COMMUNITY HUB'
+    tag: 'COMMUNITY HUB',
+    themeColor: '#0284C7', // Ocean Cyan / Sky Blue
+    themeAccent: '#0369A1',
+    badgeBg: 'rgba(2, 132, 199, 0.14)',
+    badgeBorder: 'rgba(2, 132, 199, 0.45)',
+    btnGradient: 'linear-gradient(135deg, #0369A1, #0C4A6E)'
   },
   {
     id: 'station-6',
@@ -133,13 +151,18 @@ export const KAELKOTH_EVENTS = [
     speakerRole: 'AWS Student Builder Group Council',
     description: 'The crowning annual celebration recognizing certified student builders, top hackathon teams, and welcoming the incoming chapter leadership with grand honors.',
     highlights: ['Builder Recognition', 'Certification Honors', 'Annual Keynote', 'Leadership Handover'],
-    tag: 'GRAND FINALE'
+    tag: 'GRAND FINALE',
+    themeColor: '#9333EA', // Royal Purple / Gold
+    themeAccent: '#7C3AED',
+    badgeBg: 'rgba(147, 51, 234, 0.14)',
+    badgeBorder: 'rgba(147, 51, 234, 0.45)',
+    btnGradient: 'linear-gradient(135deg, #7C3AED, #9333EA)'
   }
 ];
 
 const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
   const [activeTrackIndex, setActiveTrackIndex] = useState(0);
-  const [expandedTrackId, setExpandedTrackId] = useState(null); // Default collapsed (clean 6-row view)
+  const [expandedTrackId, setExpandedTrackId] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTimeSec, setCurrentTimeSec] = useState(0);
   const [isLooping, setIsLooping] = useState(false);
@@ -159,10 +182,10 @@ const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
     }
   };
 
-  const toggleExpandOnly = (e, id, idx) => {
-    e.stopPropagation();
-    setActiveTrackIndex(idx);
-    setExpandedTrackId((prev) => (prev === id ? null : id));
+  // Clicking anywhere on track 1..6 selects it AND toggles expansion
+  const handleTrackRowClick = (idx, eventId) => {
+    selectTrack(idx);
+    setExpandedTrackId((prev) => (prev === eventId ? null : eventId));
   };
 
   const handleNext = () => {
@@ -207,22 +230,18 @@ const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
   return (
     <div className="kktmusic-outer-wrapper">
       
-      {/* Subtle atmospheric beam above book */}
-      <div className="kktmusic-aura-beam" aria-hidden="true" />
-
-      {/* Main Kaelkoth Book Component matching the exact reference image */}
+      {/* Main Kaelkoth Book Component matching exact reference image */}
       <div className="kktmusic">
         <div className="kktmusic-pages">
 
           {/* =================================================================
-              LEFT PAGE: SONGS FROM KAELKOTH // AWS SBG & SPINNING CD
+              LEFT PAGE: AWS SBG EDITION & SPINNING CD
               ================================================================= */}
           <div className="kktmusic-left">
             
-            {/* Top Title */}
+            {/* Top Title: Updated to AWS SBG EDITION, SONGS FROM KAELKOTH removed */}
             <div className="kktmusic-left-title">
-              <span>SONGS FROM KAELKOTH</span>
-              <h2>Songs of a rotted<br />Heart</h2>
+              <h2>AWS SBG<br />EDITION</h2>
             </div>
 
             {/* Baroque Golden Frame with Spinning Disc & AWS Smile */}
@@ -313,30 +332,30 @@ const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
                   aria-label="Shuffle toggle"
                 />
               </div>
+
             </div>
 
             {/* Left Page Footer */}
             <div className="kktmusic-left-footer">
-              <span>✦</span>
-              <p>MELODIAS DE AWS STUDENT BUILDER GROUP</p>
-              <i>JSSATEB Chapter · Community Chronicles</i>
+              <span>MELODIAS DE AWS STUDENT BUILDER GROUP</span>
+              <p>JSSATEB Chapter · Community Chronicles</p>
+              <i>✦ Edition I · Official Landmark Grimoire ✦</i>
             </div>
 
           </div>
 
           {/* =================================================================
-              RIGHT PAGE: PLAYLIST REGALO & EXPANDABLE EVENT DETAILS
+              RIGHT PAGE: VOLUME I & EXPANDABLE MILESTONE TRACKLIST
               ================================================================= */}
           <div className="kktmusic-right">
             
-            {/* Header */}
+            {/* Header: VOLUME I only */}
             <div className="kktmusic-right-header">
-              <span>VOLUME I · MUSICAL COLLECTION</span>
-              <h3>Titulo de tu Playlist</h3>
+              <span>VOLUME I</span>
               <div className="kktmusic-divider">✦</div>
             </div>
 
-            {/* Tracklist with Expandable Event Details & Arrow Marks */}
+            {/* Tracklist: Clicking anywhere on 1..6 expands details */}
             <div className="kktmusic-tracks" role="list">
               {KAELKOTH_EVENTS.map((event, idx) => {
                 const isActive = idx === activeTrackIndex;
@@ -346,38 +365,53 @@ const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
                   <div 
                     key={event.id}
                     className={`kktmusic-track-item ${isActive ? 'active-playing-track' : ''} ${isExpanded ? 'is-expanded' : ''}`}
+                    style={{
+                      '--event-theme-color': event.themeColor,
+                      '--event-theme-accent': event.themeAccent,
+                      '--event-btn-gradient': event.btnGradient
+                    }}
                   >
-                    {/* Track Header Bar (Clickable) */}
+                    {/* Track Header Bar (Clicking anywhere expands & selects) */}
                     <div 
                       className="kktmusic-track"
-                      onClick={() => selectTrack(idx)}
+                      onClick={() => handleTrackRowClick(idx, event.id)}
                       role="button"
                       tabIndex={0}
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
-                          selectTrack(idx);
+                          handleTrackRowClick(idx, event.id);
                         }
                       }}
                       aria-expanded={isExpanded}
                       aria-label={`${event.title} by ${event.artist}`}
                     >
                       {/* Roman Numeral */}
-                      <span className="kktmusic-number">{event.num}</span>
+                      <span 
+                        className="kktmusic-number"
+                        style={{ color: isActive ? event.themeColor : undefined }}
+                      >
+                        {event.num}
+                      </span>
 
                       {/* Song/Event Title & Artist */}
                       <div className="kktmusic-song">
-                        <b>{event.title}</b>
+                        <b style={{ color: isActive ? event.themeColor : undefined }}>
+                          {event.title}
+                        </b>
                         <small>{event.artist}</small>
                       </div>
 
                       {/* Duration */}
                       <span className="kktmusic-duration">{event.duration}</span>
 
-                      {/* Expand Arrow Mark requested by User */}
+                      {/* Expand Arrow Mark */}
                       <button 
                         type="button"
                         className={`kktmusic-expand-arrow-btn ${isExpanded ? 'rotated' : ''}`}
-                        onClick={(e) => toggleExpandOnly(e, event.id, idx)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleTrackRowClick(idx, event.id);
+                        }}
                         title={isExpanded ? "Collapse Event Details" : "Expand Event Details"}
                         aria-label="Toggle details"
                       >
@@ -385,12 +419,20 @@ const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
                       </button>
                     </div>
 
-                    {/* Expandable Event Details Box (Accordioned directly inside the book page) */}
+                    {/* Expandable Event Details Card (High-Contrast, Crisp Typography, Theme Matched) */}
                     {isExpanded && (
-                      <div className="kktmusic-event-details-card">
+                      <div 
+                        className="kktmusic-event-details-card"
+                        style={{
+                          borderLeftColor: event.themeColor
+                        }}
+                      >
                         
-                        {/* Subtitle */}
-                        <div className="kkt-event-subtitle">
+                        {/* Subtitle with Theme Accent */}
+                        <div 
+                          className="kkt-event-subtitle"
+                          style={{ color: event.themeColor }}
+                        >
                           {event.subtitle}
                         </div>
 
@@ -398,7 +440,7 @@ const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
                         <div className="kkt-event-meta-grid">
                           <div className="kkt-meta-item">
                             <span className="kkt-meta-label">
-                              <Calendar size={11} className="kkt-meta-icon" />
+                              <Calendar size={11} className="kkt-meta-icon" style={{ color: event.themeColor }} />
                               TIMELINE
                             </span>
                             <span className="kkt-meta-value">{event.timeline}</span>
@@ -406,7 +448,7 @@ const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
 
                           <div className="kkt-meta-item">
                             <span className="kkt-meta-label">
-                              <MapPin size={11} className="kkt-meta-icon" />
+                              <MapPin size={11} className="kkt-meta-icon" style={{ color: event.themeColor }} />
                               VENUE
                             </span>
                             <span className="kkt-meta-value">{event.venue}</span>
@@ -414,34 +456,50 @@ const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
 
                           <div className="kkt-meta-item speaker-highlight">
                             <span className="kkt-meta-label">
-                              <UserCheck size={11} className="kkt-meta-icon" />
+                              <UserCheck size={11} className="kkt-meta-icon" style={{ color: event.themeColor }} />
                               KEY SPEAKER / MENTOR
                             </span>
-                            <span className="kkt-meta-value speaker-name">{event.speaker}</span>
+                            <span 
+                              className="kkt-meta-value speaker-name"
+                              style={{ color: event.themeColor }}
+                            >
+                              {event.speaker}
+                            </span>
                             <span className="kkt-meta-sub">{event.speakerRole}</span>
                           </div>
                         </div>
 
-                        {/* Description */}
+                        {/* Description: High-contrast, sharp and readable */}
                         <p className="kkt-event-description">
                           {event.description}
                         </p>
 
-                        {/* Highlights Pill Badges */}
+                        {/* Highlights Pill Badges with Station Theme Colors */}
                         <div className="kkt-event-tags-row">
                           {event.highlights.map((h, hIdx) => (
-                            <span key={hIdx} className="kkt-event-tag">
-                              <Sparkles size={9} className="kkt-tag-sparkle" />
+                            <span 
+                              key={hIdx} 
+                              className="kkt-event-tag"
+                              style={{
+                                background: event.badgeBg,
+                                borderColor: event.badgeBorder,
+                                color: event.themeColor
+                              }}
+                            >
+                              <Sparkles size={9} className="kkt-tag-sparkle" style={{ color: event.themeColor }} />
                               {h}
                             </span>
                           ))}
                         </div>
 
-                        {/* Join Station / Action Button */}
+                        {/* Join Station Action Button */}
                         {onOpenJoinModal && (
                           <button 
                             type="button"
                             className="kkt-event-join-action"
+                            style={{
+                              background: event.btnGradient
+                            }}
                             onClick={(e) => {
                               e.stopPropagation();
                               onOpenJoinModal();
@@ -456,20 +514,6 @@ const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
                   </div>
                 );
               })}
-            </div>
-
-            {/* Right Page Footer */}
-            <div className="kktmusic-right-footer">
-              <a 
-                href="#contact" 
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (onOpenJoinModal) onOpenJoinModal();
-                }}
-              >
-                LISTEN TO THE FULL COLLECTION
-              </a>
-              <span>NOMBRE DE LA PLAYLIST EN SPOTIFY · ✦</span>
             </div>
 
           </div>

@@ -1,0 +1,146 @@
+/* ==========================================================================
+   AWS SBG - KINETIC GLYPH TYPOGRAPHY STYLES
+   ========================================================================== */
+
+.kinetic-glyph-container {
+  display: inline-block;
+  position: relative;
+  font-family: inherit;
+  letter-spacing: -0.01em;
+  will-change: transform, opacity;
+  transition: opacity 0.3s ease;
+}
+
+.kinetic-glyph-output {
+  display: inline;
+  font-family: inherit;
+  white-space: pre-wrap;
+}
+
+.kinetic-glyph-container.is-scrambling .kinetic-glyph-output {
+  color: #f1f5f9;
+  text-shadow: 0 0 12px rgba(139, 92, 246, 0.45), 0 0 24px rgba(255, 153, 0, 0.25);
+}
+
+.kinetic-glyph-container.is-resolved .kinetic-glyph-output {
+  transition: text-shadow 0.4s ease;
+}
+
+/* --------------------------------------------------------------------------
+   Special Interactive Keywords (CLOUD, BUILD, AWS, INNOVATE, etc.)
+   -------------------------------------------------------------------------- */
+.kinetic-keyword {
+  display: inline-block;
+  font-weight: 800;
+  position: relative;
+  cursor: pointer;
+  padding: 0 2px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* AWS - Signature Orange / Gold Accent */
+.kinetic-keyword.kw-aws {
+  color: #ff9900;
+  text-shadow: 0 0 14px rgba(255, 153, 0, 0.35);
+}
+
+.kinetic-keyword.kw-aws:hover {
+  color: #ffb84d;
+  text-shadow: 0 0 20px rgba(255, 153, 0, 0.7);
+  transform: translateY(-1.5px);
+}
+
+/* CLOUD - Electric Violet / Purple */
+.kinetic-keyword.kw-cloud {
+  color: #a78bfa;
+  text-shadow: 0 0 14px rgba(167, 139, 250, 0.4);
+}
+
+.kinetic-keyword.kw-cloud:hover {
+  color: #c4b5fd;
+  text-shadow: 0 0 22px rgba(167, 139, 250, 0.8);
+  transform: translateY(-1.5px);
+}
+
+/* BUILD / BUILDERS - Vibrant Amber Core */
+.kinetic-keyword.kw-build {
+  color: #fbbf24;
+  text-shadow: 0 0 14px rgba(251, 191, 36, 0.35);
+}
+
+.kinetic-keyword.kw-build:hover {
+  color: #fef08a;
+  text-shadow: 0 0 22px rgba(251, 191, 36, 0.75);
+  transform: translateY(-1.5px);
+}
+
+/* INNOVATE - Electric Cyan / Sky */
+.kinetic-keyword.kw-innovate {
+  color: #38bdf8;
+  text-shadow: 0 0 14px rgba(56, 189, 248, 0.35);
+}
+
+.kinetic-keyword.kw-innovate:hover {
+  color: #7dd3fc;
+  text-shadow: 0 0 22px rgba(56, 189, 248, 0.75);
+  transform: translateY(-1.5px);
+}
+
+/* FUTURE - Deep Violet Flare */
+.kinetic-keyword.kw-future {
+  color: #c084fc;
+  text-shadow: 0 0 14px rgba(192, 132, 252, 0.35);
+}
+
+.kinetic-keyword.kw-future:hover {
+  color: #e9d5ff;
+  text-shadow: 0 0 22px rgba(192, 132, 252, 0.75);
+  transform: translateY(-1.5px);
+}
+
+/* CODE - Technical Mint */
+.kinetic-keyword.kw-code {
+  color: #34d399;
+  text-shadow: 0 0 14px rgba(52, 211, 153, 0.35);
+}
+
+.kinetic-keyword.kw-code:hover {
+  color: #6ee7b7;
+  text-shadow: 0 0 22px rgba(52, 211, 153, 0.75);
+  transform: translateY(-1.5px);
+}
+
+/* Sub-under-glow border on hover */
+.kinetic-keyword::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 2px;
+  right: 2px;
+  height: 2px;
+  background: currentColor;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  box-shadow: 0 0 8px currentColor;
+  border-radius: 2px;
+}
+
+.kinetic-keyword:hover::after {
+  opacity: 0.9;
+  transform: scaleX(1);
+}
+
+/* Screen reader only utility class */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
