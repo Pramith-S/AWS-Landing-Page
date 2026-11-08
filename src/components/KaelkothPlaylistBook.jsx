@@ -5,7 +5,8 @@ import {
   UserCheck, 
   Sparkles, 
   ArrowRight,
-  ChevronRight
+  ChevronRight,
+  X
 } from 'lucide-react';
 import './KaelkothPlaylistBook.css';
 
@@ -28,7 +29,7 @@ const AwsBookLogo = ({ className = '' }) => (
   </svg>
 );
 
-// Pathway Milestones with professional matching website theme colors:
+// Pathway Milestones matching website theme colors:
 const KAELKOTH_EVENTS = [
   {
     id: 'station-1',
@@ -163,33 +164,51 @@ const BASE_BOOK_HEIGHT = 572;
 
 const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
   const [activeTrackIndex, setActiveTrackIndex] = useState(0);
+  // BY DEFAULT DONT MAKE IT OPEN: null means no card is expanded
+  const [expandedIndex, setExpandedIndex] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTimeSec, setCurrentTimeSec] = useState(0);
   const [isLooping, setIsLooping] = useState(false);
   const [isShuffling, setIsShuffling] = useState(false);
-  const [bookScale, setBookScale] = useState(1);
+
   const wrapperRef = useRef(null);
 
-  const currentEvent = KAELKOTH_EVENTS[activeTrackIndex];
+  // Synchronous initial scale for zero-shift mobile rendering
+  const [bookScale, setBookScale] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const w = window.innerWidth;
+      const targetW = Math.max(280, w - 24);
+      if (targetW < BASE_BOOK_WIDTH) {
+        return Math.min(1, targetW / BASE_BOOK_WIDTH);
+      }
+    }
+    return 1;
+  });
 
-  // Responsive scale computation for mobile/tablets
+  // Reactive resize scaling for mobile, tablets and desktop
   useEffect(() => {
-    const handleScale = () => {
+    const updateScale = () => {
       if (!wrapperRef.current) return;
       const containerWidth = wrapperRef.current.clientWidth || window.innerWidth;
-      const targetWidth = containerWidth - 16;
+      const targetWidth = Math.max(280, containerWidth - 16);
       if (targetWidth < BASE_BOOK_WIDTH) {
-        const nextScale = Math.min(1, Math.max(0.32, targetWidth / BASE_BOOK_WIDTH));
-        setBookScale(nextScale);
+        setBookScale(targetWidth / BASE_BOOK_WIDTH);
       } else {
         setBookScale(1);
       }
     };
 
-    handleScale();
-    window.addEventListener('resize', handleScale);
-    return () => window.removeEventListener('resize', handleScale);
+    updateScale();
+    window.addEventListener('resize', updateScale);
+    window.addEventListener('orientationchange', updateScale);
+    return () => {
+      window.removeEventListener('resize', updateScale);
+      window.removeEventListener('orientationchange', updateScale);
+    };
   }, []);
+
+  const currentEvent = KAELKOTH_EVENTS[activeTrackIndex];
+  const expandedEvent = expandedIndex !== null ? KAELKOTH_EVENTS[expandedIndex] : null;
 
   const togglePlay = () => {
     setIsPlaying((prev) => !prev);
@@ -201,6 +220,12 @@ const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
     if (!isPlaying) {
       setIsPlaying(true);
     }
+  };
+
+  // Clicking on 1, 2, 3, 4, 5, 6 expands/toggles the details card & starts playback
+  const handleTrackClick = (idx) => {
+    selectTrack(idx);
+    setExpandedIndex((prev) => (prev === idx ? null : idx));
   };
 
   const handleNext = () => {
@@ -245,16 +270,18 @@ const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
   return (
     <div ref={wrapperRef} className="kktmusic-outer-wrapper">
       
-      {/* Scaler Box: Perfectly fits the complete 2-page open book on any mobile screen */}
+      {/* =================================================================
+          COMPLETE 2-PAGE OPEN BOOK SPREAD (Compressed & Fitted to Mobile)
+          Both left and right pages are ALWAYS visible side-by-side (Matching Image 2)
+          ================================================================= */}
       <div 
         className="kktmusic-scaler-container"
         style={{
-          width: bookScale < 1 ? `${Math.round(BASE_BOOK_WIDTH * bookScale)}px` : '100%',
-          maxWidth: `${BASE_BOOK_WIDTH}px`,
+          width: `${Math.round(BASE_BOOK_WIDTH * bookScale)}px`,
           height: `${Math.round(BASE_BOOK_HEIGHT * bookScale)}px`,
           position: 'relative',
           margin: '0 auto',
-          overflow: 'hidden'
+          overflow: 'visible'
         }}
       >
         <div 
@@ -262,11 +289,12 @@ const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
           style={{
             width: `${BASE_BOOK_WIDTH}px`,
             height: `${BASE_BOOK_HEIGHT}px`,
-            transform: bookScale < 1 ? `scale(${bookScale})` : undefined,
+            transform: `scale(${bookScale})`,
             transformOrigin: 'top left',
             position: 'absolute',
             top: 0,
-            left: 0
+            left: 0,
+            margin: 0
           }}
         >
           <div className="kktmusic-pages">
@@ -378,21 +406,22 @@ const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
                 <div className="kktmusic-divider">✦</div>
               </div>
 
-              {/* Tracklist: Clicking any track selects & plays it */}
+              {/* Tracklist: Clicking 1, 2, 3, 4, 5, 6 expands details card */}
               <div className="kktmusic-tracks" role="list">
                 {KAELKOTH_EVENTS.map((event, idx) => {
                   const isActive = idx === activeTrackIndex;
+                  const isThisExpanded = expandedIndex === idx;
 
                   return (
                     <div 
                       key={event.id}
                       className={`kktmusic-track-item ${isActive ? 'active-playing-track' : ''}`}
-                      onClick={() => selectTrack(idx)}
+                      onClick={() => handleTrackClick(idx)}
                       role="button"
                       tabIndex={0}
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
-                          selectTrack(idx);
+                          handleTrackClick(idx);
                         }
                       }}
                       aria-label={`${event.title} by ${event.artist}`}
@@ -415,7 +444,14 @@ const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
                         <span className="kktmusic-duration">{event.duration}</span>
 
                         <span className="kktmusic-arrow-indicator">
-                          <ChevronRight size={12} style={{ color: isActive ? event.themeColor : undefined }} />
+                          <ChevronRight 
+                            size={12} 
+                            style={{ 
+                              color: isActive ? event.themeColor : undefined,
+                              transform: isThisExpanded ? 'rotate(90deg)' : 'none',
+                              transition: 'transform 0.2s ease'
+                            }} 
+                          />
                         </span>
                       </div>
                     </div>
@@ -431,78 +467,90 @@ const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
 
       {/* =================================================================
           ACTIVE LANDMARK DETAILS MANIFEST CARD
-          Rendered cleanly beneath the scaled book with full readability on mobile & desktop
+          BY DEFAULT NOT OPEN — only opens after clicking 1, 2, 3, 4, 5, 6
           ================================================================= */}
-      {currentEvent && (
+      {expandedEvent && (
         <div 
           className="kktmusic-active-station-card"
           style={{
-            '--event-theme-color': currentEvent.themeColor,
-            '--event-theme-accent': currentEvent.themeAccent,
-            '--event-btn-gradient': currentEvent.btnGradient
+            '--event-theme-color': expandedEvent.themeColor,
+            '--event-theme-accent': expandedEvent.themeAccent,
+            '--event-btn-gradient': expandedEvent.btnGradient
           }}
         >
           <div className="station-card-top-row">
             <div 
               className="station-card-badge"
               style={{
-                background: currentEvent.badgeBg,
-                borderColor: currentEvent.badgeBorder,
-                color: currentEvent.themeColor
+                background: expandedEvent.badgeBg,
+                borderColor: expandedEvent.badgeBorder,
+                color: expandedEvent.themeColor
               }}
             >
               <Sparkles size={11} />
-              <span>STATION {currentEvent.num} // {currentEvent.tag}</span>
+              <span>STATION {expandedEvent.num} // {expandedEvent.tag}</span>
             </div>
-            <span className="station-card-duration-pill">{currentEvent.duration}</span>
+
+            <div className="station-card-top-actions">
+              <span className="station-card-duration-pill">{expandedEvent.duration}</span>
+              <button 
+                type="button"
+                className="station-card-close-btn"
+                onClick={() => setExpandedIndex(null)}
+                title="Collapse details"
+                aria-label="Close station manifest"
+              >
+                <X size={14} />
+              </button>
+            </div>
           </div>
 
-          <h3 className="station-card-title">{currentEvent.title}</h3>
+          <h3 className="station-card-title">{expandedEvent.title}</h3>
           
-          <div className="station-card-subtitle" style={{ color: currentEvent.themeColor }}>
-            {currentEvent.subtitle}
+          <div className="station-card-subtitle" style={{ color: expandedEvent.themeColor }}>
+            {expandedEvent.subtitle}
           </div>
 
           <div className="station-card-meta-grid">
             <div className="station-meta-item">
               <span className="station-meta-label">
-                <Calendar size={12} style={{ color: currentEvent.themeColor }} />
+                <Calendar size={12} style={{ color: expandedEvent.themeColor }} />
                 TIMELINE
               </span>
-              <span className="station-meta-value">{currentEvent.timeline}</span>
+              <span className="station-meta-value">{expandedEvent.timeline}</span>
             </div>
 
             <div className="station-meta-item">
               <span className="station-meta-label">
-                <MapPin size={12} style={{ color: currentEvent.themeColor }} />
+                <MapPin size={12} style={{ color: expandedEvent.themeColor }} />
                 VENUE
               </span>
-              <span className="station-meta-value">{currentEvent.venue}</span>
+              <span className="station-meta-value">{expandedEvent.venue}</span>
             </div>
 
             <div className="station-meta-item speaker-highlight">
               <span className="station-meta-label">
-                <UserCheck size={12} style={{ color: currentEvent.themeColor }} />
+                <UserCheck size={12} style={{ color: expandedEvent.themeColor }} />
                 KEY SPEAKER / MENTOR
               </span>
-              <span className="station-meta-value speaker-name" style={{ color: currentEvent.themeColor }}>
-                {currentEvent.speaker}
+              <span className="station-meta-value speaker-name" style={{ color: expandedEvent.themeColor }}>
+                {expandedEvent.speaker}
               </span>
-              <span className="station-meta-sub">{currentEvent.speakerRole}</span>
+              <span className="station-meta-sub">{expandedEvent.speakerRole}</span>
             </div>
           </div>
 
-          <p className="station-card-description">{currentEvent.description}</p>
+          <p className="station-card-description">{expandedEvent.description}</p>
 
           <div className="station-card-tags">
-            {currentEvent.highlights.map((h, i) => (
+            {expandedEvent.highlights.map((h, i) => (
               <span 
                 key={i} 
                 className="station-card-tag"
                 style={{
-                  background: currentEvent.badgeBg,
-                  borderColor: currentEvent.badgeBorder,
-                  color: currentEvent.themeColor
+                  background: expandedEvent.badgeBg,
+                  borderColor: expandedEvent.badgeBorder,
+                  color: expandedEvent.themeColor
                 }}
               >
                 <Sparkles size={9} />
@@ -515,10 +563,10 @@ const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
             <button 
               type="button"
               className="station-card-join-btn"
-              style={{ background: currentEvent.btnGradient }}
+              style={{ background: expandedEvent.btnGradient }}
               onClick={onOpenJoinModal}
             >
-              <span>Join Station {currentEvent.num}</span>
+              <span>Join Station {expandedEvent.num}</span>
               <ArrowRight size={13} />
             </button>
           )}
