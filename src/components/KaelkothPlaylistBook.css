@@ -764,423 +764,304 @@
 }
 
 /* ==========================================================================
-   MOBILE FOLIO CONTROLS & RESPONSIVE DESIGN (Flawless fit on all devices)
+   SCALED 2-PAGE OPEN BOOK & ACTIVE STATION MANIFEST (Full Spread On All Screens)
    ========================================================================== */
 
-/* Desktop view: hide all mobile-specific navigation elements */
-@media screen and (min-width: 769px) {
-  .kkt-mobile-folio-tabs,
-  .kkt-mobile-disc-shortcut,
-  .kkt-mobile-view-tracks-btn {
-    display: none !important;
-  }
+.kktmusic-outer-wrapper {
+  position: relative !important;
+  width: 100% !important;
+  max-width: 880px !important;
+  margin: 1rem auto 2.5rem auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 8px !important;
+  overflow: visible !important;
 }
 
-/* Base Mobile Folio Tabs (Above Book) */
-.kkt-mobile-folio-tabs {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 14px;
-  width: 100%;
-  max-width: 440px;
-  padding: 5px;
-  background: rgba(18, 14, 10, 0.85);
-  border: 1px solid rgba(217, 119, 6, 0.4);
-  border-radius: 999px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+/* Scaler container for fitting open 2-page book smoothly on all viewport widths */
+.kktmusic-scaler-container {
+  position: relative !important;
+  margin: 0 auto !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  overflow: hidden !important;
+  filter: drop-shadow(0 20px 45px rgba(0, 0, 0, 0.95)) !important;
+  border-radius: 4px !important;
+  flex-shrink: 0 !important;
 }
 
-.kkt-mobile-tab-pill {
-  flex: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 8px 12px;
-  border-radius: 999px;
-  border: 1px solid transparent;
-  background: transparent;
-  color: #B5A492;
-  font-family: var(--font-heading, 'Outfit', -apple-system, sans-serif);
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
+/* The Book itself is 780x572 */
+.kktmusic {
+  width: 780px !important;
+  height: 572px !important;
+  max-width: none !important;
+  aspect-ratio: 780 / 572 !important;
+  filter: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0 !important;
 }
 
-.kkt-mobile-tab-pill.active-tab {
-  background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
-  color: #FFFFFF;
-  border-color: rgba(255, 215, 0, 0.5);
-  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+.kktmusic .kktmusic-pages {
+  position: absolute !important;
+  inset: 7% 5.5% 6% 5.5% !important;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 0 !important;
+  min-width: 0 !important;
 }
 
-.tab-pill-icon {
-  font-size: 13px;
+.kktmusic .kktmusic-left {
+  display: flex !important;
 }
 
-.tab-playing-pulse {
-  display: inline-block;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #10B981;
-  box-shadow: 0 0 8px #10B981;
-  animation: kkt-pulse-dot 1.2s infinite ease-in-out;
+.kktmusic .kktmusic-right {
+  display: flex !important;
 }
 
-@keyframes kkt-pulse-dot {
-  0%, 100% { transform: scale(0.9); opacity: 0.7; }
-  50% { transform: scale(1.4); opacity: 1; }
+/* Track Items inside the authentic book spread */
+.kktmusic-track-item {
+  cursor: pointer !important;
+  transition: background 0.2s ease, transform 0.15s ease !important;
+  border-radius: 3px !important;
+  padding: 1px 4px !important;
+  margin: 1px 0 !important;
+  width: 100% !important;
 }
 
-/* Mobile Quick Bar inside Tracks Page */
-.kkt-mobile-disc-shortcut {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 6px 10px;
-  margin: 0 0 10px 0;
-  background: rgba(217, 119, 6, 0.12);
-  border: 1px dashed rgba(217, 119, 6, 0.4);
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.2s ease;
+.kktmusic-track-item:hover {
+  background: rgba(217, 119, 6, 0.14) !important;
 }
 
-.kkt-mobile-disc-shortcut:hover {
-  background: rgba(217, 119, 6, 0.2);
+.kktmusic-track-item.active-playing-track {
+  background: rgba(217, 119, 6, 0.25) !important;
+  box-shadow: inset 0 0 6px rgba(217, 119, 6, 0.2) !important;
 }
 
-.kkt-mobile-disc-shortcut .shortcut-left {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  min-width: 0;
-  overflow: hidden;
-}
-
-.shortcut-disc-icon {
-  font-size: 14px;
-  display: inline-block;
-}
-
-.shortcut-disc-icon.spinning-disc-icon {
-  animation: spin 3s linear infinite;
-}
-
-.shortcut-text {
-  font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 11px;
-  color: #382414;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.shortcut-arrow {
-  font-family: var(--font-heading, 'Outfit', sans-serif);
-  font-size: 10px;
-  font-weight: 700;
-  color: #B45309;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-  margin-left: 6px;
-}
-
-/* Mobile Switch to Tracks Button on Player Page */
-.kkt-mobile-view-tracks-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  width: 100%;
-  max-width: 260px;
-  margin: 12px auto 0 auto;
-  padding: 8px 16px;
-  background: linear-gradient(135deg, #78350F, #451A03);
-  color: #F8FAFC;
-  border: 1px solid rgba(217, 119, 6, 0.35);
-  border-radius: 6px;
-  font-family: var(--font-heading, 'Outfit', sans-serif);
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  transition: all 0.2s ease;
-}
-
-.kkt-mobile-view-tracks-btn:hover {
-  transform: translateY(-1px);
-  filter: brightness(1.15);
+.kktmusic-arrow-indicator {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-left: 6px !important;
+  opacity: 0.6 !important;
+  flex-shrink: 0 !important;
 }
 
 /* ==========================================================================
-   MOBILE VIEWPORT BREAKPOINT (<= 768px: Mobile Phones & Tablets)
+   ACTIVE STATION MANIFEST CARD (Rendered Cleanly Under the Scaled Book)
    ========================================================================== */
+.kktmusic-active-station-card {
+  width: 100% !important;
+  max-width: 780px !important;
+  margin: 18px auto 0 auto !important;
+  padding: 18px 20px 22px 20px !important;
+  background: rgba(10, 8, 16, 0.90) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-left: 4.5px solid var(--event-theme-color, #D97706) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+  animation: kkt-station-fade 0.3s ease !important;
+  position: relative !important;
+  z-index: 2 !important;
+  box-sizing: border-box !important;
+  text-align: left !important;
+}
+
+@keyframes kkt-station-fade {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.station-card-top-row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  margin-bottom: 8px !important;
+}
+
+.station-card-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  padding: 3px 10px !important;
+  border-radius: 99px !important;
+  border: 1px solid currentColor !important;
+  font-family: var(--font-mono, monospace) !important;
+  font-size: 9.5px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
+
+.station-card-duration-pill {
+  font-family: var(--font-mono, monospace) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  color: #94A3B8 !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  padding: 2px 8px !important;
+  border-radius: 4px !important;
+}
+
+.station-card-title {
+  font-family: var(--font-heading, 'Outfit', sans-serif) !important;
+  font-size: clamp(17px, 2.5vw, 22px) !important;
+  font-weight: 800 !important;
+  color: #F8FAFC !important;
+  margin: 0 0 4px 0 !important;
+  line-height: 1.25 !important;
+  letter-spacing: -0.01em !important;
+}
+
+.station-card-subtitle {
+  font-family: var(--font-heading, 'Outfit', sans-serif) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  margin-bottom: 12px !important;
+  line-height: 1.35 !important;
+}
+
+.station-card-meta-grid {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+  margin-bottom: 12px !important;
+}
+
+.station-meta-item {
+  display: flex !important;
+  align-items: baseline !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+}
+
+.station-meta-label {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  font-family: var(--font-mono, monospace) !important;
+  font-size: 9px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.08em !important;
+  color: #94A3B8 !important;
+  text-transform: uppercase !important;
+}
+
+.station-meta-value {
+  font-family: var(--font-body, 'Inter', sans-serif) !important;
+  font-weight: 600 !important;
+  color: #F1F5F9 !important;
+  font-size: 12px !important;
+}
+
+.station-meta-item.speaker-highlight {
+  padding: 6px 10px !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-radius: 6px !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  margin-top: 2px !important;
+}
+
+.station-meta-item.speaker-highlight .speaker-name {
+  font-weight: 800 !important;
+  font-size: 13px !important;
+}
+
+.station-meta-sub {
+  font-family: var(--font-body, 'Inter', sans-serif) !important;
+  font-size: 10.5px !important;
+  color: #94A3B8 !important;
+  width: 100% !important;
+  margin-top: 2px !important;
+}
+
+.station-card-description {
+  font-family: var(--font-body, 'Inter', sans-serif) !important;
+  font-size: 12.5px !important;
+  line-height: 1.6 !important;
+  color: #CBD5E1 !important;
+  margin: 0 0 12px 0 !important;
+}
+
+.station-card-tags {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+  margin-bottom: 14px !important;
+}
+
+.station-card-tag {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  font-family: var(--font-mono, monospace) !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  padding: 2.5px 8px !important;
+  border-radius: 99px !important;
+  border: 1px solid currentColor !important;
+}
+
+.station-card-join-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 9px 18px !important;
+  border-radius: 8px !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  color: #FFFFFF !important;
+  font-family: var(--font-heading, 'Outfit', sans-serif) !important;
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4) !important;
+  transition: all 0.2s ease !important;
+}
+
+.station-card-join-btn:hover {
+  transform: translateY(-1px) !important;
+  filter: brightness(1.15) !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5) !important;
+}
+
 @media screen and (max-width: 768px) {
   .kktmusic-outer-wrapper {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0.25rem auto 1.5rem auto !important;
-    padding: 0 4px !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    overflow: hidden !important;
+    margin: 0.5rem auto 1.5rem auto !important;
+    padding: 0 6px !important;
   }
 
-  /* Single-Folio Antique Book Container */
-  .kktmusic {
-    width: 100% !important;
-    max-width: 480px !important;
-    min-width: 0 !important;
-    aspect-ratio: auto !important;
-    height: auto !important;
-    min-height: 480px !important;
-    margin: 0 auto !important;
-    padding: 18px 14px 22px 14px !important;
-    border-radius: 14px !important;
-    overflow: visible !important;
-    background-image: url('https://i.imgur.com/NFBWDvC.png') !important;
-    background-repeat: no-repeat !important;
-    background-size: 215% 100% !important;
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.85), inset 0 0 30px rgba(0, 0, 0, 0.3) !important;
-    border: 1px solid rgba(217, 119, 6, 0.3) !important;
-    filter: none !important;
+  .kktmusic-active-station-card {
+    padding: 14px 14px 18px 14px !important;
+    margin-top: 14px !important;
+    border-radius: 10px !important;
   }
 
-  /* Tab-based parchment slice alignment */
-  .kktmusic.mobile-folio-tracks {
-    background-position: right center !important;
+  .station-card-title {
+    font-size: 16px !important;
   }
 
-  .kktmusic.mobile-folio-player {
-    background-position: left center !important;
-  }
-
-  /* Stacked internal layout */
-  .kktmusic .kktmusic-pages {
-    position: relative !important;
-    inset: auto !important;
-    display: block !important;
-    width: 100% !important;
-    height: auto !important;
-    padding: 0 !important;
-    grid-template-columns: 1fr !important;
-  }
-
-  /* Tracks Tab Active: Show Right Page Only */
-  .kktmusic-pages.mobile-view-tracks .kktmusic-left {
-    display: none !important;
-  }
-  .kktmusic-pages.mobile-view-tracks .kktmusic-right {
-    display: flex !important;
-    flex-direction: column !important;
-    width: 100% !important;
-    padding: 0 2px !important;
-  }
-
-  /* Player Tab Active: Show Left Page Only */
-  .kktmusic-pages.mobile-view-player .kktmusic-right {
-    display: none !important;
-  }
-  .kktmusic-pages.mobile-view-player .kktmusic-left {
-    display: flex !important;
-    flex-direction: column !important;
-    width: 100% !important;
-    padding: 4px !important;
-    align-items: center !important;
-  }
-
-  /* Right Page: Header & Tracklist on Mobile */
-  .kktmusic .kktmusic-right-header {
-    margin: 0 0 8px 0 !important;
-    text-align: center !important;
-  }
-
-  .kktmusic .kktmusic-right-header span {
-    font-size: 24px !important;
-    font-family: 'Alter-Bridge', serif !important;
-  }
-
-  .kktmusic .kktmusic-right-header .kktmusic-divider {
-    font-size: 10px !important;
-    margin: 2px 0 6px 0 !important;
-  }
-
-  .kktmusic .kktmusic-tracks {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 6px !important;
-    width: 100% !important;
-  }
-
-  .kktmusic-track-item {
-    width: 100% !important;
-    min-width: 0 !important;
-  }
-
-  .kktmusic .kktmusic-track {
-    padding: 8px 8px !important;
-    min-height: 42px !important;
-    width: 100% !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-  }
-
-  .kktmusic .kktmusic-number {
-    font-size: 13.5px !important;
-    min-width: 26px !important;
-    font-weight: 700 !important;
-  }
-
-  .kktmusic .kktmusic-song {
-    flex: 1 1 auto !important;
-    min-width: 0 !important;
-  }
-
-  .kktmusic .kktmusic-song b {
-    font-size: 12.5px !important;
-    line-height: 1.25 !important;
-    display: -webkit-box !important;
-    -webkit-line-clamp: 2 !important;
-    -webkit-box-orient: vertical !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-  }
-
-  .kktmusic .kktmusic-song small {
-    font-size: 10.5px !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-  }
-
-  .kktmusic .kktmusic-duration {
-    font-size: 11px !important;
-    flex-shrink: 0 !important;
-    margin-left: 4px !important;
-    margin-right: 2px !important;
-  }
-
-  .kktmusic-expand-arrow-btn {
-    padding: 4px !important;
-    flex-shrink: 0 !important;
-  }
-
-  /* Expanded Milestone Manifest Details Card on Mobile */
-  .kktmusic-event-details-card {
-    padding: 12px 10px 14px 12px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    border-radius: 0 8px 8px 0 !important;
-    border-left-width: 4px !important;
-    margin: 4px 0 8px 0 !important;
-  }
-
-  .kkt-event-subtitle {
+  .station-card-subtitle {
     font-size: 12px !important;
-    margin-bottom: 6px !important;
   }
 
-  .kkt-event-meta-grid {
-    gap: 4px !important;
-    margin-bottom: 6px !important;
-  }
-
-  .kkt-meta-label {
-    font-size: 8px !important;
-  }
-
-  .kkt-meta-value {
-    font-size: 10.5px !important;
-  }
-
-  .kkt-meta-item.speaker-highlight .speaker-name {
-    font-size: 11px !important;
-  }
-
-  .kkt-meta-sub {
-    font-size: 9px !important;
-  }
-
-  .kkt-event-description {
-    font-size: 11px !important;
-    line-height: 1.45 !important;
-    margin: 6px 0 !important;
-  }
-
-  .kkt-event-tags-row {
-    gap: 4px !important;
-    margin: 6px 0 !important;
-  }
-
-  .kkt-event-tag {
-    font-size: 8px !important;
-    padding: 2px 6px !important;
-  }
-
-  .kkt-event-join-action {
-    width: 100% !important;
-    justify-content: center !important;
-    min-height: 38px !important;
+  .station-card-description {
     font-size: 11.5px !important;
-    margin-top: 8px !important;
+    line-height: 1.5 !important;
   }
 
-  /* Left Page: CD Player Controls on Mobile */
-  .kktmusic .kktmusic-left-title h2 {
-    font-size: 26px !important;
-    line-height: 1.1 !important;
-  }
-
-  .kktmusic .kktmusic-disc {
-    width: clamp(160px, 45vw, 200px) !important;
-    height: clamp(160px, 45vw, 200px) !important;
-    margin: 10px auto !important;
-    background-size: contain !important;
-  }
-
-  .kktmusic .kktmusic-cd {
-    width: 78% !important;
-    height: 78% !important;
-  }
-
-  .kktmusic .kktmusic-nowplaying {
+  .station-card-join-btn {
     width: 100% !important;
-    max-width: 300px !important;
-    margin: 8px auto !important;
-  }
-
-  .kktmusic .kktmusic-playing b {
-    font-size: 12.5px !important;
-  }
-
-  .kktmusic .kktmusic-controls {
-    width: 200px !important;
-    height: 36px !important;
-    margin: 6px auto 0 auto !important;
-    background-size: 200px 36px !important;
-  }
-
-  .kktmusic .kktmusic-controls-interactive-layer {
-    width: 200px !important;
-    height: 36px !important;
-    margin: 6px auto 0 auto !important;
-  }
-
-  .kktmusic .kktmusic-left-footer {
-    margin-top: 10px !important;
-    font-size: 10.5px !important;
+    padding: 8px 14px !important;
+    font-size: 12px !important;
   }
 }

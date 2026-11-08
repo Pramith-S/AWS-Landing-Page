@@ -37,6 +37,7 @@ const ShapeGrid = ({
     const isTri = shape === 'triangle';
     const hexHoriz = effectiveSquareSize * 1.5;
     const hexVert = effectiveSquareSize * Math.sqrt(3);
+    let vignetteGrad = null;
 
     const resizeCanvas = () => {
       if (!canvas) return;

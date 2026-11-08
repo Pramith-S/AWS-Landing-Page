@@ -78,6 +78,14 @@
   padding: 0 1rem;
 }
 
+@media (max-width: 768px) {
+  .pathway-book-display-container {
+    padding: 0 4px;
+  }
+}
+
+
+
 /* Metro Transit Main Shell */
 .metro-transit-wrapper {
   background: rgba(14, 12, 22, 0.75);

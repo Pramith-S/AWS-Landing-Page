@@ -3481,7 +3481,7 @@ window.dismissReveal = function() {
 };
 
 // Viewport / Approach Playback Control
-let IS_PLAYING = true;
+let IS_PLAYING = false;
 let HAS_BEGUN = true;
 
 window.addEventListener('message', (event) => {
@@ -3514,7 +3514,6 @@ function frame() {
   if (POSTER) unveil();
 
   if (!IS_PLAYING) {
-    draw();
     MAIN.last = performance.now();
     return;
   }

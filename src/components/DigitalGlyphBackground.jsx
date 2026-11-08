@@ -4,17 +4,14 @@ import './DigitalGlyphBackground.css';
 /**
  * DigitalGlyphBackground
  * 
- * Cinematic Vertical Matrix Rain with Golden & Purple Glowing Streams
- * Designed to match Reference Image 1 with precision:
- * - Perfectly aligned, distinct vertical column lanes (no messy horizontal overlaps)
- * - Blazing bright glowing heads (dual-pass bloom in pure white with golden & violet halos)
- * - AWS Gold & Cyber Violet color themes
- * - Authentic Katakana glyphs + Alphanumerics
- * - Smooth, organic cascading animation at 60 FPS
- * - Auto-pauses off-screen via IntersectionObserver; respects prefers-reduced-motion
+ * Cinematic Vertical Matrix Rain with Golden & Purple Streams
+ * Ultra-optimized 60 FPS Canvas Implementation:
+ * - Perfectly aligned vertical column lanes
+ * - Zero GC allocation inside render() (cached gradients)
+ * - Layered alpha glow technique instead of expensive Gaussian shadowBlur
+ * - Automatic pause via IntersectionObserver when offscreen
  */
 
-// Japanese Katakana matching the reference screenshot exactly
 const KATAKANA = [
   'ヲ', 'ユ', 'カ', 'ロ', 'ル', 'コ', 'タ', 'ワ', 'オ', 'ト', 'モ', 'チ', 'ヤ', 'ニ',
   'マ', 'セ', 'ナ', 'ヘ', 'メ', 'ヌ', 'フ', 'ラ', 'キ', 'ゲ', 'サ', 'エ', 'シ', 'ヅ',
@@ -65,39 +62,35 @@ const DigitalGlyphBackground = ({
     let height = 0;
     let dpr = 1;
     let isMobile = false;
+    let bgGrad = null;
 
     // Strict vertical lane configuration
     let lanes = [];
 
     const initLanes = () => {
       lanes = [];
-      // Generous lane width for clean, distinct columns without overlapping
-      const laneWidth = isMobile ? 32 : 46;
+      const laneWidth = isMobile ? 36 : 46;
       const numLanes = Math.floor(width / laneWidth);
       const startX = Math.floor((width - numLanes * laneWidth) / 2) + Math.floor(laneWidth / 2);
 
       for (let i = 0; i < numLanes; i++) {
         const x = startX + i * laneWidth;
         
-        // Depth tier: ~40% foreground (large, bold, intense bloom), ~60% midground
         const isForeground = Math.random() < 0.42;
-        const fontSize = isForeground ? (isMobile ? 16 : 19) : (isMobile ? 12 : 14);
+        const fontSize = isForeground ? (isMobile ? 15 : 18) : (isMobile ? 12 : 14);
         const lineHeight = isForeground ? (isMobile ? 20 : 23) : (isMobile ? 15 : 18);
-        const trailLength = Math.floor(Math.random() * 16) + (isForeground ? 22 : 16);
+        const trailLength = Math.floor(Math.random() * 14) + (isForeground ? 20 : 14);
 
-        // Pre-fill glyph trail
         const chars = [];
         for (let j = 0; j < trailLength; j++) {
           chars.push(getRandomGlyph());
         }
 
-        // Color theme: ~50% Golden (AWS SBG Gold theme), ~50% Electric Purple / Violet (Reference Image)
         const isGold = Math.random() < 0.50;
         const theme = isGold ? 'gold' : 'purple';
 
-        // Stagger initial Y position across and above the viewport
-        const y = Math.random() * (height + 600) - 400;
-        const streamSpeed = (Math.random() * 0.9 + (isForeground ? 1.4 : 0.9)) * speed;
+        const y = Math.random() * (height + 500) - 300;
+        const streamSpeed = (Math.random() * 0.8 + (isForeground ? 1.3 : 0.8)) * speed;
 
         lanes.push({
           x,
@@ -105,15 +98,15 @@ const DigitalGlyphBackground = ({
           isForeground,
           fontSize,
           lineHeight,
-          font: `${isForeground ? 'bold' : '600'} ${fontSize}px "Consolas", "Courier New", "Hiragino Kaku Gothic Pro", monospace`,
+          font: `${isForeground ? 'bold' : '600'} ${fontSize}px "Consolas", "Courier New", monospace`,
           speed: streamSpeed,
           trailLength,
           chars,
           theme,
-          glowColor: isGold ? '#FFB800' : '#C084FC', // Vibrant Gold or Electric Violet halo
+          glowColor: isGold ? '#FFB800' : '#C084FC',
           secondaryGlow: isGold ? '#FFA51F' : '#A855F7',
           mutateTimer: Math.floor(Math.random() * 6) + 3,
-          delay: Math.floor(Math.random() * 60)
+          delay: Math.floor(Math.random() * 50)
         });
       }
     };
@@ -123,7 +116,7 @@ const DigitalGlyphBackground = ({
       width = Math.max(rect.width, 320);
       height = Math.max(rect.height, 400);
       isMobile = width < 768;
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      dpr = Math.min(window.devicePixelRatio || 1, 1.5); // Cap DPR at 1.5 for performance
 
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
@@ -132,6 +125,15 @@ const DigitalGlyphBackground = ({
 
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.scale(dpr, dpr);
+
+      // Pre-create ambient gradient on resize (cached, zero GC during render)
+      bgGrad = ctx.createRadialGradient(
+        width * 0.5, height * 0.35, 60,
+        width * 0.5, height * 0.35, Math.max(width, height) * 0.70
+      );
+      bgGrad.addColorStop(0, 'rgba(28, 14, 46, 0.40)');
+      bgGrad.addColorStop(0.5, 'rgba(12, 6, 22, 0.25)');
+      bgGrad.addColorStop(1, 'rgba(4, 3, 10, 0.85)');
 
       initLanes();
     };
@@ -156,7 +158,7 @@ const DigitalGlyphBackground = ({
     );
     intersectionObserver.observe(container);
 
-    // Main 60 FPS Render Loop
+    // Optimized 60 FPS Render Loop (Hardware fill rate, Zero GC, No shadowBlur stalls)
     const render = () => {
       if (!isVisibleRef.current) {
         animFrameRef.current = null;
@@ -167,16 +169,10 @@ const DigitalGlyphBackground = ({
       ctx.fillStyle = '#04030A';
       ctx.fillRect(0, 0, width, height);
 
-      // Soft ambient cyber glow centered behind section
-      const bgGrad = ctx.createRadialGradient(
-        width * 0.5, height * 0.35, 60,
-        width * 0.5, height * 0.35, Math.max(width, height) * 0.70
-      );
-      bgGrad.addColorStop(0, 'rgba(28, 14, 46, 0.40)');
-      bgGrad.addColorStop(0.5, 'rgba(12, 6, 22, 0.25)');
-      bgGrad.addColorStop(1, 'rgba(4, 3, 10, 0.85)');
-      ctx.fillStyle = bgGrad;
-      ctx.fillRect(0, 0, width, height);
+      if (bgGrad) {
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, width, height);
+      }
 
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
@@ -190,20 +186,17 @@ const DigitalGlyphBackground = ({
           continue;
         }
 
-        // Advance stream down the vertical column
         lane.y += lane.speed;
 
-        // Reset stream when it travels past the bottom
         const totalHeight = lane.trailLength * lane.lineHeight;
         if (lane.y - totalHeight > height) {
-          lane.y = -Math.floor(Math.random() * 180) - 40;
-          lane.speed = (Math.random() * 0.9 + (lane.isForeground ? 1.4 : 0.9)) * speed;
+          lane.y = -Math.floor(Math.random() * 150) - 30;
+          lane.speed = (Math.random() * 0.8 + (lane.isForeground ? 1.3 : 0.8)) * speed;
           lane.theme = Math.random() < 0.50 ? 'gold' : 'purple';
           lane.glowColor = lane.theme === 'gold' ? '#FFB800' : '#C084FC';
           lane.secondaryGlow = lane.theme === 'gold' ? '#FFA51F' : '#A855F7';
         }
 
-        // Random character mutation in trail for organic cyber network heartbeat
         lane.mutateTimer--;
         if (lane.mutateTimer <= 0) {
           const mutateIdx = Math.floor(Math.random() * lane.trailLength);
@@ -213,11 +206,9 @@ const DigitalGlyphBackground = ({
 
         ctx.font = lane.font;
 
-        // Draw each character in the column from tail to head
         for (let t = lane.trailLength - 1; t >= 0; t--) {
           const charY = lane.y - t * lane.lineHeight;
 
-          // Viewport culling
           if (charY < -30 || charY > height + 30) continue;
 
           const char = lane.chars[t] || '0';
@@ -225,71 +216,49 @@ const DigitalGlyphBackground = ({
           const isNearHead = t === 1 || t === 2;
 
           if (isHead) {
-            // === BRIGHTEST GLOWING HEAD (Dual-Pass Luminous Bloom) ===
-            // Pass 1: Saturated diffuse neon halo (Gold or Purple)
-            ctx.shadowColor = lane.glowColor;
-            ctx.shadowBlur = lane.isForeground ? 22 : 14;
+            // Intense Glowing Head using fast multi-pass alpha layering
             ctx.fillStyle = lane.glowColor;
-            ctx.fillText(char, lane.x, charY);
+            ctx.globalAlpha = 0.45;
+            ctx.fillText(char, lane.x - 1, charY);
+            ctx.fillText(char, lane.x + 1, charY);
+            ctx.fillText(char, lane.x, charY - 1);
+            ctx.fillText(char, lane.x, charY + 1);
 
-            // Pass 2: Blinding, pure white core
-            ctx.shadowColor = '#FFFFFF';
-            ctx.shadowBlur = 8;
+            // Blinding Pure White Core
             ctx.fillStyle = '#FFFFFF';
+            ctx.globalAlpha = 1.0;
             ctx.fillText(char, lane.x, charY);
-
-            ctx.shadowBlur = 0;
           } else if (isNearHead) {
-            // === NEAR-HEAD CHARACTERS ===
-            // High-luminance colored glow
-            ctx.shadowColor = lane.secondaryGlow;
-            ctx.shadowBlur = lane.isForeground ? 10 : 5;
-            
+            ctx.globalAlpha = 0.95;
             if (lane.theme === 'gold') {
-              ctx.fillStyle = t === 1 ? '#FFFBEB' : '#FEF08A'; // Pale golden-white
+              ctx.fillStyle = t === 1 ? '#FFFBEB' : '#FEF08A';
             } else {
-              ctx.fillStyle = t === 1 ? '#FAF5FF' : '#E9D5FF'; // Pale electric lavender
+              ctx.fillStyle = t === 1 ? '#FAF5FF' : '#E9D5FF';
             }
             ctx.fillText(char, lane.x, charY);
-            ctx.shadowBlur = 0;
           } else {
-            // === TRAIL CHARACTERS ===
-            // Smooth exponential decay into rich Gold or Cyber Violet
-            const progress = t / lane.trailLength; // 0 (near head) -> 1 (tail)
-            const alpha = Math.max(0.04, (1 - progress) * (lane.isForeground ? 0.92 : 0.68));
+            const progress = t / lane.trailLength;
+            const alpha = Math.max(0.04, (1 - progress) * (lane.isForeground ? 0.90 : 0.65));
+            ctx.globalAlpha = alpha;
 
             if (lane.theme === 'gold') {
-              if (t < 6) {
-                ctx.fillStyle = `rgba(251, 191, 36, ${alpha})`;  // Bright Amber
-              } else if (t < 14) {
-                ctx.fillStyle = `rgba(245, 158, 11, ${alpha})`;  // AWS Gold
-              } else {
-                ctx.fillStyle = `rgba(180, 83, 9, ${alpha * 0.85})`; // Deep Amber-Slate
-              }
+              ctx.fillStyle = t < 6 ? '#FBBF24' : (t < 14 ? '#F59E0B' : '#D97706');
             } else {
-              // Purple Theme (matching Reference Image 1)
-              if (t < 6) {
-                ctx.fillStyle = `rgba(192, 132, 252, ${alpha})`; // Bright Violet
-              } else if (t < 14) {
-                ctx.fillStyle = `rgba(147, 51, 234, ${alpha})`;  // Electric Purple
-              } else {
-                ctx.fillStyle = `rgba(99, 102, 241, ${alpha * 0.85})`; // Deep Indigo-Violet
-              }
+              ctx.fillStyle = t < 6 ? '#E879F9' : (t < 14 ? '#C084FC' : '#9333EA');
             }
-
             ctx.fillText(char, lane.x, charY);
           }
         }
       }
+
+      ctx.globalAlpha = 1.0;
 
       if (!prefersReducedMotion) {
         animFrameRef.current = requestAnimationFrame(render);
       }
     };
 
-    if (prefersReducedMotion) {
-      render();
-    } else {
+    if (!prefersReducedMotion) {
       animFrameRef.current = requestAnimationFrame(render);
     }
 
@@ -303,13 +272,12 @@ const DigitalGlyphBackground = ({
   return (
     <div 
       ref={containerRef} 
-      className="digital-glyph-container" 
+      className="digital-glyph-container"
       style={{ opacity }}
       aria-hidden="true"
     >
       <canvas ref={canvasRef} className="digital-glyph-canvas" />
-      <div className="digital-glyph-top-fade" />
-      <div className="digital-glyph-bottom-fade" />
+      <div className="digital-glyph-vignette" />
     </div>
   );
 };

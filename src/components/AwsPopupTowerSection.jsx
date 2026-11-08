@@ -8,7 +8,7 @@ import './AwsPopupTowerSection.css';
  */
 export default function AwsPopupTowerSection({ onOpenJoinModal }) {
   const iframeRef = useRef(null);
-  const isApproachingRef = useRef(true);
+  const isApproachingRef = useRef(false);
 
   useEffect(() => {
     const handleMessage = (event) => {
@@ -16,7 +16,9 @@ export default function AwsPopupTowerSection({ onOpenJoinModal }) {
         onOpenJoinModal();
       } else if (event.data === 'aws-sbg-popup-ready') {
         try {
-          iframeRef.current?.contentWindow?.postMessage('aws-sbg-play', '*');
+          if (isApproachingRef.current) {
+            iframeRef.current?.contentWindow?.postMessage('aws-sbg-play', '*');
+          }
         } catch (e) {}
       }
     };
@@ -43,7 +45,7 @@ export default function AwsPopupTowerSection({ onOpenJoinModal }) {
         });
       },
       {
-        rootMargin: '200px 0px',
+        rootMargin: '300px 0px',
         threshold: 0.05
       }
     );
@@ -54,7 +56,9 @@ export default function AwsPopupTowerSection({ onOpenJoinModal }) {
 
   const handleIframeLoad = () => {
     try {
-      iframeRef.current?.contentWindow?.postMessage('aws-sbg-play', '*');
+      if (isApproachingRef.current) {
+        iframeRef.current?.contentWindow?.postMessage('aws-sbg-play', '*');
+      }
     } catch (e) {}
   };
 

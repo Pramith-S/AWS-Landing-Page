@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
-  ChevronDown, 
-  ChevronUp, 
   Calendar, 
   MapPin, 
   UserCheck, 
   Sparkles, 
-  ArrowRight
+  ArrowRight,
+  ChevronRight
 } from 'lucide-react';
 import './KaelkothPlaylistBook.css';
 
@@ -30,7 +29,6 @@ const AwsBookLogo = ({ className = '' }) => (
 );
 
 // Pathway Milestones with professional matching website theme colors:
-// Gold (AWS), Green (DevOps), Violet (AI/Quest), Red (Hackathons), Cyan (Community), Royal Purple (Finale)
 const KAELKOTH_EVENTS = [
   {
     id: 'station-1',
@@ -47,7 +45,7 @@ const KAELKOTH_EVENTS = [
     description: 'The historic launch of AWS Student Builder Group at JSSATEB! Ms. Omshree Butani walked builders through cloud fundamentals, breaking down core AWS building blocks in an inspiring live workshop.',
     highlights: ['Cloud Fundamentals', 'Demystifying AWS', 'FinOps & Architecture', 'Auditorium Kickoff'],
     tag: 'INAUGURAL EVENT',
-    themeColor: '#D97706', // AWS Gold / Amber
+    themeColor: '#D97706',
     themeAccent: '#B45309',
     badgeBg: 'rgba(217, 119, 6, 0.14)',
     badgeBorder: 'rgba(217, 119, 6, 0.45)',
@@ -68,7 +66,7 @@ const KAELKOTH_EVENTS = [
     description: 'Comprehensive virtual hands-on lab conducted on 16th October by Ms. Abhinaya SV. Builders engaged in live console walkthroughs covering core AWS cloud services, architectural patterns, and practical prep for the AWS Certified Cloud Practitioner (CLF-C02).',
     highlights: ['Online Hands-on Lab', 'Live Console Walkthroughs', 'CLF-C02 Prep', 'Core Cloud Architecture'],
     tag: 'HANDS-ON LAB',
-    themeColor: '#059669', // DevOps Emerald / Green
+    themeColor: '#059669',
     themeAccent: '#047857',
     badgeBg: 'rgba(5, 150, 105, 0.14)',
     badgeBorder: 'rgba(5, 150, 105, 0.45)',
@@ -89,7 +87,7 @@ const KAELKOTH_EVENTS = [
     description: 'An adrenaline-filled, interactive 3D RPG cloud tournament powered by AWS Cloud Quest! Solve real-world city challenges, deploy live cloud infrastructure, and battle for top ranks on the live leaderboard.',
     highlights: ['3D RPG Simulation', 'Live Infrastructure Scoring', 'Digital Badges', 'Exclusive Swag & Prizes'],
     tag: 'GAMIFIED EVENT',
-    themeColor: '#7C3AED', // Electric Violet / Purple
+    themeColor: '#7C3AED',
     themeAccent: '#6D28D9',
     badgeBg: 'rgba(124, 58, 237, 0.14)',
     badgeBorder: 'rgba(124, 58, 237, 0.45)',
@@ -110,7 +108,7 @@ const KAELKOTH_EVENTS = [
     description: 'High-octane 24-hour sprint to architect, build, and deploy serverless, cloud-native, and Generative AI applications using AWS services. Includes mentor guidance, cloud credits, and judging by industry veterans.',
     highlights: ['Serverless & GenAI Track', 'AWS Cloud Credits', 'Jury Evaluation', 'Incubation & Awards'],
     tag: 'HACKATHONS',
-    themeColor: '#DC2626', // Crimson / Coral Red
+    themeColor: '#DC2626',
     themeAccent: '#B91C1C',
     badgeBg: 'rgba(220, 38, 38, 0.14)',
     badgeBorder: 'rgba(220, 38, 38, 0.45)',
@@ -131,7 +129,7 @@ const KAELKOTH_EVENTS = [
     description: 'Open-floor technical meetups, project showcases, cloud architect tech talks, and our grand annual celebration bringing together builders, alumni, and industry leaders.',
     highlights: ['Architect Tech Talks', 'Lightning Project Demos', 'Open Networking', 'Global AWS Community'],
     tag: 'COMMUNITY HUB',
-    themeColor: '#0284C7', // Ocean Cyan / Sky Blue
+    themeColor: '#0284C7',
     themeAccent: '#0369A1',
     badgeBg: 'rgba(2, 132, 199, 0.14)',
     badgeBorder: 'rgba(2, 132, 199, 0.45)',
@@ -152,7 +150,7 @@ const KAELKOTH_EVENTS = [
     description: 'The crowning annual celebration recognizing certified student builders, top hackathon teams, and welcoming the incoming chapter leadership with grand honors.',
     highlights: ['Builder Recognition', 'Certification Honors', 'Annual Keynote', 'Leadership Handover'],
     tag: 'GRAND FINALE',
-    themeColor: '#9333EA', // Royal Purple / Gold
+    themeColor: '#9333EA',
     themeAccent: '#7C3AED',
     badgeBg: 'rgba(147, 51, 234, 0.14)',
     badgeBorder: 'rgba(147, 51, 234, 0.45)',
@@ -160,16 +158,38 @@ const KAELKOTH_EVENTS = [
   }
 ];
 
+const BASE_BOOK_WIDTH = 780;
+const BASE_BOOK_HEIGHT = 572;
+
 const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
   const [activeTrackIndex, setActiveTrackIndex] = useState(0);
-  const [expandedTrackId, setExpandedTrackId] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTimeSec, setCurrentTimeSec] = useState(0);
   const [isLooping, setIsLooping] = useState(false);
   const [isShuffling, setIsShuffling] = useState(false);
-  const [mobileActiveTab, setMobileActiveTab] = useState('tracks'); // 'tracks' | 'player'
+  const [bookScale, setBookScale] = useState(1);
+  const wrapperRef = useRef(null);
 
   const currentEvent = KAELKOTH_EVENTS[activeTrackIndex];
+
+  // Responsive scale computation for mobile/tablets
+  useEffect(() => {
+    const handleScale = () => {
+      if (!wrapperRef.current) return;
+      const containerWidth = wrapperRef.current.clientWidth || window.innerWidth;
+      const targetWidth = containerWidth - 16;
+      if (targetWidth < BASE_BOOK_WIDTH) {
+        const nextScale = Math.min(1, Math.max(0.32, targetWidth / BASE_BOOK_WIDTH));
+        setBookScale(nextScale);
+      } else {
+        setBookScale(1);
+      }
+    };
+
+    handleScale();
+    window.addEventListener('resize', handleScale);
+    return () => window.removeEventListener('resize', handleScale);
+  }, []);
 
   const togglePlay = () => {
     setIsPlaying((prev) => !prev);
@@ -181,12 +201,6 @@ const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
     if (!isPlaying) {
       setIsPlaying(true);
     }
-  };
-
-  // Clicking anywhere on track 1..6 selects it AND toggles expansion
-  const handleTrackRowClick = (idx, eventId) => {
-    selectTrack(idx);
-    setExpandedTrackId((prev) => (prev === eventId ? null : eventId));
   };
 
   const handleNext = () => {
@@ -229,350 +243,288 @@ const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
   const progressPercent = Math.min(100, (currentTimeSec / currentEvent.durationSec) * 100);
 
   return (
-    <div className="kktmusic-outer-wrapper">
+    <div ref={wrapperRef} className="kktmusic-outer-wrapper">
       
-      {/* Mobile Folio Tabs Switcher (Visible only on mobile <= 768px) */}
-      <div className="kkt-mobile-folio-tabs" role="tablist" aria-label="Book folios">
-        <button
-          type="button"
-          role="tab"
-          aria-selected={mobileActiveTab === 'tracks'}
-          className={`kkt-mobile-tab-pill ${mobileActiveTab === 'tracks' ? 'active-tab' : ''}`}
-          onClick={() => setMobileActiveTab('tracks')}
+      {/* Scaler Box: Perfectly fits the complete 2-page open book on any mobile screen */}
+      <div 
+        className="kktmusic-scaler-container"
+        style={{
+          width: bookScale < 1 ? `${Math.round(BASE_BOOK_WIDTH * bookScale)}px` : '100%',
+          maxWidth: `${BASE_BOOK_WIDTH}px`,
+          height: `${Math.round(BASE_BOOK_HEIGHT * bookScale)}px`,
+          position: 'relative',
+          margin: '0 auto',
+          overflow: 'hidden'
+        }}
+      >
+        <div 
+          className="kktmusic"
+          style={{
+            width: `${BASE_BOOK_WIDTH}px`,
+            height: `${BASE_BOOK_HEIGHT}px`,
+            transform: bookScale < 1 ? `scale(${bookScale})` : undefined,
+            transformOrigin: 'top left',
+            position: 'absolute',
+            top: 0,
+            left: 0
+          }}
         >
-          <span className="tab-pill-icon">📜</span>
-          <span className="tab-pill-label">VOLUME I · TRACKS</span>
-        </button>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={mobileActiveTab === 'player'}
-          className={`kkt-mobile-tab-pill ${mobileActiveTab === 'player' ? 'active-tab' : ''}`}
-          onClick={() => setMobileActiveTab('player')}
-        >
-          <span className="tab-pill-icon">🎵</span>
-          <span className="tab-pill-label">SBG PLAYER DISC</span>
-          {isPlaying && <span className="tab-playing-pulse" title="Playing" />}
-        </button>
-      </div>
+          <div className="kktmusic-pages">
 
-      {/* Main Kaelkoth Book Component matching exact reference image */}
-      <div className={`kktmusic mobile-folio-${mobileActiveTab}`}>
-        <div className={`kktmusic-pages mobile-view-${mobileActiveTab}`}>
-
-          {/* =================================================================
-              LEFT PAGE: AWS SBG EDITION & SPINNING CD
-              ================================================================= */}
-          <div className="kktmusic-left">
-            
-            {/* Top Title: Updated to AWS SBG EDITION, SONGS FROM KAELKOTH removed */}
-            <div className="kktmusic-left-title">
-              <h2>AWS SBG<br />EDITION</h2>
-            </div>
-
-            {/* Baroque Golden Frame with Spinning Disc & AWS Smile */}
-            <div className="kktmusic-disc">
-              <div 
-                className={`kktmusic-cd ${isPlaying ? 'spinning' : 'paused'}`}
-                title={isPlaying ? "Click to Pause" : "Click to Play"}
-                onClick={togglePlay}
-              >
-                {/* Official CD artwork from Kaelkoth */}
-                <img src="https://i.imgur.com/OONeop0.png" alt="Playlist cover" />
-                
-                {/* Center hole with official AWS Smile Logo overlay */}
-                <div className="kktmusic-hole">
-                  <AwsBookLogo className="kktmusic-aws-inner-logo" />
-                </div>
-              </div>
-            </div>
-
-            {/* Now Playing Bar with Working Controls */}
-            <div className="kktmusic-nowplaying">
-              <div className="kktmusic-playing">
-                <span>PLAYING NOW:</span>
-                <b>{currentEvent.title}</b>
+            {/* =================================================================
+                LEFT PAGE: AWS SBG EDITION & SPINNING CD
+                ================================================================= */}
+            <div className="kktmusic-left">
+              
+              {/* Top Title */}
+              <div className="kktmusic-left-title">
+                <h2>AWS SBG<br />EDITION</h2>
               </div>
 
-              {/* Player Progress Scrubber */}
-              <div className="kktmusic-progress-bar-wrap">
-                <div className="kktmusic-progress-line">
-                  <div 
-                    className="kktmusic-progress-fill" 
-                    style={{ width: `${progressPercent}%` }} 
-                  />
-                  <div 
-                    className="kktmusic-progress-dot" 
-                    style={{ left: `${progressPercent}%` }} 
-                  />
-                </div>
-              </div>
-
-              {/* Visual Controls Sprite Background */}
-              <div className="kktmusic-controls" />
-
-              {/* Working Clickable Buttons Layer directly over sprite icons */}
-              <div className="kktmusic-controls-interactive-layer">
-                {/* Repeat / Loop */}
-                <button 
-                  type="button"
-                  className={`kkt-ctrl-hitbox hitbox-loop ${isLooping ? 'active-loop' : ''}`}
-                  onClick={() => setIsLooping(!isLooping)}
-                  title={isLooping ? "Loop On" : "Loop Off"}
-                  aria-label="Loop toggle"
-                />
-
-                {/* Previous Track */}
-                <button 
-                  type="button"
-                  className="kkt-ctrl-hitbox hitbox-prev"
-                  onClick={handlePrev}
-                  title="Previous Milestone"
-                  aria-label="Previous Track"
-                />
-
-                {/* Play / Pause Toggle */}
-                <button 
-                  type="button"
-                  className="kkt-ctrl-hitbox hitbox-play"
+              {/* Baroque Golden Frame with Spinning Disc & AWS Smile */}
+              <div className="kktmusic-disc">
+                <div 
+                  className={`kktmusic-cd ${isPlaying ? 'spinning' : 'paused'}`}
+                  title={isPlaying ? "Click to Pause" : "Click to Play"}
                   onClick={togglePlay}
-                  title={isPlaying ? "Pause" : "Play"}
-                  aria-label={isPlaying ? "Pause" : "Play"}
-                />
-
-                {/* Next Track */}
-                <button 
-                  type="button"
-                  className="kkt-ctrl-hitbox hitbox-next"
-                  onClick={handleNext}
-                  title="Next Milestone"
-                  aria-label="Next Track"
-                />
-
-                {/* Shuffle */}
-                <button 
-                  type="button"
-                  className={`kkt-ctrl-hitbox hitbox-shuffle ${isShuffling ? 'active-shuffle' : ''}`}
-                  onClick={() => setIsShuffling(!isShuffling)}
-                  title={isShuffling ? "Shuffle On" : "Shuffle Off"}
-                  aria-label="Shuffle toggle"
-                />
+                >
+                  <img src="https://i.imgur.com/OONeop0.png" alt="Playlist cover" />
+                  <div className="kktmusic-hole">
+                    <AwsBookLogo className="kktmusic-aws-inner-logo" />
+                  </div>
+                </div>
               </div>
 
-            </div>
+              {/* Now Playing Bar with Working Controls */}
+              <div className="kktmusic-nowplaying">
+                <div className="kktmusic-playing">
+                  <span>PLAYING NOW:</span>
+                  <b>{currentEvent.title}</b>
+                </div>
 
-            {/* Left Page Footer */}
-            <div className="kktmusic-left-footer">
-              <span>MELODIAS DE AWS STUDENT BUILDER GROUP</span>
-              <p>JSSATEB Chapter · Community Chronicles</p>
-              <i>✦ Edition I · Official Landmark Grimoire ✦</i>
-            </div>
-
-            {/* Mobile shortcut to switch to tracks */}
-            <button
-              type="button"
-              className="kkt-mobile-view-tracks-btn"
-              onClick={() => setMobileActiveTab('tracks')}
-            >
-              <span>View All Milestone Tracks</span>
-              <ArrowRight size={13} />
-            </button>
-
-          </div>
-
-          {/* =================================================================
-              RIGHT PAGE: VOLUME I & EXPANDABLE MILESTONE TRACKLIST
-              ================================================================= */}
-          <div className="kktmusic-right">
-            
-            {/* Header: VOLUME I only */}
-            <div className="kktmusic-right-header">
-              <span>VOLUME I</span>
-              <div className="kktmusic-divider">✦</div>
-            </div>
-
-            {/* Mobile Now Playing Quick Bar */}
-            <div 
-              className="kkt-mobile-disc-shortcut"
-              onClick={() => setMobileActiveTab('player')}
-              role="button"
-              tabIndex={0}
-              title="Switch to CD Player Folio"
-            >
-              <div className="shortcut-left">
-                <span className={`shortcut-disc-icon ${isPlaying ? 'spinning-disc-icon' : ''}`}>💿</span>
-                <span className="shortcut-text">
-                  <b>{isPlaying ? 'Playing:' : 'Selected:'}</b> {currentEvent.title}
-                </span>
-              </div>
-              <span className="shortcut-arrow">View Player ➜</span>
-            </div>
-
-            {/* Tracklist: Clicking anywhere on 1..6 expands details */}
-            <div className="kktmusic-tracks" role="list">
-              {KAELKOTH_EVENTS.map((event, idx) => {
-                const isActive = idx === activeTrackIndex;
-                const isExpanded = expandedTrackId === event.id;
-
-                return (
-                  <div 
-                    key={event.id}
-                    className={`kktmusic-track-item ${isActive ? 'active-playing-track' : ''} ${isExpanded ? 'is-expanded' : ''}`}
-                    style={{
-                      '--event-theme-color': event.themeColor,
-                      '--event-theme-accent': event.themeAccent,
-                      '--event-btn-gradient': event.btnGradient
-                    }}
-                  >
-                    {/* Track Header Bar (Clicking anywhere expands & selects) */}
+                {/* Player Progress Scrubber */}
+                <div className="kktmusic-progress-bar-wrap">
+                  <div className="kktmusic-progress-line">
                     <div 
-                      className="kktmusic-track"
-                      onClick={() => handleTrackRowClick(idx, event.id)}
+                      className="kktmusic-progress-fill" 
+                      style={{ width: `${progressPercent}%` }} 
+                    />
+                    <div 
+                      className="kktmusic-progress-dot" 
+                      style={{ left: `${progressPercent}%` }} 
+                    />
+                  </div>
+                </div>
+
+                {/* Visual Controls Sprite Background */}
+                <div className="kktmusic-controls" />
+
+                {/* Working Clickable Buttons Layer */}
+                <div className="kktmusic-controls-interactive-layer">
+                  <button 
+                    type="button"
+                    className={`kkt-ctrl-hitbox hitbox-loop ${isLooping ? 'active-loop' : ''}`}
+                    onClick={() => setIsLooping(!isLooping)}
+                    title={isLooping ? "Loop On" : "Loop Off"}
+                    aria-label="Loop toggle"
+                  />
+                  <button 
+                    type="button"
+                    className="kkt-ctrl-hitbox hitbox-prev"
+                    onClick={handlePrev}
+                    title="Previous Milestone"
+                    aria-label="Previous Track"
+                  />
+                  <button 
+                    type="button"
+                    className="kkt-ctrl-hitbox hitbox-play"
+                    onClick={togglePlay}
+                    title={isPlaying ? "Pause" : "Play"}
+                    aria-label={isPlaying ? "Pause" : "Play"}
+                  />
+                  <button 
+                    type="button"
+                    className="kkt-ctrl-hitbox hitbox-next"
+                    onClick={handleNext}
+                    title="Next Milestone"
+                    aria-label="Next Track"
+                  />
+                  <button 
+                    type="button"
+                    className={`kkt-ctrl-hitbox hitbox-shuffle ${isShuffling ? 'active-shuffle' : ''}`}
+                    onClick={() => setIsShuffling(!isShuffling)}
+                    title={isShuffling ? "Shuffle On" : "Shuffle Off"}
+                    aria-label="Shuffle toggle"
+                  />
+                </div>
+              </div>
+
+              {/* Left Page Footer */}
+              <div className="kktmusic-left-footer">
+                <span>MELODIAS DE AWS STUDENT BUILDER GROUP</span>
+                <p>JSSATEB Chapter · Community Chronicles</p>
+                <i>✦ Edition I · Official Landmark Grimoire ✦</i>
+              </div>
+
+            </div>
+
+            {/* =================================================================
+                RIGHT PAGE: VOLUME I & COMPLETE 6 MILESTONE TRACKLIST
+                ================================================================= */}
+            <div className="kktmusic-right">
+              
+              <div className="kktmusic-right-header">
+                <span>VOLUME I</span>
+                <div className="kktmusic-divider">✦</div>
+              </div>
+
+              {/* Tracklist: Clicking any track selects & plays it */}
+              <div className="kktmusic-tracks" role="list">
+                {KAELKOTH_EVENTS.map((event, idx) => {
+                  const isActive = idx === activeTrackIndex;
+
+                  return (
+                    <div 
+                      key={event.id}
+                      className={`kktmusic-track-item ${isActive ? 'active-playing-track' : ''}`}
+                      onClick={() => selectTrack(idx)}
                       role="button"
                       tabIndex={0}
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
-                          handleTrackRowClick(idx, event.id);
+                          selectTrack(idx);
                         }
                       }}
-                      aria-expanded={isExpanded}
                       aria-label={`${event.title} by ${event.artist}`}
                     >
-                      {/* Roman Numeral */}
-                      <span 
-                        className="kktmusic-number"
-                        style={{ color: isActive ? event.themeColor : undefined }}
-                      >
-                        {event.num}
-                      </span>
-
-                      {/* Song/Event Title & Artist */}
-                      <div className="kktmusic-song">
-                        <b style={{ color: isActive ? event.themeColor : undefined }}>
-                          {event.title}
-                        </b>
-                        <small>{event.artist}</small>
-                      </div>
-
-                      {/* Duration */}
-                      <span className="kktmusic-duration">{event.duration}</span>
-
-                      {/* Expand Arrow Mark */}
-                      <button 
-                        type="button"
-                        className={`kktmusic-expand-arrow-btn ${isExpanded ? 'rotated' : ''}`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleTrackRowClick(idx, event.id);
-                        }}
-                        title={isExpanded ? "Collapse Event Details" : "Expand Event Details"}
-                        aria-label="Toggle details"
-                      >
-                        {isExpanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
-                      </button>
-                    </div>
-
-                    {/* Expandable Event Details Card (High-Contrast, Crisp Typography, Theme Matched) */}
-                    {isExpanded && (
-                      <div 
-                        className="kktmusic-event-details-card"
-                        style={{
-                          borderLeftColor: event.themeColor
-                        }}
-                      >
-                        
-                        {/* Subtitle with Theme Accent */}
-                        <div 
-                          className="kkt-event-subtitle"
-                          style={{ color: event.themeColor }}
+                      <div className="kktmusic-track">
+                        <span 
+                          className="kktmusic-number"
+                          style={{ color: isActive ? event.themeColor : undefined }}
                         >
-                          {event.subtitle}
+                          {event.num}
+                        </span>
+
+                        <div className="kktmusic-song">
+                          <b style={{ color: isActive ? event.themeColor : undefined }}>
+                            {event.title}
+                          </b>
+                          <small>{event.artist}</small>
                         </div>
 
-                        {/* Meta Rows */}
-                        <div className="kkt-event-meta-grid">
-                          <div className="kkt-meta-item">
-                            <span className="kkt-meta-label">
-                              <Calendar size={11} className="kkt-meta-icon" style={{ color: event.themeColor }} />
-                              TIMELINE
-                            </span>
-                            <span className="kkt-meta-value">{event.timeline}</span>
-                          </div>
+                        <span className="kktmusic-duration">{event.duration}</span>
 
-                          <div className="kkt-meta-item">
-                            <span className="kkt-meta-label">
-                              <MapPin size={11} className="kkt-meta-icon" style={{ color: event.themeColor }} />
-                              VENUE
-                            </span>
-                            <span className="kkt-meta-value">{event.venue}</span>
-                          </div>
-
-                          <div className="kkt-meta-item speaker-highlight">
-                            <span className="kkt-meta-label">
-                              <UserCheck size={11} className="kkt-meta-icon" style={{ color: event.themeColor }} />
-                              KEY SPEAKER / MENTOR
-                            </span>
-                            <span 
-                              className="kkt-meta-value speaker-name"
-                              style={{ color: event.themeColor }}
-                            >
-                              {event.speaker}
-                            </span>
-                            <span className="kkt-meta-sub">{event.speakerRole}</span>
-                          </div>
-                        </div>
-
-                        {/* Description: High-contrast, sharp and readable */}
-                        <p className="kkt-event-description">
-                          {event.description}
-                        </p>
-
-                        {/* Highlights Pill Badges with Station Theme Colors */}
-                        <div className="kkt-event-tags-row">
-                          {event.highlights.map((h, hIdx) => (
-                            <span 
-                              key={hIdx} 
-                              className="kkt-event-tag"
-                              style={{
-                                background: event.badgeBg,
-                                borderColor: event.badgeBorder,
-                                color: event.themeColor
-                              }}
-                            >
-                              <Sparkles size={9} className="kkt-tag-sparkle" style={{ color: event.themeColor }} />
-                              {h}
-                            </span>
-                          ))}
-                        </div>
-
-                        {/* Join Station Action Button */}
-                        {onOpenJoinModal && (
-                          <button 
-                            type="button"
-                            className="kkt-event-join-action"
-                            style={{
-                              background: event.btnGradient
-                            }}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              onOpenJoinModal();
-                            }}
-                          >
-                            <span>Join This Station</span>
-                            <ArrowRight size={12} />
-                          </button>
-                        )}
+                        <span className="kktmusic-arrow-indicator">
+                          <ChevronRight size={12} style={{ color: isActive ? event.themeColor : undefined }} />
+                        </span>
                       </div>
-                    )}
-                  </div>
-                );
-              })}
+                    </div>
+                  );
+                })}
+              </div>
+
             </div>
 
           </div>
-
         </div>
       </div>
+
+      {/* =================================================================
+          ACTIVE LANDMARK DETAILS MANIFEST CARD
+          Rendered cleanly beneath the scaled book with full readability on mobile & desktop
+          ================================================================= */}
+      {currentEvent && (
+        <div 
+          className="kktmusic-active-station-card"
+          style={{
+            '--event-theme-color': currentEvent.themeColor,
+            '--event-theme-accent': currentEvent.themeAccent,
+            '--event-btn-gradient': currentEvent.btnGradient
+          }}
+        >
+          <div className="station-card-top-row">
+            <div 
+              className="station-card-badge"
+              style={{
+                background: currentEvent.badgeBg,
+                borderColor: currentEvent.badgeBorder,
+                color: currentEvent.themeColor
+              }}
+            >
+              <Sparkles size={11} />
+              <span>STATION {currentEvent.num} // {currentEvent.tag}</span>
+            </div>
+            <span className="station-card-duration-pill">{currentEvent.duration}</span>
+          </div>
+
+          <h3 className="station-card-title">{currentEvent.title}</h3>
+          
+          <div className="station-card-subtitle" style={{ color: currentEvent.themeColor }}>
+            {currentEvent.subtitle}
+          </div>
+
+          <div className="station-card-meta-grid">
+            <div className="station-meta-item">
+              <span className="station-meta-label">
+                <Calendar size={12} style={{ color: currentEvent.themeColor }} />
+                TIMELINE
+              </span>
+              <span className="station-meta-value">{currentEvent.timeline}</span>
+            </div>
+
+            <div className="station-meta-item">
+              <span className="station-meta-label">
+                <MapPin size={12} style={{ color: currentEvent.themeColor }} />
+                VENUE
+              </span>
+              <span className="station-meta-value">{currentEvent.venue}</span>
+            </div>
+
+            <div className="station-meta-item speaker-highlight">
+              <span className="station-meta-label">
+                <UserCheck size={12} style={{ color: currentEvent.themeColor }} />
+                KEY SPEAKER / MENTOR
+              </span>
+              <span className="station-meta-value speaker-name" style={{ color: currentEvent.themeColor }}>
+                {currentEvent.speaker}
+              </span>
+              <span className="station-meta-sub">{currentEvent.speakerRole}</span>
+            </div>
+          </div>
+
+          <p className="station-card-description">{currentEvent.description}</p>
+
+          <div className="station-card-tags">
+            {currentEvent.highlights.map((h, i) => (
+              <span 
+                key={i} 
+                className="station-card-tag"
+                style={{
+                  background: currentEvent.badgeBg,
+                  borderColor: currentEvent.badgeBorder,
+                  color: currentEvent.themeColor
+                }}
+              >
+                <Sparkles size={9} />
+                {h}
+              </span>
+            ))}
+          </div>
+
+          {onOpenJoinModal && (
+            <button 
+              type="button"
+              className="station-card-join-btn"
+              style={{ background: currentEvent.btnGradient }}
+              onClick={onOpenJoinModal}
+            >
+              <span>Join Station {currentEvent.num}</span>
+              <ArrowRight size={13} />
+            </button>
+          )}
+        </div>
+      )}
+
     </div>
   );
 };
