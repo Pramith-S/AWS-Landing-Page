@@ -4,24 +4,20 @@ import './AwsPopupTowerSection.css';
 /**
  * AWS SBG 3D Interactive Pop-Up Book World
  * Embedded directly from the downloads pop-up 3D WebGL engine.
- * Only plays when the user approaches this section in the viewport,
- * pausing when scrolled away to conserve CPU/GPU and preserve cinematic sync.
+ * Fully responsive on desktop and mobile, with active autoplay and approach sync.
  */
 export default function AwsPopupTowerSection({ onOpenJoinModal }) {
   const iframeRef = useRef(null);
-  const isApproachingRef = useRef(false);
+  const isApproachingRef = useRef(true);
 
   useEffect(() => {
     const handleMessage = (event) => {
       if (event.data === 'aws-sbg-open-join' && onOpenJoinModal) {
         onOpenJoinModal();
       } else if (event.data === 'aws-sbg-popup-ready') {
-        // Iframe initialized: if user is already approaching or viewing this section, play immediately!
-        if (isApproachingRef.current) {
-          try {
-            iframeRef.current?.contentWindow?.postMessage('aws-sbg-play', '*');
-          } catch (e) {}
-        }
+        try {
+          iframeRef.current?.contentWindow?.postMessage('aws-sbg-play', '*');
+        } catch (e) {}
       }
     };
 
@@ -47,8 +43,7 @@ export default function AwsPopupTowerSection({ onOpenJoinModal }) {
         });
       },
       {
-        // 160px buffer: Begins playing smoothly right as user scrolls toward/approaches the section
-        rootMargin: '160px 0px',
+        rootMargin: '200px 0px',
         threshold: 0.05
       }
     );
@@ -58,11 +53,9 @@ export default function AwsPopupTowerSection({ onOpenJoinModal }) {
   }, []);
 
   const handleIframeLoad = () => {
-    if (isApproachingRef.current) {
-      try {
-        iframeRef.current?.contentWindow?.postMessage('aws-sbg-play', '*');
-      } catch (e) {}
-    }
+    try {
+      iframeRef.current?.contentWindow?.postMessage('aws-sbg-play', '*');
+    } catch (e) {}
   };
 
   return (

@@ -40,11 +40,16 @@
   }
 }
 
-/* Mobile responsive fitting */
+/* Mobile responsive fitting - Fits 100% of mobile viewport with zero horizontal overflow */
 @media (max-width: 768px) {
   .aws-popup-fullscreen-section {
-    height: 82vh;
-    min-height: 520px;
+    width: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    height: 78vh;
+    min-height: 480px;
     border-top: 1px solid rgba(255, 153, 0, 0.25);
     border-bottom: 1px solid rgba(255, 153, 0, 0.25);
   }
@@ -52,7 +57,12 @@
 
 @media (max-width: 480px) {
   .aws-popup-fullscreen-section {
-    height: 75vh;
-    min-height: 460px;
+    width: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    height: 72vh;
+    min-height: 420px;
   }
 }

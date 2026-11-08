@@ -3480,45 +3480,28 @@ window.dismissReveal = function() {
   if (subContainer) subContainer.style.opacity = '1';
 };
 
-// Interactive Approach / Viewport Playback Control
-let IS_IN_IFRAME = false;
-try {
-  IS_IN_IFRAME = window !== window.top;
-} catch (e) {
-  IS_IN_IFRAME = true;
-}
-
-let IS_PLAYING = !IS_IN_IFRAME; // If standalone tab, autoplay; if embedded iframe, wait until user approaches!
-let HAS_BEGUN = false;
+// Viewport / Approach Playback Control
+let IS_PLAYING = true;
+let HAS_BEGUN = true;
 
 window.addEventListener('message', (event) => {
   const data = typeof event.data === 'string' ? event.data : event.data?.type;
   if (data === 'aws-sbg-play') {
-    if (!IS_PLAYING) {
-      IS_PLAYING = true;
-      MAIN.last = performance.now();
-      if (!HAS_BEGUN) {
-        HAS_BEGUN = true;
-        MAIN.time = 0;
-        MAIN.offset = 0;
+    IS_PLAYING = true;
+    MAIN.last = performance.now();
+    try {
+      if (window.__penAudio && window.__penAudio.want && window.__penAudio.ctx && window.__penAudio.ctx.state === 'suspended') {
+        window.__penAudio.ctx.resume();
       }
-      try {
-        if (window.__penAudio && window.__penAudio.want && window.__penAudio.ctx && window.__penAudio.ctx.state === 'suspended') {
-          window.__penAudio.ctx.resume();
-        }
-      } catch (err) {}
-    }
+    } catch (err) {}
   } else if (data === 'aws-sbg-pause') {
-    if (IS_PLAYING) {
-      IS_PLAYING = false;
-      try {
-        if (window.__penAudio && window.__penAudio.ctx && window.__penAudio.ctx.state === 'running') {
-          window.__penAudio.ctx.suspend();
-        }
-      } catch (err) {}
-    }
+    IS_PLAYING = false;
+    try {
+      if (window.__penAudio && window.__penAudio.ctx && window.__penAudio.ctx.state === 'running') {
+        window.__penAudio.ctx.suspend();
+      }
+    } catch (err) {}
   } else if (data === 'aws-sbg-replay') {
-    HAS_BEGUN = true;
     IS_PLAYING = true;
     MAIN.time = 0;
     MAIN.offset = 0;
@@ -3527,18 +3510,20 @@ window.addEventListener('message', (event) => {
 });
 
 function frame() {
+  MAIN.frames++;
+  if (POSTER) unveil();
+
   if (!IS_PLAYING) {
     draw();
     MAIN.last = performance.now();
     return;
   }
+
   const now = performance.now(), dtRaw = (now - MAIN.last) / 1000; MAIN.last = now;
   MAIN.time += Math.min(dtRaw, 0.05);
   STORY.T = storyTime(MAIN.time);
   draw(); updateSbgHud(STORY.T);
   adapt(dtRaw);
-  MAIN.frames++;
-  if (POSTER && MAIN.frames >= 5) unveil();
 }
 
 // ---- start ----
@@ -3547,14 +3532,14 @@ resize();
 addEventListener('resize', resize);
 MAIN.offset = PARAMS.has('t') ? +PARAMS.get('t') : 0;
 if (SOFT) { const b = document.getElementById('sound'); if (b) b.remove(); }
-// (a few moments drawn once, behind the still: every shader is made now, not in the middle of the film)
 if (!SOFT && !(TEST && PARAMS.has('sheet'))) { for (const t of WARM) { STORY.T = t; draw(); } STORY.T = storyTime(MAIN.time); }
 if (!SOFT) {
   if (typeof audioHook === 'function') audioHook();
   renderer.setAnimationLoop(frame);
 }
 
-// Signal parent that iframe is ready to receive viewport messages
+if (typeof unveil === 'function') setTimeout(unveil, 100);
+
 try {
   if (window.parent && window.parent !== window) {
     window.parent.postMessage('aws-sbg-popup-ready', '*');

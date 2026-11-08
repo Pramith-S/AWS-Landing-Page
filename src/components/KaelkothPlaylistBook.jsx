@@ -167,6 +167,7 @@ const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
   const [currentTimeSec, setCurrentTimeSec] = useState(0);
   const [isLooping, setIsLooping] = useState(false);
   const [isShuffling, setIsShuffling] = useState(false);
+  const [mobileActiveTab, setMobileActiveTab] = useState('tracks'); // 'tracks' | 'player'
 
   const currentEvent = KAELKOTH_EVENTS[activeTrackIndex];
 
@@ -230,9 +231,34 @@ const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
   return (
     <div className="kktmusic-outer-wrapper">
       
+      {/* Mobile Folio Tabs Switcher (Visible only on mobile <= 768px) */}
+      <div className="kkt-mobile-folio-tabs" role="tablist" aria-label="Book folios">
+        <button
+          type="button"
+          role="tab"
+          aria-selected={mobileActiveTab === 'tracks'}
+          className={`kkt-mobile-tab-pill ${mobileActiveTab === 'tracks' ? 'active-tab' : ''}`}
+          onClick={() => setMobileActiveTab('tracks')}
+        >
+          <span className="tab-pill-icon">📜</span>
+          <span className="tab-pill-label">VOLUME I · TRACKS</span>
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={mobileActiveTab === 'player'}
+          className={`kkt-mobile-tab-pill ${mobileActiveTab === 'player' ? 'active-tab' : ''}`}
+          onClick={() => setMobileActiveTab('player')}
+        >
+          <span className="tab-pill-icon">🎵</span>
+          <span className="tab-pill-label">SBG PLAYER DISC</span>
+          {isPlaying && <span className="tab-playing-pulse" title="Playing" />}
+        </button>
+      </div>
+
       {/* Main Kaelkoth Book Component matching exact reference image */}
-      <div className="kktmusic">
-        <div className="kktmusic-pages">
+      <div className={`kktmusic mobile-folio-${mobileActiveTab}`}>
+        <div className={`kktmusic-pages mobile-view-${mobileActiveTab}`}>
 
           {/* =================================================================
               LEFT PAGE: AWS SBG EDITION & SPINNING CD
@@ -342,6 +368,16 @@ const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
               <i>✦ Edition I · Official Landmark Grimoire ✦</i>
             </div>
 
+            {/* Mobile shortcut to switch to tracks */}
+            <button
+              type="button"
+              className="kkt-mobile-view-tracks-btn"
+              onClick={() => setMobileActiveTab('tracks')}
+            >
+              <span>View All Milestone Tracks</span>
+              <ArrowRight size={13} />
+            </button>
+
           </div>
 
           {/* =================================================================
@@ -353,6 +389,23 @@ const KaelkothPlaylistBook = ({ onOpenJoinModal }) => {
             <div className="kktmusic-right-header">
               <span>VOLUME I</span>
               <div className="kktmusic-divider">✦</div>
+            </div>
+
+            {/* Mobile Now Playing Quick Bar */}
+            <div 
+              className="kkt-mobile-disc-shortcut"
+              onClick={() => setMobileActiveTab('player')}
+              role="button"
+              tabIndex={0}
+              title="Switch to CD Player Folio"
+            >
+              <div className="shortcut-left">
+                <span className={`shortcut-disc-icon ${isPlaying ? 'spinning-disc-icon' : ''}`}>💿</span>
+                <span className="shortcut-text">
+                  <b>{isPlaying ? 'Playing:' : 'Selected:'}</b> {currentEvent.title}
+                </span>
+              </div>
+              <span className="shortcut-arrow">View Player ➜</span>
             </div>
 
             {/* Tracklist: Clicking anywhere on 1..6 expands details */}
