@@ -1,29 +1,95 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 
-const Loader = ({ minDisplayTime = 2600, onFinished }) => {
-  const [isVisible, setIsVisible] = useState(true);
+const MAIN_TEXT = 'AWS STUDENT BUILDER GROUP';
+const SUB_TEXT = 'JSSATEB';
+const GLYPH_POOL = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const CELL_HEIGHT_EM = 1.24;
+
+// Tracks completed intro within the current SPA session so section navigation never replays it.
+let hasCompletedIntro = false;
+
+function buildDeterministicGlyph(seed, stepIdx, forbiddenChar) {
+  const hash = Math.abs((seed * 73856093) ^ (stepIdx * 19349663) ^ 0x9e3779b9);
+  let candidate = GLYPH_POOL[hash % GLYPH_POOL.length];
+  if (candidate === forbiddenChar) {
+    candidate = GLYPH_POOL[(hash + 7) % GLYPH_POOL.length];
+  }
+  return candidate;
+}
+
+function buildLineSlots(text, lineOffset, baseDuration, perCharStep, sweepStartMs) {
+  let glyphOrder = 0;
+
+  return text.split('').map((char, idx) => {
+    if (char === ' ') {
+      return { isSpace: true, key: `${lineOffset}-space-${idx}` };
+    }
+
+    const order = glyphOrder++;
+    const steps = 7 + Math.round(order * (lineOffset === 0 ? 0.52 : 1.05));
+    const seed = (lineOffset + 1) * 131 + idx * 37 + char.charCodeAt(0);
+
+    const reel = [];
+    for (let s = 0; s < steps; s++) {
+      const prev = s > 0 ? reel[s - 1] : '';
+      let picked = buildDeterministicGlyph(seed + s * 17, s, s === steps - 1 ? char : prev);
+      if (picked === prev) {
+        picked = GLYPH_POOL[(GLYPH_POOL.indexOf(picked) + 3) % GLYPH_POOL.length];
+      }
+      reel.push(picked);
+    }
+    reel.push(char);
+
+    const fragX = ((order % 5) - 2) * 1.4;
+    const fragY = (((order * 3) % 5) - 2) * 1.1;
+    const fragSkew = (order % 2 === 0 ? 1 : -1) * (4 + (order % 4));
+
+    return {
+      isSpace: false,
+      key: `${lineOffset}-char-${idx}`,
+      char,
+      steps,
+      reel,
+      fragDelay: 20 + order * 6,
+      fragX: `${fragX.toFixed(1)}px`,
+      fragY: `${fragY.toFixed(1)}px`,
+      fragSkew: `${fragSkew}deg`,
+      spinDelay: 40 + (order % 3) * 15,
+      spinDuration: baseDuration + order * perCharStep + ((order * 17) % 36),
+      sweepDelay: sweepStartMs + order * 18
+    };
+  });
+}
+
+const Loader = ({ minDisplayTime = 2550, onFinished }) => {
+  const [isVisible, setIsVisible] = useState(() => !hasCompletedIntro);
   const [isFadingOut, setIsFadingOut] = useState(false);
 
-  const mainWords = ['AWS', 'STUDENT', 'BUILDER', 'GROUP'];
-  const downsideWord = 'JSSATEB';
+  const mainSlots = useMemo(() => buildLineSlots(MAIN_TEXT, 0, 620, 40, 1220), []);
+  const subSlots = useMemo(() => buildLineSlots(SUB_TEXT, 1, 860, 88, 1420), []);
 
   useEffect(() => {
-    const isMobileViewport =
-      typeof window !== 'undefined' &&
-      (window.innerWidth <= 768 || window.matchMedia?.('(pointer: coarse)')?.matches);
+    if (hasCompletedIntro) {
+      setIsVisible(false);
+      return;
+    }
 
-    // Keep mobile responsive immediately on load and never lock body scroll
-    const delay = isMobileViewport ? Math.min(minDisplayTime, 850) : minDisplayTime;
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      Boolean(window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches);
+
+    const delay = prefersReducedMotion ? Math.min(minDisplayTime, 900) : minDisplayTime;
     document.body.style.overflow = '';
 
     let dismissed = false;
     let fadeTimer = null;
     let exitTimer = null;
 
-    const triggerDismiss = (fadeMs = 450) => {
+    const triggerDismiss = (fadeMs = 480) => {
       if (dismissed) return;
       dismissed = true;
+      hasCompletedIntro = true;
       setIsFadingOut(true);
       document.body.style.overflow = '';
       exitTimer = setTimeout(() => {
@@ -33,75 +99,80 @@ const Loader = ({ minDisplayTime = 2600, onFinished }) => {
     };
 
     fadeTimer = setTimeout(() => {
-      triggerDismiss(500);
+      triggerDismiss(480);
     }, delay);
 
-    const handleDismiss = () => triggerDismiss(280);
+    const handleUserDismiss = () => triggerDismiss(280);
 
-    window.addEventListener('keydown', handleDismiss, { passive: true });
-    window.addEventListener('pointerdown', handleDismiss, { passive: true });
-    window.addEventListener('touchstart', handleDismiss, { passive: true });
-    window.addEventListener('wheel', handleDismiss, { passive: true });
-    window.addEventListener('click', handleDismiss);
+    window.addEventListener('keydown', handleUserDismiss, { passive: true });
+    window.addEventListener('pointerdown', handleUserDismiss, { passive: true });
+    window.addEventListener('touchstart', handleUserDismiss, { passive: true });
+    window.addEventListener('wheel', handleUserDismiss, { passive: true });
+    window.addEventListener('click', handleUserDismiss);
 
     return () => {
       if (fadeTimer) clearTimeout(fadeTimer);
       if (exitTimer) clearTimeout(exitTimer);
-      window.removeEventListener('keydown', handleDismiss);
-      window.removeEventListener('pointerdown', handleDismiss);
-      window.removeEventListener('touchstart', handleDismiss);
-      window.removeEventListener('wheel', handleDismiss);
-      window.removeEventListener('click', handleDismiss);
+      window.removeEventListener('keydown', handleUserDismiss);
+      window.removeEventListener('pointerdown', handleUserDismiss);
+      window.removeEventListener('touchstart', handleUserDismiss);
+      window.removeEventListener('wheel', handleUserDismiss);
+      window.removeEventListener('click', handleUserDismiss);
       document.body.style.overflow = '';
     };
   }, [minDisplayTime, onFinished]);
 
   if (!isVisible) return null;
 
-  let mainCharCounter = 0;
+  const renderLine = (slots, className, label) => (
+    <div className={`intro-line ${className}`} aria-label={label}>
+      {slots.map((slot) => {
+        if (slot.isSpace) {
+          return (
+            <span key={slot.key} className="glyph-space" aria-hidden="true">
+              {'\u00A0'}
+            </span>
+          );
+        }
+
+        return (
+          <span
+            key={slot.key}
+            className="glyph-cell"
+            aria-hidden="true"
+            style={{
+              '--steps': slot.steps,
+              '--frag-delay': `${slot.fragDelay}ms`,
+              '--frag-x': slot.fragX,
+              '--frag-y': slot.fragY,
+              '--frag-skew': slot.fragSkew,
+              '--spin-delay': `${slot.spinDelay}ms`,
+              '--spin-dur': `${slot.spinDuration}ms`,
+              '--sweep-delay': `${slot.sweepDelay}ms`
+            }}
+          >
+            <span className="glyph-sizer">{slot.char}</span>
+            <span className="glyph-window">
+              <span className="glyph-reel">
+                {slot.reel.map((g, gIdx) => (
+                  <span key={gIdx} className="glyph-item">
+                    {g}
+                  </span>
+                ))}
+              </span>
+            </span>
+          </span>
+        );
+      })}
+    </div>
+  );
 
   return (
     <StyledOverlay className={isFadingOut ? 'fade-out' : ''}>
       <StyledWrapper>
-        <div className="loader">
-          {/* Top Line: AWS STUDENT BUILDER GROUP */}
-          <div className="loader-line loader-main-line">
-            {mainWords.map((word, wordIdx) => (
-              <div key={`word-${wordIdx}`} className="loader-word">
-                {word.split('').map((char) => {
-                  const delay = mainCharCounter * 50;
-                  mainCharCounter++;
-                  return (
-                    <span
-                      key={`char-${mainCharCounter}`}
-                      className="loader-char"
-                      style={{ animationDelay: `${delay}ms` }}
-                    >
-                      {char}
-                    </span>
-                  );
-                })}
-              </div>
-            ))}
-          </div>
-
-          {/* Downside Line: JSSATEB */}
-          <div className="loader-line loader-downside-line">
-            <div className="loader-word">
-              {downsideWord.split('').map((char, index) => {
-                const delay = index * 75;
-                return (
-                  <span
-                    key={`downside-${index}`}
-                    className="loader-char downside-char"
-                    style={{ animationDelay: `${delay}ms` }}
-                  >
-                    {char}
-                  </span>
-                );
-              })}
-            </div>
-          </div>
+        <div className="loader" role="status" aria-live="polite">
+          {renderLine(mainSlots, 'intro-line-main', MAIN_TEXT)}
+          {renderLine(subSlots, 'intro-line-sub', SUB_TEXT)}
         </div>
       </StyledWrapper>
     </StyledOverlay>
@@ -113,6 +184,7 @@ const StyledOverlay = styled.div`
   inset: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   z-index: 999999;
   background-color: #000000;
   display: flex;
@@ -120,7 +192,8 @@ const StyledOverlay = styled.div`
   justify-content: center;
   overflow: hidden;
   touch-action: pan-y;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
+  will-change: opacity;
+  transition: opacity 0.48s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.48s ease;
 
   &.fade-out {
     opacity: 0;
@@ -136,90 +209,168 @@ const StyledWrapper = styled.div`
   justify-content: center;
   width: 100%;
   max-width: 100vw;
-  padding: 0 1.5rem;
+  padding: 0 1.25rem;
+  box-sizing: border-box;
 
   .loader {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: clamp(0.6rem, 1.6vw, 1.2rem);
+    gap: clamp(0.3rem, 0.85vw, 0.6rem);
     user-select: none;
+    text-align: center;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Each line has overflow: hidden so letters pop up from below */
-  .loader-line {
-    display: flex;
+  .intro-line {
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     flex-wrap: nowrap;
-    overflow: hidden;
-    height: 1.35em;
-    padding: 0 0.2em;
-  }
-
-  .loader-main-line {
-    font-family: var(--font-heading, 'Outfit', 'Poppins', sans-serif);
-    font-size: clamp(1.5rem, 4vw, 3.2rem);
-    font-weight: 800;
-    letter-spacing: 0.05em;
+    white-space: pre;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.012em;
+    line-height: ${CELL_HEIGHT_EM};
     color: #ffffff;
-    text-transform: uppercase;
-    gap: 0.45em;
   }
 
-  .loader-downside-line {
-    font-family: var(--font-heading, 'Outfit', 'Poppins', sans-serif);
-    font-size: clamp(1.1rem, 2.6vw, 2.1rem);
-    font-weight: 800;
-    letter-spacing: 0.32em;
-    text-indent: 0.32em; /* Centers the letter-spaced text */
-    color: var(--electric-violet, #a78bfa);
-    text-transform: uppercase;
+  .intro-line-main {
+    font-size: clamp(0.95rem, 4.15vw, 3.05rem);
   }
 
-  .loader-word {
+  .intro-line-sub {
+    font-size: clamp(0.85rem, 3.1vw, 2.3rem);
+  }
+
+  .glyph-space {
+    display: inline-block;
+    width: 0.28em;
+    height: ${CELL_HEIGHT_EM}em;
+    line-height: ${CELL_HEIGHT_EM}em;
+  }
+
+  .glyph-cell {
+    position: relative;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
+    height: ${CELL_HEIGHT_EM}em;
+    line-height: ${CELL_HEIGHT_EM}em;
+    color: #ffffff;
+    animation:
+      glyphFragment 380ms cubic-bezier(0.22, 1, 0.36, 1) var(--frag-delay) both,
+      glyphVioletSweep 360ms ease-in-out var(--sweep-delay) 1 both;
   }
 
-  /* The hideAndSeek undulating wave animation */
-  .loader-char {
+  .glyph-sizer {
     display: inline-block;
-    padding: 0;
-    margin: 0 0.02em;
-    transform: translateY(135%);
-    animation: hideAndSeek 1.1s alternate infinite cubic-bezier(0.86, 0, 0.07, 1);
-    text-shadow: 0 0 18px rgba(139, 92, 246, 0.5), 0 0 4px rgba(255, 255, 255, 0.8);
+    visibility: hidden;
+    pointer-events: none;
+    line-height: ${CELL_HEIGHT_EM}em;
   }
 
-  .downside-char {
-    text-shadow: 0 0 16px rgba(139, 92, 246, 0.85);
+  .glyph-window {
+    position: absolute;
+    top: 0;
+    left: -0.04em;
+    right: -0.04em;
+    height: ${CELL_HEIGHT_EM}em;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      #000 13%,
+      #000 87%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      #000 13%,
+      #000 87%,
+      transparent 100%
+    );
   }
 
-  @keyframes hideAndSeek {
+  .glyph-reel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    will-change: transform;
+    animation: glyphReelSpin var(--spin-dur) cubic-bezier(0.14, 0.92, 0.24, 1) var(--spin-delay) both;
+  }
+
+  .glyph-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: ${CELL_HEIGHT_EM}em;
+    line-height: ${CELL_HEIGHT_EM}em;
+    flex: none;
+  }
+
+  @keyframes glyphReelSpin {
     0% {
-      transform: translateY(135%);
-      opacity: 0;
-    }
-    30% {
-      opacity: 1;
+      transform: translate3d(0, 0, 0);
     }
     100% {
-      transform: translateY(0%);
-      opacity: 1;
+      transform: translate3d(0, calc(var(--steps) * -${CELL_HEIGHT_EM}em), 0);
     }
   }
 
-  @media (max-width: 768px) {
-    .loader-main-line {
-      font-size: clamp(1rem, 4.4vw, 1.4rem);
-      gap: 0.3em;
+  @keyframes glyphFragment {
+    0% {
+      opacity: 0;
+      transform: translate3d(var(--frag-x), var(--frag-y), 0) skewX(var(--frag-skew));
+      text-shadow: -2px 0 rgba(168, 85, 247, 0.8), 2px 0 rgba(56, 189, 248, 0.55);
     }
-    .loader-downside-line {
-      font-size: clamp(0.85rem, 3.4vw, 1.1rem);
-      letter-spacing: 0.22em;
-      text-indent: 0.22em;
+    22% {
+      opacity: 0.95;
+      transform: translate3d(calc(var(--frag-x) * -0.5), 1px, 0) skewX(calc(var(--frag-skew) * -0.45));
+    }
+    40% {
+      opacity: 0.36;
+      transform: translate3d(1px, -1px, 0) skewX(2deg);
+      text-shadow: 1.5px 0 rgba(192, 132, 252, 0.65), -1.5px 0 rgba(255, 255, 255, 0.4);
+    }
+    66% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) skewX(0deg);
+      text-shadow: -1px 0 rgba(168, 85, 247, 0.3), 1px 0 rgba(56, 189, 248, 0.2);
+    }
+    100% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) skewX(0deg);
+      text-shadow: none;
+    }
+  }
+
+  @keyframes glyphVioletSweep {
+    0% {
+      color: #ffffff;
+    }
+    45% {
+      color: #c084fc;
+      text-shadow: 0 0 10px rgba(168, 85, 247, 0.35);
+    }
+    100% {
+      color: #ffffff;
+      text-shadow: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .glyph-cell {
+      animation: none;
+    }
+    .glyph-reel {
+      animation: none;
+      transform: translate3d(0, calc(var(--steps) * -${CELL_HEIGHT_EM}em), 0);
     }
   }
 `;
