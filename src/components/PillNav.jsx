@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import gsap from 'gsap';
 import './PillNav.css';
 
@@ -7,6 +7,7 @@ const PillNav = ({
   logoAlt = 'Logo',
   items = [],
   activeHref = '#about',
+  onItemSelect,
   className = '',
   ease = 'power2.easeOut',
   baseColor = 'rgba(20, 17, 32, 0.65)',
@@ -17,43 +18,75 @@ const PillNav = ({
   initialLoadAnimation = false
 }) => {
   const [hoveredTab, setHoveredTab] = useState(null);
-  const navRef = useRef(null);
+  const containerRef = useRef(null);
+  const trackRef = useRef(null);
   const pillRef = useRef(null);
   const itemRefs = useRef({});
 
   const currentHighlight = hoveredTab || activeHref;
 
-  const updatePillPosition = () => {
-    const navNode = navRef.current;
+  const updatePillPosition = useCallback(() => {
+    const trackNode = trackRef.current;
     const activeNode = itemRefs.current[currentHighlight];
     const pillNode = pillRef.current;
 
-    if (!navNode || !activeNode || !pillNode) return;
+    if (!trackNode || !activeNode || !pillNode) return;
 
-    const navRect = navNode.getBoundingClientRect();
+    const trackRect = trackNode.getBoundingClientRect();
     const activeRect = activeNode.getBoundingClientRect();
 
-    const left = activeRect.left - navRect.left;
+    const left = activeRect.left - trackRect.left;
     const width = activeRect.width;
 
     gsap.to(pillNode, {
       left: `${left}px`,
       width: `${width}px`,
-      duration: 0.35,
+      duration: initialLoadAnimation ? 0.35 : 0.32,
       ease: ease,
       opacity: 1
     });
-  };
+  }, [currentHighlight, ease, initialLoadAnimation]);
+
+  // Keep the active section pill smoothly centered inside scrollable mobile capsule
+  useEffect(() => {
+    if (hoveredTab) return;
+    const containerNode = containerRef.current;
+    const activeNode = itemRefs.current[activeHref];
+    if (!containerNode || !activeNode) return;
+    if (containerNode.scrollWidth <= containerNode.clientWidth + 2) return;
+
+    const targetScrollLeft =
+      activeNode.offsetLeft - containerNode.clientWidth / 2 + activeNode.offsetWidth / 2;
+
+    containerNode.scrollTo({
+      left: Math.max(0, targetScrollLeft),
+      behavior: 'smooth',
+    });
+  }, [activeHref, hoveredTab]);
 
   useEffect(() => {
     updatePillPosition();
     window.addEventListener('resize', updatePillPosition);
-    return () => window.removeEventListener('resize', updatePillPosition);
-  }, [currentHighlight, ease]);
+
+    let observer;
+    if (typeof ResizeObserver !== 'undefined' && trackRef.current) {
+      observer = new ResizeObserver(updatePillPosition);
+      observer.observe(trackRef.current);
+    }
+
+    if (typeof document !== 'undefined' && document.fonts?.ready) {
+      document.fonts.ready.then(updatePillPosition).catch(() => {});
+    }
+
+    return () => {
+      window.removeEventListener('resize', updatePillPosition);
+      observer?.disconnect();
+    };
+  }, [updatePillPosition]);
 
   return (
     <div
-      ref={navRef}
+      ref={containerRef}
       className={`pill-nav-container ${theme} ${className}`.trim()}
       style={{
         '--base-color': baseColor,
@@ -68,27 +101,37 @@ const PillNav = ({
         </a>
       )}
 
-      {/* Animated Sliding Pill Highlight */}
-      <div ref={pillRef} className="pill-nav-slider" />
+      <div ref={trackRef} className="pill-nav-track">
+        {/* Animated Sliding Pill Highlight */}
+        <div ref={pillRef} className="pill-nav-slider" />
 
-      <div className="pill-nav-items">
-        {items.map((item) => {
-          const href = item.href || `#${item.label.toLowerCase()}`;
-          const isCurrent = currentHighlight === href;
-          return (
-            <a
-              key={item.label}
-              ref={(el) => (itemRefs.current[href] = el)}
-              href={href}
-              className={`pill-nav-item ${isCurrent ? 'is-active' : ''}`}
-              onClick={() => setHoveredTab(null)}
-              onMouseEnter={() => setHoveredTab(href)}
-              onMouseLeave={() => setHoveredTab(null)}
-            >
-              {item.label}
-            </a>
-          );
-        })}
+        <div className="pill-nav-items">
+          {items.map((item) => {
+            const href = item.href || `#${item.label.toLowerCase()}`;
+            const isCurrent = currentHighlight === href;
+            return (
+              <a
+                key={item.label}
+                ref={(el) => (itemRefs.current[href] = el)}
+                href={href}
+                aria-current={activeHref === href ? 'location' : undefined}
+                className={`pill-nav-item ${isCurrent ? 'is-active' : ''}`}
+                onClick={(e) => {
+                  setHoveredTab(null);
+                  onItemSelect?.(href, e);
+                }}
+                onPointerEnter={(e) => {
+                  if (e.pointerType === 'mouse') setHoveredTab(href);
+                }}
+                onPointerLeave={(e) => {
+                  if (e.pointerType === 'mouse') setHoveredTab(null);
+                }}
+              >
+                {item.label}
+              </a>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

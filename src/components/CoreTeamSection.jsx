@@ -68,6 +68,25 @@ const CoreTeamSection = () => {
   // Grand Stage Lightbox Modal
   const [lightboxPhoto, setLightboxPhoto] = useState(null);
 
+  const [isMobileOrCoarse, setIsMobileOrCoarse] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.innerWidth <= 768 || Boolean(window.matchMedia?.('(pointer: coarse)')?.matches);
+  });
+
+  useEffect(() => {
+    const mq = window.matchMedia?.('(pointer: coarse)');
+    const checkViewport = () => {
+      setIsMobileOrCoarse(window.innerWidth <= 768 || Boolean(mq?.matches));
+    };
+    checkViewport();
+    window.addEventListener('resize', checkViewport, { passive: true });
+    mq?.addEventListener?.('change', checkViewport);
+    return () => {
+      window.removeEventListener('resize', checkViewport);
+      mq?.removeEventListener?.('change', checkViewport);
+    };
+  }, []);
+
   // Auto-switch Chapter Lead photo every 4 seconds
   useEffect(() => {
     const timer = setInterval(() => {
@@ -105,6 +124,7 @@ const CoreTeamSection = () => {
     <section id="core-team" className="section-padding core-team-section">
       {/* Xenon Choir Plasma Ambient Background */}
       <div className="xenon-choir-bg-container" aria-hidden="true">
+        {!isMobileOrCoarse && (
         <iframe
           src="/xenon-choir/bg.html"
           title="Xenon Choir Ambient Background"
@@ -112,6 +132,7 @@ const CoreTeamSection = () => {
           tabIndex={-1}
           loading="lazy"
         />
+        )}
         <div className="xenon-choir-scrim" />
       </div>
 

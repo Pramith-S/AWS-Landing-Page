@@ -9,7 +9,7 @@ import './CosmicCloudVeil.css';
  * - Special AWS Hub nodes with radiant electric violet & warm amber pulses
  * - Interactive cursor attraction & connection lines
  * - Breathing cosmic nebula gradient layers
- * - Auto-pauses off-screen for 60fps buttery smoothness
+ * - Auto-pauses off-screen for 60fps buttery smoothness (mobile uses capped DPR & throttled cadence)
  */
 const CosmicCloudVeil = () => {
   const containerRef = useRef(null);
@@ -26,6 +26,10 @@ const CosmicCloudVeil = () => {
     const ctx = canvas.getContext('2d', { alpha: false });
     if (!ctx) return;
 
+    const isMobileOrCoarse =
+      window.innerWidth <= 768 || window.matchMedia?.('(pointer: coarse)')?.matches;
+    const isFinePointer = window.matchMedia?.('(pointer: fine)')?.matches && !isMobileOrCoarse;
+
     let width = 0;
     let height = 0;
     let dpr = 1;
@@ -34,7 +38,7 @@ const CosmicCloudVeil = () => {
       const rect = container.getBoundingClientRect();
       width = Math.max(rect.width, 300);
       height = Math.max(rect.height, 300);
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      dpr = isMobileOrCoarse ? 1 : Math.min(window.devicePixelRatio || 1, 2);
 
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
@@ -48,9 +52,10 @@ const CosmicCloudVeil = () => {
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(container);
 
-    // Create Cloud Network Nodes
-    // Density scaled based on area
-    const nodeCount = Math.min(55, Math.max(30, Math.floor((window.innerWidth * 700) / 18000)));
+    // Create Cloud Network Nodes (lighter density on mobile for fast touch scrolling)
+    const nodeCount = isMobileOrCoarse
+      ? 16
+      : Math.min(55, Math.max(30, Math.floor((window.innerWidth * 700) / 18000)));
 
     const nodes = Array.from({ length: nodeCount }, (_, i) => {
       const isHub = i % 7 === 0;
@@ -68,6 +73,7 @@ const CosmicCloudVeil = () => {
       };
     });
 
+    const interactionTarget = container.parentElement || container;
     const handlePointerMove = (e) => {
       const rect = container.getBoundingClientRect();
       mouseRef.current.targetX = e.clientX - rect.left;
@@ -81,29 +87,39 @@ const CosmicCloudVeil = () => {
       mouseRef.current.targetY = -1000;
     };
 
-    container.addEventListener('pointermove', handlePointerMove, { passive: true });
-    container.addEventListener('pointerleave', handlePointerLeave, { passive: true });
+    if (isFinePointer) {
+      interactionTarget.addEventListener('pointermove', handlePointerMove, { passive: true });
+      interactionTarget.addEventListener('pointerleave', handlePointerLeave, { passive: true });
+    }
 
     let time = 0;
+    let lastDrawTime = 0;
+    const minFrameMs = isMobileOrCoarse ? 40 : 0;
 
-    const render = () => {
+    const render = (now = 0) => {
       if (!isVisibleRef.current) {
         animFrameRef.current = null;
         return;
       }
 
-      time += 0.014;
+      if (minFrameMs > 0 && now - lastDrawTime < minFrameMs) {
+        animFrameRef.current = requestAnimationFrame(render);
+        return;
+      }
+      lastDrawTime = now;
 
-      // Mouse lerping
-      mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.12;
-      mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.12;
+      time += isMobileOrCoarse ? 0.025 : 0.014;
+
+      if (isFinePointer) {
+        mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.12;
+        mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.12;
+      }
 
       // 1. Deep Obsidian Base (#0B0B0E)
       ctx.fillStyle = '#0B0B0E';
       ctx.fillRect(0, 0, width, height);
 
       // 2. Slow Breathing Cosmic Nebula Glows
-      // Purple Nebula Bloom 1 (Left Side)
       const neb1X = width * 0.25 + Math.sin(time * 0.6) * 40;
       const neb1Y = height * 0.35 + Math.cos(time * 0.5) * 35;
       const neb1 = ctx.createRadialGradient(neb1X, neb1Y, 10, neb1X, neb1Y, Math.max(width, height) * 0.45);
@@ -113,7 +129,6 @@ const CosmicCloudVeil = () => {
       ctx.fillStyle = neb1;
       ctx.fillRect(0, 0, width, height);
 
-      // Violet-Amber Nebula Bloom 2 (Right Form Side)
       const neb2X = width * 0.75 + Math.cos(time * 0.7) * 45;
       const neb2Y = height * 0.6 + Math.sin(time * 0.4) * 40;
       const neb2 = ctx.createRadialGradient(neb2X, neb2Y, 20, neb2X, neb2Y, Math.max(width, height) * 0.5);
@@ -124,7 +139,7 @@ const CosmicCloudVeil = () => {
       ctx.fillRect(0, 0, width, height);
 
       // Interactive Cursor Nebula Halo
-      if (mouseRef.current.active && mouseRef.current.x > 0) {
+      if (isFinePointer && mouseRef.current.active && mouseRef.current.x > 0) {
         const mouseGlow = ctx.createRadialGradient(
           mouseRef.current.x, mouseRef.current.y, 0,
           mouseRef.current.x, mouseRef.current.y, 220
@@ -142,7 +157,6 @@ const CosmicCloudVeil = () => {
         node.x += node.vx;
         node.y += node.vy;
 
-        // Bounce gently at bounds
         if (node.x <= 0 || node.x >= width) node.vx *= -1;
         if (node.y <= 0 || node.y >= height) node.vy *= -1;
       }
@@ -167,8 +181,7 @@ const CosmicCloudVeil = () => {
           }
         }
 
-        // Draw Interactive Tethers to Mouse Cursor
-        if (mouseRef.current.active && mouseRef.current.x > 0) {
+        if (isFinePointer && mouseRef.current.active && mouseRef.current.x > 0) {
           const mdx = nodes[i].x - mouseRef.current.x;
           const mdy = nodes[i].y - mouseRef.current.y;
           const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
@@ -192,14 +205,12 @@ const CosmicCloudVeil = () => {
         const pulse = Math.sin(time * 2 + node.pulseOffset) * 0.2;
         const currentAlpha = Math.max(0.2, Math.min(0.85, node.alpha + pulse));
 
-        // Core Dot
         ctx.beginPath();
         ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
         ctx.fillStyle = node.color;
         ctx.globalAlpha = currentAlpha;
         ctx.fill();
 
-        // Glowing Aura for Hub Nodes
         if (node.isHub) {
           ctx.beginPath();
           ctx.arc(node.x, node.y, node.radius * 2.8, 0, Math.PI * 2);
@@ -207,7 +218,6 @@ const CosmicCloudVeil = () => {
           ctx.globalAlpha = currentAlpha * 0.25;
           ctx.fill();
 
-          // Outer Pulse Ring
           const ringRadius = node.radius * (2.8 + Math.abs(pulse) * 2);
           ctx.beginPath();
           ctx.arc(node.x, node.y, ringRadius, 0, Math.PI * 2);
@@ -226,7 +236,7 @@ const CosmicCloudVeil = () => {
       if (entry.isIntersecting && !animFrameRef.current) {
         animFrameRef.current = requestAnimationFrame(render);
       }
-    }, { threshold: 0.05 });
+    }, { threshold: 0.02 });
 
     observer.observe(container);
     animFrameRef.current = requestAnimationFrame(render);
@@ -235,8 +245,10 @@ const CosmicCloudVeil = () => {
       observer.disconnect();
       resizeObserver.disconnect();
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
-      container.removeEventListener('pointermove', handlePointerMove);
-      container.removeEventListener('pointerleave', handlePointerLeave);
+      if (isFinePointer) {
+        interactionTarget.removeEventListener('pointermove', handlePointerMove);
+        interactionTarget.removeEventListener('pointerleave', handlePointerLeave);
+      }
     };
   }, []);
 

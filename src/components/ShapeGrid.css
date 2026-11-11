@@ -7,3 +7,9 @@
   position: relative;
   z-index: 1;
 }
+
+@media (hover: none), (pointer: coarse), (max-width: 768px) {
+  .shapegrid-canvas {
+    pointer-events: none;
+  }
+}

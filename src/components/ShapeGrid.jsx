@@ -37,7 +37,10 @@ const ShapeGrid = ({
     const isTri = shape === 'triangle';
     const hexHoriz = effectiveSquareSize * 1.5;
     const hexVert = effectiveSquareSize * Math.sqrt(3);
+    const isMobileOrCoarse = typeof window !== 'undefined' && (window.innerWidth <= 768 || window.matchMedia?.('(pointer: coarse)')?.matches);
     let vignetteGrad = null;
+    let lastFrameTime = 0;
+    const minFrameMs = isMobileOrCoarse ? 45 : 0;
 
     const resizeCanvas = () => {
       if (!canvas) return;
@@ -46,6 +49,17 @@ const ShapeGrid = ({
       const h = Math.max(rect.height || window.innerHeight, 100);
       canvas.width = Math.round(w);
       canvas.height = Math.round(h);
+      const vRadius = Math.max(10, Math.sqrt(canvas.width ** 2 + canvas.height ** 2) / 2);
+      vignetteGrad = ctx.createRadialGradient(
+        canvas.width / 2,
+        canvas.height / 2,
+        0,
+        canvas.width / 2,
+        canvas.height / 2,
+        vRadius
+      );
+      vignetteGrad.addColorStop(0, 'rgba(0, 0, 0, 0)');
+      vignetteGrad.addColorStop(1, 'rgba(7, 9, 14, 0.6)');
       numSquaresX.current = Math.ceil(canvas.width / effectiveSquareSize) + 1;
       numSquaresY.current = Math.ceil(canvas.height / effectiveSquareSize) + 1;
     };
@@ -209,6 +223,11 @@ const ShapeGrid = ({
         }
       }
 
+      if (vignetteGrad) {
+        ctx.fillStyle = vignetteGrad;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        return;
+      }
       const radius = Math.max(10, Math.sqrt(canvas.width ** 2 + canvas.height ** 2) / 2);
       const gradient = ctx.createRadialGradient(
         canvas.width / 2,
@@ -231,17 +250,22 @@ const ShapeGrid = ({
       if (isVisible && !requestRef.current) {
         requestRef.current = requestAnimationFrame(updateAnimation);
       }
-    }, { threshold: 0.05 });
+    }, { threshold: 0 });
 
     if (canvas.parentElement) {
       observer.observe(canvas.parentElement);
     }
 
-    const updateAnimation = () => {
+    const updateAnimation = (now = 0) => {
       if (!isVisible) {
         requestRef.current = null;
         return;
       }
+      if (minFrameMs > 0 && lastFrameTime > 0 && now - lastFrameTime < minFrameMs) {
+        requestRef.current = requestAnimationFrame(updateAnimation);
+        return;
+      }
+      lastFrameTime = now;
       const effectiveSpeed = Math.max(speed, 0.1);
       const wrapX = isHex ? hexHoriz * 2 : effectiveSquareSize;
       const wrapY = isHex ? hexVert : isTri ? effectiveSquareSize * 2 : effectiveSquareSize;
@@ -445,8 +469,8 @@ const ShapeGrid = ({
       hoveredSquare.current = null;
     };
 
-    canvas.addEventListener('mousemove', handleMouseMove);
-    canvas.addEventListener('mouseleave', handleMouseLeave);
+    if (!isMobileOrCoarse) canvas.addEventListener('mousemove', handleMouseMove);
+    if (!isMobileOrCoarse) canvas.addEventListener('mouseleave', handleMouseLeave);
 
     requestRef.current = requestAnimationFrame(updateAnimation);
 

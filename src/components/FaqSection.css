@@ -3,6 +3,7 @@
   border-top: none;
   position: relative;
   overflow: hidden;
+  overflow: clip;
 }
 
 .faq-section::after {

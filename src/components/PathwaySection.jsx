@@ -1,15 +1,15 @@
 import React from 'react';
 import { Milestone } from 'lucide-react';
 import StrokeText from './StrokeText';
-import KaelkothPlaylistBook from './KaelkothPlaylistBook';
-import DigitalGlyphBackground from './DigitalGlyphBackground';
+import PathwayHangingBoard from './PathwayHangingBoard';
+import PathwayPatternBackground from './PathwayPatternBackground';
 import './PathwaySection.css';
 
 const PathwaySection = ({ onOpenJoinModal }) => {
   return (
     <section id="pathway" className="section-padding pathway-section">
-      {/* Falling Numbers & Tech Symbols from Upside to Downside in Background */}
-      <DigitalGlyphBackground speed={1.0} opacity={1.0} />
+      {/* Full-Section Dark Cosmic Light-Violet Patterned Background */}
+      <PathwayPatternBackground />
 
       <div className="container pathway-content-wrapper">
         
@@ -24,7 +24,7 @@ const PathwaySection = ({ onOpenJoinModal }) => {
             <StrokeText
               text="Milestone Landmarks &"
               trigger="scroll"
-              strokeColor="#FF9900"
+              strokeColor="#A78BFA"
               fillColor="#F8FAFC"
               strokeWidth={1.2}
               drawDuration={1.4}
@@ -38,8 +38,8 @@ const PathwaySection = ({ onOpenJoinModal }) => {
             <StrokeText
               text="Community Pathway"
               trigger="scroll"
-              strokeColor="#FF9900"
-              fillColor="#FF9900"
+              strokeColor="#C4B5FD"
+              fillColor="#A78BFA"
               strokeWidth={1.2}
               drawDuration={1.4}
               fillDelay={0.3}
@@ -52,13 +52,13 @@ const PathwaySection = ({ onOpenJoinModal }) => {
           </div>
           
           <p className="section-subtitle">
-            Explore the official builder grimoire of our community journey. Click any milestone track or arrow to expand session details, speakers, and venue manifests.
+            Explore our community milestones and event chronicles below. Click any hanging event card to open full session details, speakers, and venue info.
           </p>
         </div>
 
-        {/* The Exact Kaelkoth Book Component from Downloads & Reference Image */}
-        <div className="pathway-book-display-container">
-          <KaelkothPlaylistBook onOpenJoinModal={onOpenJoinModal} />
+        {/* Hanging Kraft-Paper Event Cards Board */}
+        <div className="pathway-board-display-container">
+          <PathwayHangingBoard onOpenJoinModal={onOpenJoinModal} />
         </div>
 
       </div>

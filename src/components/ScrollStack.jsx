@@ -190,62 +190,39 @@ const ScrollStack = ({
   }, [updateCardTransforms]);
 
   const setupLenis = useCallback(() => {
+    // Do not mount global Lenis syncTouch on window scroll; native smooth scrolling & touch physics stay unblocked
     if (useWindowScroll) {
-      const lenis = new Lenis({
-        duration: 1.2,
-        easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        smoothWheel: true,
-        touchMultiplier: 2,
-        infinite: false,
-        wheelMultiplier: 1,
-        lerp: 0.1,
-        syncTouch: true,
-        syncTouchLerp: 0.075
-      });
-
-      lenis.on('scroll', handleScroll);
-
-      const raf = time => {
-        lenis.raf(time);
-        animationFrameRef.current = requestAnimationFrame(raf);
-      };
-      animationFrameRef.current = requestAnimationFrame(raf);
-
-      lenisRef.current = lenis;
-      return lenis;
-    } else {
-      const scroller = scrollerRef.current;
-      if (!scroller) return;
-
-      const lenis = new Lenis({
-        wrapper: scroller,
-        content: scroller.querySelector('.scroll-stack-inner'),
-        duration: 1.2,
-        easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        smoothWheel: true,
-        touchMultiplier: 2,
-        infinite: false,
-        gestureOrientationHandler: true,
-        normalizeWheel: true,
-        wheelMultiplier: 1,
-        touchInertiaMultiplier: 35,
-        lerp: 0.1,
-        syncTouch: true,
-        syncTouchLerp: 0.075,
-        touchInertia: 0.6
-      });
-
-      lenis.on('scroll', handleScroll);
-
-      const raf = time => {
-        lenis.raf(time);
-        animationFrameRef.current = requestAnimationFrame(raf);
-      };
-      animationFrameRef.current = requestAnimationFrame(raf);
-
-      lenisRef.current = lenis;
-      return lenis;
+      return null;
     }
+
+    const scroller = scrollerRef.current;
+    if (!scroller) return null;
+
+    const lenis = new Lenis({
+      wrapper: scroller,
+      content: scroller.querySelector('.scroll-stack-inner'),
+      duration: 1.2,
+      easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      touchMultiplier: 1.2,
+      infinite: false,
+      gestureOrientationHandler: true,
+      normalizeWheel: true,
+      wheelMultiplier: 1,
+      lerp: 0.1,
+      syncTouch: false
+    });
+
+    lenis.on('scroll', handleScroll);
+
+    const raf = time => {
+      lenis.raf(time);
+      animationFrameRef.current = requestAnimationFrame(raf);
+    };
+    animationFrameRef.current = requestAnimationFrame(raf);
+
+    lenisRef.current = lenis;
+    return lenis;
   }, [handleScroll, useWindowScroll]);
 
   useLayoutEffect(() => {
@@ -255,11 +232,31 @@ const ScrollStack = ({
     const cards = Array.from(scroller.querySelectorAll('.scroll-stack-card'));
     cardsRef.current = cards;
 
+    const isMobileOrCoarse =
+      typeof window !== 'undefined' &&
+      (window.innerWidth <= 768 || window.matchMedia?.('(pointer: coarse)')?.matches);
+
+    const transformsCache = lastTransformsRef.current;
+
+    if (isMobileOrCoarse && useWindowScroll) {
+      // Static stacked FAQ layout on mobile avoids scrollHeight shifts and overlapping blur compositor stalls
+      cards.forEach((card, i) => {
+        card.style.marginBottom = i < cards.length - 1 ? `${Math.min(itemDistance, 16)}px` : '';
+        card.style.willChange = 'auto';
+        card.style.transform = '';
+        card.style.filter = '';
+        card.style.perspective = '';
+        card.style.webkitPerspective = '';
+      });
+      return () => {
+        cardsRef.current = [];
+        transformsCache.clear();
+      };
+    }
+
     // Measure un-transformed initial vertical positions
     const containerTop = scroller.getBoundingClientRect().top + (window.scrollY || 0);
     initialOffsetsRef.current = cards.map(card => containerTop + card.offsetTop);
-
-    const transformsCache = lastTransformsRef.current;
 
     cards.forEach((card, i) => {
       if (i < cards.length - 1) {
@@ -276,19 +273,32 @@ const ScrollStack = ({
 
     setupLenis();
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', () => {
+    let scrollRaf = null;
+    const onWindowScroll = () => {
+      if (scrollRaf) return;
+      scrollRaf = requestAnimationFrame(() => {
+        scrollRaf = null;
+        handleScroll();
+      });
+    };
+
+    const onResize = () => {
       if (scroller) {
         const cTop = scroller.getBoundingClientRect().top + (window.scrollY || 0);
         initialOffsetsRef.current = cards.map(card => cTop + card.offsetTop);
         updateCardTransforms();
       }
-    });
+    };
+
+    window.addEventListener('scroll', onWindowScroll, { passive: true });
+    window.addEventListener('resize', onResize, { passive: true });
 
     updateCardTransforms();
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', onWindowScroll);
+      window.removeEventListener('resize', onResize);
+      if (scrollRaf) cancelAnimationFrame(scrollRaf);
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }

@@ -34,7 +34,6 @@ import MobilePillarsSection from './mobile-components/MobilePillarsSection';
 import MobileEventsSection from './mobile-components/MobileEventsSection';
 import PathwaySection from './components/PathwaySection';
 import MobileDomainsSection from './mobile-components/MobileDomainsSection';
-import AwsPopupTowerSection from './components/AwsPopupTowerSection';
 import CoreTeamSection from './components/CoreTeamSection';
 import MobileContactSection from './mobile-components/MobileContactSection';
 import MobileFaqSection from './mobile-components/MobileFaqSection';
@@ -164,7 +163,6 @@ function MobileApp() {
       <MobileEventsSection onOpenJoinModal={handleOpenJoinModal} />
       <PathwaySection onOpenJoinModal={handleOpenJoinModal} />
       <MobileDomainsSection />
-      <AwsPopupTowerSection onOpenJoinModal={handleOpenJoinModal} />
       <CoreTeamSection />
       <MobileContactSection />
       <MobileFaqSection />

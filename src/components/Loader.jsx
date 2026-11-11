@@ -9,34 +9,48 @@ const Loader = ({ minDisplayTime = 2600, onFinished }) => {
   const downsideWord = 'JSSATEB';
 
   useEffect(() => {
-    // Lock scroll while intro loader is active
-    document.body.style.overflow = 'hidden';
+    const isMobileViewport =
+      typeof window !== 'undefined' &&
+      (window.innerWidth <= 768 || window.matchMedia?.('(pointer: coarse)')?.matches);
 
-    const timer = setTimeout(() => {
-      setIsFadingOut(true);
-      const exitTimer = setTimeout(() => {
-        setIsVisible(false);
-        document.body.style.overflow = '';
-        if (onFinished) onFinished();
-      }, 600);
-      return () => clearTimeout(exitTimer);
-    }, minDisplayTime);
+    // Keep mobile responsive immediately on load and never lock body scroll
+    const delay = isMobileViewport ? Math.min(minDisplayTime, 850) : minDisplayTime;
+    document.body.style.overflow = '';
 
-    const handleDismiss = () => {
+    let dismissed = false;
+    let fadeTimer = null;
+    let exitTimer = null;
+
+    const triggerDismiss = (fadeMs = 450) => {
+      if (dismissed) return;
+      dismissed = true;
       setIsFadingOut(true);
-      setTimeout(() => {
+      document.body.style.overflow = '';
+      exitTimer = setTimeout(() => {
         setIsVisible(false);
-        document.body.style.overflow = '';
         if (onFinished) onFinished();
-      }, 400);
+      }, fadeMs);
     };
 
-    window.addEventListener('keydown', handleDismiss);
+    fadeTimer = setTimeout(() => {
+      triggerDismiss(500);
+    }, delay);
+
+    const handleDismiss = () => triggerDismiss(280);
+
+    window.addEventListener('keydown', handleDismiss, { passive: true });
+    window.addEventListener('pointerdown', handleDismiss, { passive: true });
+    window.addEventListener('touchstart', handleDismiss, { passive: true });
+    window.addEventListener('wheel', handleDismiss, { passive: true });
     window.addEventListener('click', handleDismiss);
 
     return () => {
-      clearTimeout(timer);
+      if (fadeTimer) clearTimeout(fadeTimer);
+      if (exitTimer) clearTimeout(exitTimer);
       window.removeEventListener('keydown', handleDismiss);
+      window.removeEventListener('pointerdown', handleDismiss);
+      window.removeEventListener('touchstart', handleDismiss);
+      window.removeEventListener('wheel', handleDismiss);
       window.removeEventListener('click', handleDismiss);
       document.body.style.overflow = '';
     };
@@ -105,7 +119,8 @@ const StyledOverlay = styled.div`
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  transition: opacity 0.6s ease, visibility 0.6s ease;
+  touch-action: pan-y;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
 
   &.fade-out {
     opacity: 0;

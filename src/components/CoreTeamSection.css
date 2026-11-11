@@ -8,6 +8,7 @@
   background-color: #07060a;
   position: relative;
   overflow: hidden;
+  overflow: clip;
   padding: 4.5rem 0 5.5rem;
   border-top: 1.5px solid rgba(255, 255, 255, 0.2);
 }
@@ -23,8 +24,19 @@
   pointer-events: none;
   z-index: 0;
   overflow: hidden;
+  overflow: clip;
   opacity: 0.38;
   mix-blend-mode: screen;
+}
+
+@media (max-width: 768px), (hover: none), (pointer: coarse) {
+  .core-team-section .xenon-choir-bg-container {
+    opacity: 0.85;
+    background:
+      radial-gradient(ellipse 75% 55% at 50% 25%, rgba(168, 85, 247, 0.24), transparent 70%),
+      radial-gradient(ellipse 65% 50% at 80% 75%, rgba(255, 145, 77, 0.16), transparent 68%),
+      #07060a;
+  }
 }
 
 .xenon-choir-iframe {
@@ -297,6 +309,7 @@
   background-color: #eee;
   position: relative;
   overflow: hidden;
+  overflow: clip;
   border-radius: 2px;
 }
 
@@ -882,6 +895,7 @@
   margin: 0 0 3px;
   white-space: nowrap;
   overflow: hidden;
+  overflow: clip;
   text-overflow: ellipsis;
 }
 
@@ -917,6 +931,7 @@
   height: 32px;
   border-radius: 6px;
   overflow: hidden;
+  overflow: clip;
   text-decoration: none;
   border: 1px solid rgba(255, 255, 255, 0.18);
   background: #14111d;
@@ -1057,6 +1072,7 @@
   border: 2px solid #ffffff;
   border-radius: 8px;
   overflow: hidden;
+  overflow: clip;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
 }
 

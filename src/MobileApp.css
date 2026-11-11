@@ -1,6 +1,9 @@
 /* Mobile App Specific Overrides & Layout */
 .mobile-app-wrapper {
+  touch-action: pan-y;
+  overscroll-behavior-y: auto;
   overflow-x: hidden;
+  overflow-x: clip;
   width: 100%;
 }
 
@@ -38,7 +41,7 @@
   position: relative;
   min-height: auto;
   height: auto;
-  padding-top: 4.5rem;
+  padding-top: 7.25rem;
   padding-bottom: 2.5rem;
 }
 
