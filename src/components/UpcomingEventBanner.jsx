@@ -15,15 +15,52 @@ import './UpcomingEventBanner.css';
 
 const POSTER_SRC = '/images/quest-hunt-poster.png';
 const REGISTRATION_URL = 'https://cloud-quest-registration-phi.vercel.app/';
-const COMMAND_TEXT = 'npx upcoming-event --aws-quest-hunt';
+const COMMAND_NAME = 'upcoming-event --aws-quest-hunt';
+const FULL_COMMAND = `npx ${COMMAND_NAME}`;
 
 export default function UpcomingEventBanner() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [typedText, setTypedText] = useState(COMMAND_NAME);
 
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  // Smooth typewriter effect that runs reliably across desktop and mobile devices
+  useEffect(() => {
+    let index = 0;
+    let isDeleting = false;
+    let timeoutId = null;
+
+    const tick = () => {
+      if (!isDeleting) {
+        index++;
+        setTypedText(COMMAND_NAME.slice(0, index));
+        if (index === COMMAND_NAME.length) {
+          // Pause when fully typed
+          isDeleting = true;
+          timeoutId = setTimeout(tick, 3500);
+          return;
+        }
+        timeoutId = setTimeout(tick, 60);
+      } else {
+        index--;
+        setTypedText(COMMAND_NAME.slice(0, index));
+        if (index === 0) {
+          // Pause when blank before typing again
+          isDeleting = false;
+          timeoutId = setTimeout(tick, 500);
+          return;
+        }
+        timeoutId = setTimeout(tick, 35);
+      }
+    };
+
+    // Initial delay then start
+    timeoutId = setTimeout(tick, 800);
+    return () => clearTimeout(timeoutId);
   }, []);
 
   // Lock body scroll and listen for ESC key when modal is open
@@ -44,7 +81,7 @@ export default function UpcomingEventBanner() {
 
   const handleCopy = (e) => {
     e.stopPropagation();
-    navigator.clipboard?.writeText(COMMAND_TEXT);
+    navigator.clipboard?.writeText(FULL_COMMAND);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -124,9 +161,10 @@ export default function UpcomingEventBanner() {
 
               <div className="body">
                 <div className="pre">
-                  <code>-&nbsp;</code>
-                  <code>npx&nbsp;</code>
-                  <code className="cmd" data-cmd="upcoming-event --aws-quest-hunt" />
+                  <span className="dash-bullet">-&nbsp;</span>
+                  <span className="npx-label">npx&nbsp;</span>
+                  <span className="cmd-text">{typedText}</span>
+                  <span className="cursor-caret" />
                 </div>
 
                 <div className="terminal-footer">
@@ -270,7 +308,7 @@ const StyledTerminalWrapper = styled.div`
     overflow: hidden;
     border: 1px solid rgba(139, 92, 246, 0.35);
     border-radius: 12px;
-    background-color: rgba(24, 21, 36, 0.85);
+    background-color: rgba(24, 21, 36, 0.88);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     width: 100%;
@@ -335,6 +373,7 @@ const StyledTerminalWrapper = styled.div`
     width: 16px;
     margin-top: 1px;
     color: #ff9900;
+    flex-shrink: 0;
   }
 
   .copy_toggle {
@@ -379,11 +418,11 @@ const StyledTerminalWrapper = styled.div`
     border-bottom-left-radius: 8px;
     overflow-x: auto;
     padding: 0.85rem 1rem;
-    line-height: 19px;
+    line-height: 20px;
     color: white;
     background-color: #0c0a12;
     white-space: nowrap;
-    gap: 0.6rem;
+    gap: 0.65rem;
   }
 
   .pre {
@@ -398,45 +437,39 @@ const StyledTerminalWrapper = styled.div`
     font-size: 14.5px;
   }
 
-  .pre code:nth-child(1) {
+  .dash-bullet {
     color: #ff9900;
     font-weight: 700;
   }
 
-  .pre code:nth-child(2) {
+  .npx-label {
     color: #e34ba9;
     font-weight: 700;
   }
 
-  .cmd {
-    height: 19px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
+  .cmd-text {
     color: #38bdf8;
     font-weight: 600;
+    display: inline-block;
   }
 
-  .cmd::before {
-    content: attr(data-cmd);
-    position: relative;
-    display: block;
-    white-space: nowrap;
-    overflow: hidden;
-    background-color: transparent;
-    animation: inputs 7s steps(32) infinite;
+  .cursor-caret {
+    display: inline-block;
+    width: 8px;
+    height: 16px;
+    background-color: #00ffa3;
+    margin-left: 2px;
+    animation: blink-caret 0.75s step-end infinite;
+    vertical-align: middle;
   }
 
-  .cmd::after {
-    content: "";
-    position: relative;
-    display: block;
-    height: 100%;
-    overflow: hidden;
-    background-color: transparent;
-    border-right: 0.15em solid #00ffa3;
-    animation: cursor 0.5s step-end infinite alternate, blinking 0.5s infinite;
+  @keyframes blink-caret {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
   }
 
   .terminal-footer {
@@ -482,31 +515,31 @@ const StyledTerminalWrapper = styled.div`
     text-decoration-color: #00ffa3;
   }
 
-  @keyframes blinking {
-    20%,
-    80% {
-      transform: scaleY(1);
-    }
-    50% {
-      transform: scaleY(0);
-    }
-  }
+  /* Responsive Mobile Tweaks */
+  @media (max-width: 600px) {
+    max-width: 100%;
+    margin-top: 1.25rem;
 
-  @keyframes cursor {
-    50% {
-      border-right-color: transparent;
+    .card {
+      padding: 0.65rem;
+      border-radius: 10px;
     }
-  }
 
-  @keyframes inputs {
-    0%,
-    100% {
-      width: 0;
+    .body {
+      padding: 0.75rem 0.85rem;
     }
-    12%,
-    88% {
-      width: 280px;
-      max-width: max-content;
+
+    .pre {
+      font-size: 13px;
+    }
+
+    .head {
+      min-height: 35px;
+      padding-inline: 10px;
+    }
+
+    .title {
+      font-size: 0.75rem;
     }
   }
 `;
