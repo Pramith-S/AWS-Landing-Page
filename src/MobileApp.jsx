@@ -29,6 +29,7 @@ import {
 } from 'react-icons/si';
 
 import MobileNavbar from './mobile-components/MobileNavbar';
+import UpcomingEventBanner from './components/UpcomingEventBanner';
 import MobileAboutSection from './mobile-components/MobileAboutSection';
 import MobilePillarsSection from './mobile-components/MobilePillarsSection';
 import MobileEventsSection from './mobile-components/MobileEventsSection';
@@ -131,6 +132,9 @@ function MobileApp() {
                 <JoinButton onClick={handleOpenJoinModal} />
                 <ContributeButton href="https://github.com/awsjssateb" />
               </div>
+
+              {/* Upcoming Event Terminal Card: Little Downside of First Page */}
+              <UpcomingEventBanner />
             </div>
           </div>
         </section>

@@ -23,6 +23,23 @@ const EVENTS_DATA = [
     image: workshopsImg,
     badge: '🎉 INAUGURAL EVENT'
   },
+    {
+    id: 'event-quest-hunt',
+    title: 'AWS QUEST HUNT',
+    category: 'Upcoming',
+    tag: 'QUIZ MISSION',
+    date: '20 November',
+    time: '1:00 PM – 5:00 PM IST',
+    location: 'Sem Hall-2, JSSATEB',
+    speaker: 'AWS Student Builder Center',
+    speakerRole: 'Solve • Explore • Deploy · Gamified Cloud Quiz Challenge',
+    description: 'Solve, explore, and deploy! Join the ultimate gamified AWS Quest Hunt quiz mission and challenge your AWS cloud skills. Scan the QR code or click below to register.',
+    ctaText: 'Register Now',
+    registrationUrl: 'https://cloud-quest-registration-phi.vercel.app/',
+    accentColor: '#FF9900',
+    image: '/images/quest-hunt-poster.png',
+    badge: '🔥 UPCOMING EVENT'
+  },
   {
     id: 'event-2',
     title: 'Coming Soon',
@@ -377,7 +394,7 @@ const EventsSection = ({ onOpenJoinModal }) => {
                 <div className="active-event-footer">
                   {currentEvent.ctaText && (
                     <a
-                      href="https://chat.whatsapp.com/LvgZscYwBMD1lRVX79fgkh?s=cl&p=a&mlu=4"
+                      href={currentEvent.registrationUrl || "https://chat.whatsapp.com/LvgZscYwBMD1lRVX79fgkh?s=cl&p=a&mlu=4"}
                       target="_blank"
                       rel="noreferrer"
                       className="btn-purple-primary event-cta"

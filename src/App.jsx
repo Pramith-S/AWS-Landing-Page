@@ -5,6 +5,7 @@ import WordRotate from './components/WordRotate';
 import JoinButton from './components/JoinButton';
 import ContributeButton from './components/ContributeButton';
 import Navbar from './components/Navbar';
+import UpcomingEventBanner from './components/UpcomingEventBanner';
 import AboutSection from './components/AboutSection';
 import PillarsSection from './components/PillarsSection';
 import EventsSection from './components/EventsSection';
@@ -84,6 +85,9 @@ function App() {
               <JoinButton onClick={handleOpenJoinModal} />
               <ContributeButton href="https://github.com/awsjssateb" />
             </div>
+
+            {/* Upcoming Event Terminal Card: Little Downside of First Page */}
+            <UpcomingEventBanner />
           </div>
         </div>
 

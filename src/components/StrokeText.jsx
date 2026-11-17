@@ -25,6 +25,7 @@ const StrokeText = ({
   fontWeight = 800,
   letterSpacing = -4,
   reverse = false,
+  hoverRedraw = false,
   className = '',
   style = {}
 }) => {
@@ -177,6 +178,15 @@ const StrokeText = ({
         timeline?.kill();
         timeline = build();
         timeline.play(0);
+      }
+      if (hoverRedraw) {
+        const replay = () => {
+          timeline?.kill();
+          timeline = build();
+          timeline.play(0);
+        };
+        root.addEventListener('pointerenter', replay);
+        removeHover = () => root.removeEventListener('pointerenter', replay);
       };
       root.addEventListener('pointerenter', play);
       removeHover = () => root.removeEventListener('pointerenter', play);
@@ -191,6 +201,15 @@ const StrokeText = ({
         });
       } else {
         timeline.play(0);
+      }
+      if (hoverRedraw) {
+        const replay = () => {
+          timeline?.kill();
+          timeline = build();
+          timeline.play(0);
+        };
+        root.addEventListener('pointerenter', replay);
+        removeHover = () => root.removeEventListener('pointerenter', replay);
       }
     }
 
